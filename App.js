@@ -9,11 +9,13 @@ import SearchScreen from './screens/SearchScreen';
 import AccountScreen from './screens/AccountScreen';
 import AppointmentScreen from './screens/AppointmentScreen';
 import SearchResultScreen from './screens/SearchResultScreen';
+import SignInScreen from './screens/SignInScreen';
+import SignUpScreen from './screens/SignUpScreen';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Ionicons, FontAwesome } from '@expo/vector-icons';
+import { FontAwesome } from '@expo/vector-icons';
 
 // import {createStore, combineReducers} from 'redux';
 // import {Provider} from 'react-redux';
@@ -31,6 +33,8 @@ const Tab = createBottomTabNavigator();
     <Stack.Navigator screenOptions={{headerShown: false}} >
       <Stack.Screen name="Search" component={SearchScreen} />
       <Stack.Screen name="Resultat" component={SearchResultScreen} />
+      <Stack.Screen name="Connexion" component={SignInScreen} />
+      <Stack.Screen name="Inscription" component={SignUpScreen} />
       </Stack.Navigator>
   );
   }

@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Button, Image } from 'react-native-elements';
+import { Image, Button } from 'react-native-elements';
+//import { Button } from '@ant-design/react-native';
 
 
 function SearchScreen(props) {
@@ -14,6 +15,7 @@ function SearchScreen(props) {
             title="Connexion"
             buttonStyle = {{backgroundColor:'#424D41', padding:1, paddingRight:5, paddingLeft:5, borderRadius:5}}
             type="solid"
+            onPress={() => props.navigation.navigate('Connexion')}
             />
             </View>
             
