@@ -9,6 +9,7 @@ import SearchScreen from './screens/SearchScreen';
 import AccountScreen from './screens/AccountScreen';
 import AppointmentScreen from './screens/AppointmentScreen';
 import SearchResultScreen from './screens/SearchResultScreen';
+import SelectedTattooArtistScreen from './screens/SelectedTattooArtistScreen';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -31,6 +32,7 @@ function SearchStack() {
             <Stack.Navigator screenOptions={{ headerShown: false }} >
                 <Stack.Screen name="Search" component={SearchScreen} />
                 <Stack.Screen name="Resultat" component={SearchResultScreen} />
+                <Stack.Screen name="TattooArtist" component={SelectedTattooArtistScreen} />
             </Stack.Navigator>
     );
 }
