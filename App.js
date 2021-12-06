@@ -26,44 +26,44 @@ const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 
- function SearchStack() {
-  return (
-    <Stack.Navigator screenOptions={{headerShown: false}} >
-      <Stack.Screen name="Search" component={SearchScreen} />
-      <Stack.Screen name="Resultat" component={SearchResultScreen} />
-      </Stack.Navigator>
-  );
-  }
+function SearchStack() {
+    return (
+            <Stack.Navigator screenOptions={{ headerShown: false }} >
+                <Stack.Screen name="Search" component={SearchScreen} />
+                <Stack.Screen name="Resultat" component={SearchResultScreen} />
+            </Stack.Navigator>
+    );
+}
 
 export default function App() {
-  return (
-    //<Provider store={store}>
-    <NavigationContainer>
-      <Tab.Navigator
-    screenOptions={({ route }) => ({
-      tabBarIcon: ({ color }) => {
-        let iconName;
-        if (route.name === 'Recherche') {
-          iconName = 'search';
-        } else if (route.name === 'Mes RDV') {
-          iconName = 'calendar-o';
-        } else if (route.name === 'Mon compte') {
-          iconName = 'user';
-        }
-        return <FontAwesome name={iconName} size={25} color={color} />;
-      },
-      tabBarActiveTintColor: "#C2A77D",
-    tabBarInactiveTintColor: "#F1EFE5",
-    tabBarStyle: {backgroundColor:"#424D41"},
-    headerShown: false
-    }
-    )}
-    >
-       <Tab.Screen name="Recherche" component={SearchStack} />
-      <Tab.Screen name="Mes RDV" component={AppointmentScreen} />
-      <Tab.Screen name="Mon compte" component={AccountScreen} />
-    </Tab.Navigator>
-  </NavigationContainer>
-  //</Provider>
-  );
+    return (
+        //<Provider store={store}>
+        <NavigationContainer>
+            <Tab.Navigator
+                screenOptions={({ route }) => ({
+                    tabBarIcon: ({ color }) => {
+                        let iconName;
+                        if (route.name === 'Recherche') {
+                            iconName = 'search';
+                        } else if (route.name === 'Mes RDV') {
+                            iconName = 'calendar-o';
+                        } else if (route.name === 'Mon compte') {
+                            iconName = 'user';
+                        }
+                        return <FontAwesome name={iconName} size={25} color={color} />;
+                    },
+                    tabBarActiveTintColor: "#C2A77D",
+                    tabBarInactiveTintColor: "#F1EFE5",
+                    tabBarStyle: { backgroundColor: "#424D41" },
+                    headerShown: false
+                }
+                )}
+            >
+                <Tab.Screen name="Recherche" component={SearchStack} />
+                <Tab.Screen name="Mes RDV" component={AppointmentScreen} />
+                <Tab.Screen name="Mon compte" component={AccountScreen} />
+            </Tab.Navigator>
+        </NavigationContainer>
+        //</Provider>
+    );
 }
