@@ -1,21 +1,21 @@
 import React from 'react';
 import { StyleSheet , Text, View, Button } from 'react-native';
 
-function SearchResultScreen(props) {
+function SelectedTattooArtistScreen(props) {
     return (
         <View style={styles.container}>
             
             <Button 
-            title="Selectionner Artiste"
+            title="Prendre Rdv"
             type="solid"
             color = '#424D41'
-            onPress={() => props.navigation.navigate('Selectionner Artist')}
+            onPress={() => props.navigation.navigate('Formulaire')}
      />
         </View>
     )
 }
 
-export default SearchResultScreen;
+export default SelectedTattooArtistScreen;
 
 const styles = StyleSheet.create({
     container: {
@@ -25,4 +25,6 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
     },
     });
+    
+
     
