@@ -13,8 +13,8 @@ function SearchScreen(props) {
                 style={{ width: 200, height: 80, marginRight: 70 }} />
             <Button
             title="Connexion"
-            buttonStyle = {{backgroundColor:'#424D41', padding:1, paddingRight:5, paddingLeft:5, borderRadius:5}}
-            type="solid"
+            titleStyle={{color:'#424D41'}}
+            type="clear"
             onPress={() => props.navigation.navigate('Connexion')}
             />
             </View>

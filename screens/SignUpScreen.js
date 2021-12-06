@@ -12,46 +12,78 @@ const data = [
 
 export default function SignUpScreen() {
 
-const [value, setValue] = useState(null);
-const [isFocus, setIsFocus] = useState(false);
+  //Const pour le dropdown
+  const [value, setValue] = useState(null);
+  const [isFocus, setIsFocus] = useState(false);
 
-const renderLabel = () => {
-    if (value || isFocus) {
-      return (
-        <Text style={styles.label}>
-        </Text>
-      );
-    }
-    return null;
-  };
+  const [signUpLastName, setSignUpLastName] = useState('');
+  const [signUpFirstName, setSignUpFirstName] = useState('');
+  const [signUpEmail, setSignUpEmail] = useState('');
+  const [signUpPhoneNumber, setSignUpPhoneNumber] = useState('');
+  const [signUpAddress, setSignUpAddress] = useState('');
+  const [signUpPostalCode, setSignUpPostalCode] = useState('');
+  const [signUpCity, setSignUpCity] = useState('');
+  const [signUpPassword, setSignUpPassword] = useState('');
+
+  const [userExists, setUserExists] = useState(false)
+  const [listErrorsSignup, setErrorsSignup] = useState([]);
+
+// const renderLabel = () => {
+//     if (value || isFocus) {
+//       return (
+//         <Text style={styles.label}>
+//         </Text>
+//       );
+//     }
+//     return null;
+//   };
+
+var handleSubmitSignup = async () => {
+    
+  const data = await fetch('http://172.17.1.128:3000/sign-up', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+    body: `userGenderFromFront=${value}&userLastNameFromFront=${signUpLastName}&userFirstNameFromFront=${signUpFirstName}&userEmailFromFront=${signUpEmail}&userPhoneNumberFromFront=${signUpPhoneNumber}&userAddressFromFront=${signUpAddress}&userPostalCodeFromFront=${signUpPostalCode}&userCityFromFront=${signUpCity}&userPasswordFromFront=${signUpPassword}`})
+
+  const body = await data.json()
+
+  if(body.result == true){
+   // props.addToken(body.token)
+   console.log('user creater');
+    setUserExists(true)
+    
+  } else {
+    setErrorsSignup(body.error)
+  }
+}
+
+  var tabErrorsSignup = listErrorsSignup.map((error,i) => {
+    return(<p>{error}</p>)
+  })
 
     return (
         <View style={styles.container}>
         <View style = {styles.header}>
             <Image 
             source = {require('../assets/tattoo-moi_1.png')}
-            style={{ width: 200, height: 80, marginRight: 70 }} />
-            <Button
-            title="Connexion"
-            buttonStyle = {{backgroundColor:'#424D41', padding:1, paddingRight:5, paddingLeft:5, borderRadius:2}}
-            type="solid"
-            onPress={() => props.navigation.navigate('Connexion')}
-            />
+            style={{ width: 200, height: 80 }} />
         </View>
         
         <ScrollView style = {styles.form}>
         <View style={styles.smallForm}>
-        {renderLabel()}
+        {/* {renderLabel()} */}
         <Dropdown
          style={styles.dropdown}
           placeholderStyle={styles.placeholderStyle}
           selectedTextStyle={styles.selectedTextStyle}
           data={data}
-          //dropdownPosition='top'
-          maxHeight={150}
+          dropdownPosition={'bottom'}
+          maxHeight={200}
           labelField="label"
           valueField="value"
           placeholder='Civilité' 
+          containerStyle={{backgroundColor:'#F1EFE5', marginTop: -30}}
+          activeColor={'#C2A77D'}
           value={value}
           onFocus={() => setIsFocus(true)}
           onBlur={() => setIsFocus(false)}
@@ -64,53 +96,53 @@ const renderLabel = () => {
         <TextInput
             style={styles.smallInput}
             placeholder="Nom"
-            //onChangeText={onChangeText}
-            //value={text}
+            onChangeText={setSignUpLastName}
+            value={signUpLastName}
         />
         </View>
         <TextInput
             style={styles.input}
             placeholder="Prénom"
-            //onChangeText={onChangeText}
-            //value={text}
+            onChangeText={setSignUpFirstName}
+            value={signUpFirstName}
         />
         <TextInput
             style={styles.input}
             placeholder="Adresse email"
-            //onChangeText={onChangeText}
-            //value={text}
+            onChangeText={setSignUpEmail}
+            value={signUpEmail}
         />
         <TextInput
             style={styles.input}
             placeholder="Numéro de téléphone"
-            //onChangeText={onChangeText}
-            //value={text}
+            onChangeText={setSignUpPhoneNumber}
+            value={signUpPhoneNumber}
         />
         <TextInput
             style={styles.input}
             placeholder="Adresse postale"
-            //onChangeText={onChangeText}
-            //value={text}
+            onChangeText={setSignUpAddress}
+            value={signUpAddress}
         />
         <View style={styles.smallForm}>
         <TextInput
             style={styles.smallInput}
             placeholder="Code postal"
-            //onChangeText={onChangeText}
-            //value={text}
+            onChangeText={setSignUpPostalCode}
+            value={signUpPostalCode}
         />
         <TextInput
             style={styles.smallInput}
             placeholder="Ville"
-            //onChangeText={onChangeText}
-            //value={text}
+            onChangeText={setSignUpCity}
+            value={signUpCity}
         />
         </View>
         <TextInput
             style={styles.input}
             placeholder="Mot de passe"
-            //onChangeText={onChangeText}
-            //value={text}
+            onChangeText={setSignUpPassword}
+            value={signUpPassword}
         />
         <TextInput
             style={styles.input}
@@ -125,7 +157,7 @@ const renderLabel = () => {
             title="S'inscrire"
             buttonStyle = {{backgroundColor:'#424D41', borderRadius:2, marginTop: 30, alignSelf:'center'}}
             type="solid"
-            //onPress={() => props.navigation.navigate('Connexion')}
+            onPress={() => handleSubmitSignup()}
         />
 
         <Button
@@ -166,11 +198,7 @@ container: {
   justifyContent: 'center',
 },
 header: {
-    flex:2,  
-    maxHeight : 80,
-    flexDirection : 'row',
-    alignItems : 'center',
-   justifyContent :'space-evenly',
+  maxHeight : 80,
 },
 form: {
     flex:3,

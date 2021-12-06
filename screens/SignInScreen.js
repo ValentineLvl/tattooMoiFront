@@ -1,57 +1,86 @@
-import React from 'react';
-import { StyleSheet, View, Text, TextInput } from 'react-native';
+import React, {useState} from 'react';
+import { StyleSheet, View, Text, TextInput, ScrollView } from 'react-native';
 import { Image, Button } from 'react-native-elements';
 import { Ionicons, FontAwesome } from '@expo/vector-icons';
 
 export default function SignInScreen(props) {
 
-    const [signInEmail, setSignInEmail] = useState('')
-    const [signInPassword, setSignInPassword] = useState('')
+    const [signInEmail, setSignInEmail] = useState('');
+    const [signInPassword, setSignInPassword] = useState('');
+
+    const [userExists, setUserExists] = useState(false);
+
+    const [listErrorsSignin, setErrorsSignin] = useState([]);
+
+    var handleSubmitSignin = async () => {
+ 
+        const data = await fetch('http://172.17.1.128:3000/sign-in', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+          body: `userEmailFromFront=${signInEmail}&userPasswordFromFront=${signInPassword}`
+        })
+    
+        const body = await data.json()
+    
+        if(body.result == true){
+          //props.addToken(body.token)
+          //props.navigate.goBack()
+          console.log('user connected')
+          setUserExists(true)
+          
+        }  else {
+          setErrorsSignin(body.error)
+        }
+      }
+
+    //   if(userExists){
+    //     return <Redirect to='/screensource' />
+    //   }
+    
+      var tabErrorsSignin = listErrorsSignin.map((error,i) => {
+        return(<p>{error}</p>)
+      })
+
 
     return (
         <View style={styles.container}>
             <View style = {styles.header}>
                 <Image 
                 source = {require('../assets/tattoo-moi_1.png')}
-                style={{ width: 200, height: 80, marginRight: 70 }} />
-                <Button
-                title="Connexion"
-                buttonStyle = {{backgroundColor:'#424D41', padding:1, paddingRight:5, paddingLeft:5, borderRadius:2}}
-                type="solid"
-                onPress={() => props.navigation.navigate('Connexion')}
-                />
+                style={{ width: 200, height: 80 }} />
             </View>
-            
-        <View style = {styles.button}>
+            <ScrollView style = {styles.scroll}>
+       
             <Button
                 title="Continuer sans s'inscrire"
-                buttonStyle = {{backgroundColor:'#424D41', borderRadius:2}}
+                buttonStyle = {styles.greenButton}
                 type="solid"
                 //onPress={() => props.navigation.navigate('Connexion')}
             />
-            </View>
-            <View style = {styles.connexion}>
+            
             <TextInput
                 style={styles.input}
                 placeholder="Adresse email"
-                //onChangeText={onChangeText}
-                //value={text}
+                onChangeText={setSignInEmail}
+                value={signInEmail}
             />
             <TextInput
                 style={styles.input}
                 placeholder="Mot de passe"
-                //onChangeText={onChangeText}
-                //value={text}
+                onChangeText={setSignInPassword}
+                value={signInPassword}
+                secureTextEntry
             />
             <Button
                 title="Se connecter"
-                buttonStyle = {{backgroundColor:'#424D41', borderRadius:2, marginBottom: 10}}
+                buttonStyle = {styles.greenButton}
                 type="solid"
-                //onPress={() => props.navigation.navigate('Connexion')}
+                onPress={() => handleSubmitSignin() }
             />
+
             <Button
                 title=" Se connecter avec Google"
-                buttonStyle = {{backgroundColor:'#C2A77D', borderRadius:2, marginBottom: 10, marginTop: 30}}
+                buttonStyle = {styles.beigeButton}
                 type="solid"
                 icon={<Ionicons
                     name='logo-google'
@@ -62,7 +91,7 @@ export default function SignInScreen(props) {
             />
             <Button
                 title=" Se connecter avec Facebook"
-                buttonStyle = {{backgroundColor:'#C2A77D', borderRadius:2}}
+                buttonStyle = {styles.beigeButton}
                 type="solid"
                 icon={<FontAwesome
                     name='facebook'
@@ -71,15 +100,14 @@ export default function SignInScreen(props) {
                 />}
                 //onPress={() => props.navigation.navigate('Connexion')}
             />
-            </View>
-            <View style = {styles.inscription}>
             <Button
                 title="S'inscrire"
-                buttonStyle = {{backgroundColor:'#424D41', borderRadius:2}}
+                buttonStyle = {styles.greenButton}
                 type="solid"
                 onPress={() => props.navigation.navigate('Inscription')}
             />
-        </View>
+            
+        </ScrollView>
         </View>
     )
 }
@@ -94,24 +122,24 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
     },
     header: {
-        flex:2,  
         maxHeight : 80,
-        flexDirection : 'row',
-        alignItems : 'center',
-       justifyContent :'space-evenly',
     },
-    button: {
+    scroll: {
         flex:3,
-        flexDirection : 'column',  
-        alignItems : 'center',
-        justifyContent: 'center',
+        marginTop:20,
     },
-    connexion: {
-        flex:4,
-        flexDirection : 'column',  
-        alignItems : 'center',
-        justifyContent: 'center',
-        marginTop: 20,
+    greenButton: {
+        backgroundColor:'#424D41', 
+        borderRadius:2,
+        alignSelf : 'center',
+        marginTop:20,
+        marginBottom:20,
+    },
+    beigeButton : {
+        backgroundColor:'#C2A77D', 
+        borderRadius:2,
+        alignSelf : 'center',
+        marginTop:30,
     },
     input: {
         height: 40,
@@ -121,11 +149,4 @@ const styles = StyleSheet.create({
         width: 300,
         borderRadius: 2,
       },
-    inscription: {
-        flex:5,
-        flexDirection : 'column',  
-        alignItems : 'center',
-        justifyContent: 'center',
-    },
-    
     });
