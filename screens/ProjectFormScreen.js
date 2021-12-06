@@ -5,45 +5,46 @@ import { Ionicons, FontAwesome, MaterialIcons } from '@expo/vector-icons';
 import { Dropdown } from 'react-native-element-dropdown';
 
 const title = [
-    { label: 'Mr.', value: '1' },
-    { label: 'Mme.', value: '2' },
-    { label: 'NC', value: '3' },
+    { label: 'Mr.', value: 'Mr.' },
+    { label: 'Mme.', value: 'Mme.' },
+    { label: 'NC', value: 'NC' },
  
   ];
 
 const style =[
-    { label: 'Old School', value: '1' },
-    { label: 'New School', value: '2' },
-    { label: 'Realism', value: '3' },
-    { label: 'Japonais', value: '4' },
-    { label: 'Tribal', value: '5' },
-    { label: 'Fineline', value: '6' },
-    { label: 'Dotwork', value: '7' },
-    { label: 'Geometric', value: '8' },
-    { label: 'Lettering', value: '9' },
+    { label: 'Old School', value: 'Old School' },
+    { label: 'New School', value: 'New School' },
+    { label: 'Realism', value: 'Realism' },
+    { label: 'Japonais', value: 'Japonais' },
+    { label: 'Tribal', value: 'Tribal' },
+    { label: 'Fineline', value: 'Fineline' },
+    { label: 'Dotwork', value: 'Dotwork' },
+    { label: 'Geometric', value: 'Geometric' },
+    { label: 'Lettering', value: 'Lettering'},
+   
 ]
 
 const schedule = [
-    { label: 'En soirée', value: '1' },
-    { label: 'En journée', value: '2' },
-    { label: 'Les weekends', value: '3' },
-    { label: 'Peu importe', value: '4' },
+    { label: 'En soirée', value: 'En soirée' },
+    { label: 'En journée', value: 'En journée' },
+    { label: 'Les weekends', value: 'Les weekends' },
+    { label: 'Peu importe', value: 'Peu importe' },
  
   ];
 function ProjectFormScreen(props) {
     
-        const [text, onChangeText] = React.useState("");
-        const [lastName, onChangeLastName] = React.useState("");
-        const [firstName, onChangeFirstName] = React.useState("");
-        const [email, onChangeEmail] = React.useState("");
-        const [phone, onChangePhone] = React.useState("");
-        const [postalCode, onChangePostalCode] = React.useState("");
-        const [city, onChangeCity] = React.useState("");
-        const [tattooZone, onChangeTattooZone] = React.useState("");
-        const [width, onChangeWidth] = React.useState("");
-        const [height, onChangeHeight] = React.useState("");
-        const [description, onChangeDescription] = React.useState("");
-        const [address, onChangeAddress] = React.useState("");
+        
+        const [lastName, setLastName] = useState("");
+        const [firstName, setFirstName] = useState("");
+        const [email, setEmail] = useState("");
+        const [phone, setPhone] = useState("");
+        const [postalCode, setPostalCode] = useState("");
+        const [city, setCity] = useState("");
+        const [tattooZone, setTattooZone] = useState("");
+        const [width, setWidth] = useState("");
+        const [height, setHeight] = useState("");
+        const [description, setDescription] = useState("");
+        const [address, setAddress] = useState("");
         
 
 
@@ -52,7 +53,17 @@ function ProjectFormScreen(props) {
         const [styleValue, setStyleValue] = useState(null);
         const [scheduleValue, setScheduleValue] = useState(null);
       
-    
+
+        async function handleClickAddForm () { {
+            console.log("activation de la fonction")
+         await fetch('http://172.17.1.32:3000/project-form', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+            body: `userStyleFromFront=${styleValue}&userDisponibilityFromFront=${scheduleValue}&userGenderFromFront=${titleValue}&userLastNameFromFront=${lastName}&userFirstNameFromFront=${firstName}&userEmailFromFront=${email}&userPhoneNumberFromFront=${phone}&userAddressFromFront=${address}&userPostalCodeFromFront=${postalCode}&userCityFromFront=${city}&usertattooZoneFromFront=${tattooZone}&userWidthFromFront=${width}&userHeightFromFront=${height}`
+        })
+        console.log(lastName)
+        
+        }}
       
     return (
         <View style={styles.container}>
@@ -77,6 +88,8 @@ function ProjectFormScreen(props) {
           selectedTextStyle={styles.selectedTextStyle}
           inputSearchStyle={styles.inputSearchStyle}
           data={title}
+          containerStyle={{backgroundColor:'#F1EFE5', marginTop:-42}}
+          activeColor={'#C2A77D'}
           maxHeight={100}
           labelField="label"
           valueField="value"
@@ -93,7 +106,7 @@ function ProjectFormScreen(props) {
       
       <TextInput
         style={styles.input}
-        onChangeText={onChangeLastName}
+        onChangeText={setLastName}
         value={lastName}
         placeholder="Nom"
       />
@@ -101,28 +114,28 @@ function ProjectFormScreen(props) {
       </View>
       <TextInput
         style={styles.input}
-        onChangeText={onChangeFirstName}
+        onChangeText={setFirstName}
         value={firstName}
         placeholder="Prénom"
       
       />
       <TextInput
         style={styles.input}
-        onChangeText={onChangeEmail}
+        onChangeText={setEmail}
         value={email}
         placeholder="Adresse email"
       
       />
       <TextInput
         style={styles.input}
-        onChangeText={onChangePhone}
+        onChangeText={setPhone}
         value={phone}
         placeholder="Numéro de téléphone"
       
       />
       <TextInput
         style={styles.input}
-        onChangeText={onChangeAddress}
+        onChangeText={setAddress}
         value={address}
         placeholder="Adresse postale"
       
@@ -130,14 +143,14 @@ function ProjectFormScreen(props) {
        <View style={styles.inlign}   >
       <TextInput
         style={styles.input}
-        onChangeText={onChangePostalCode}
+        onChangeText={setPostalCode}
         value={postalCode}
         placeholder="Code postal"
       
       />
       <TextInput
         style={styles.input}
-        onChangeText={onChangeCity}
+        onChangeText={setCity}
         value={city}
         placeholder="Ville"
       
@@ -152,6 +165,8 @@ function ProjectFormScreen(props) {
           selectedTextStyle={styles.selectedTextStyle}
           inputSearchStyle={styles.inputSearchStyle}
           data={style}
+          containerStyle={{backgroundColor:'#F1EFE5', marginTop:-42}}
+          activeColor={'#C2A77D'}
           search
           maxHeight={200}
           labelField="label"
@@ -170,7 +185,7 @@ function ProjectFormScreen(props) {
      
       <TextInput
         style={styles.input}
-        onChangeText={onChangeTattooZone}
+        onChangeText={setTattooZone}
         value={tattooZone}
         placeholder="Zone à tatouer "
       
@@ -179,14 +194,14 @@ function ProjectFormScreen(props) {
       <View style={styles.inlign}   >
        <TextInput
         style={styles.input}
-        onChangeText={onChangeWidth}
+        onChangeText={setWidth}
         value={width}
         placeholder="Largeur (cm) "
       
       />
       <TextInput
         style={styles.input}
-        onChangeText={onChangeHeight}
+        onChangeText={setHeight}
         value={height}
         placeholder="Longueur (cm)"
       
@@ -198,6 +213,8 @@ function ProjectFormScreen(props) {
           selectedTextStyle={styles.selectedTextStyle}
           inputSearchStyle={styles.inputSearchStyle}
           data={schedule}
+          containerStyle={{backgroundColor:'#F1EFE5', marginTop:10}}
+          activeColor={'#C2A77D'}
           maxHeight={200}
           labelField="label"
           valueField="value"
@@ -215,7 +232,7 @@ function ProjectFormScreen(props) {
      
       <TextInput
         style={{ flex:1,height: 80,margin: 5,borderWidth: 1, padding: 10,borderRadius:2}}
-        onChangeText={onChangeDescription}
+        onChangeText={setDescription}
         value={description}
         placeholder="Description du projet"
       
@@ -236,7 +253,7 @@ function ProjectFormScreen(props) {
             padding="30"
             color = '#424D41'
             
-            onPress={() => props.navigation.navigate('Selectionner Artist')}
+            onPress={() => handleClickAddForm()}
      />
      </View>
      
@@ -296,15 +313,15 @@ const styles = StyleSheet.create({
         borderRadius: 2,
         backgroundColor: '#F1EFE5',
       },
-    //   label: {
-    //     position: 'absolute',
+      label: {
+        position: 'absolute',
         
-    //     left: 22,
-    //     top: 8,
-    //     zIndex: 999,
-    //     paddingHorizontal: 8,
-    //     fontSize: 14,
-    //   },
+        left: 22,
+        top: 8,
+        zIndex: 999,
+        paddingHorizontal: 8,
+        fontSize: 14,
+      },
       placeholderStyle: {
         fontSize: 16,
         

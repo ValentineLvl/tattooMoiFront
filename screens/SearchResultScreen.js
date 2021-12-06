@@ -9,7 +9,7 @@ function SearchResultScreen(props) {
             title="Selectionner Artiste"
             type="solid"
             color = '#424D41'
-            onPress={() => props.navigation.navigate('Selectionner Artist')}
+            onPress={() => props.navigation.navigate('TattooArtist')}
      />
         </View>
     )

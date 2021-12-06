@@ -33,7 +33,7 @@ const Tab = createBottomTabNavigator();
     <Stack.Navigator screenOptions={{headerShown: false}} >
       <Stack.Screen name="Search" component={SearchScreen} />
       <Stack.Screen name="Resultat" component={SearchResultScreen} />
-      <Stack.Screen name="Selectionner Artist" component={SelectedTattooArtistScreen} />
+      <Stack.Screen name="TattooArtist" component={SelectedTattooArtistScreen} />
       <Stack.Screen name="Formulaire" component={ProjectFormScreen} />
       </Stack.Navigator>
   );
