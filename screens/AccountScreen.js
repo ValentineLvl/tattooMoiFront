@@ -1,15 +1,29 @@
 import React from 'react';
 import { StyleSheet , Text, View } from 'react-native';
+import { Button } from 'react-native-elements';
 
-function AccountScreen() {
+import HeaderComponent from './HeaderComponent';
+import {connect} from 'react-redux'
+
+function AccountScreen(props) {
+
+const handleLogOut = async () => {
+    props.disconnectToken(null);
+    props.navigation.navigate('Search');
+}
+
     return (
         <View style={styles.container}>
-            <Text>Mon compte</Text>
+            <HeaderComponent/>
+            <Button
+            title="Déconnexion"
+            titleStyle={{color:'#424D41'}}
+            type="clear"
+            onPress={() => handleLogOut()}
+            />
         </View>
     )
 }
-
-export default AccountScreen;
 
 const styles = StyleSheet.create({
     container: {
@@ -19,3 +33,16 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
     },
     });
+
+    function mapDispatchToProps(dispatch){
+        return {
+            disconnectToken: function(token){
+            dispatch({type: 'disconnectToken', token: token})
+            }
+        }
+        }
+
+    export default connect(
+        null,
+        mapDispatchToProps
+        )(AccountScreen);

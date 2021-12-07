@@ -9,6 +9,7 @@ import AppointmentScreen from './screens/AppointmentScreen';
 import SearchResultScreen from './screens/SearchResultScreen';
 import SignInScreen from './screens/SignInScreen';
 import SignUpScreen from './screens/SignUpScreen';
+//import HeaderComponent from './screens/HeaderComponent';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
