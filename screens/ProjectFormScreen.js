@@ -1,8 +1,12 @@
 import React, {useState} from 'react';
-import { StyleSheet , Text, View, Button, ScrollView,  SafeAreaView, TextInput, Image} from 'react-native';
+import { StyleSheet , Text, View, Button, ScrollView,  SafeAreaView, TextInput, Image, TouchableOpacity} from 'react-native';
 import { Input } from 'react-native-elements'
 import { Ionicons, FontAwesome, MaterialIcons } from '@expo/vector-icons';
 import { Dropdown } from 'react-native-element-dropdown';
+import * as ImagePicker from 'expo-image-picker';
+
+
+
 
 const title = [
     { label: 'Mr.', value: 'Mr.' },
@@ -45,26 +49,59 @@ function ProjectFormScreen(props) {
         const [height, setHeight] = useState("");
         const [description, setDescription] = useState("");
         const [address, setAddress] = useState("");
-        
-
-
         const [titleValue, setTitleValue] = useState(null);
         const [isFocus, setIsFocus] = useState(false);
         const [styleValue, setStyleValue] = useState(null);
         const [scheduleValue, setScheduleValue] = useState(null);
+        const [tempUrl, setTempUrl] = useState("")
       
+        
+        let openImagePickerAsync = async () => {
+            let permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+        
+            if (permissionResult.granted === false) {
+              alert('Permission to access camera roll is required!');
+              return;
+            }
+        
+            let pickerResult = await ImagePicker.launchImageLibraryAsync();
+            console.log(pickerResult);
+            var data = new FormData();
+            data.append('avatar', {
+            uri: pickerResult.uri,
+            type: 'image/jpeg',
+            name: 'avatar.jpg',
+          });
+          var rawResponse = await fetch('http://172.17.1.32:3000/upload', {
+            method: 'POST',
+            body: data
+          });
+          var response = await rawResponse.json();
+        //   props.onSnap(response.url);
+          setTempUrl(response.url);
+          console.log("response", response)
+            }
+
+
+
 
         async function handleClickAddForm () { {
             console.log("activation de la fonction")
          await fetch('http://172.17.1.32:3000/project-form', {
             method: 'POST',
             headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-            body: `userStyleFromFront=${styleValue}&userDisponibilityFromFront=${scheduleValue}&userGenderFromFront=${titleValue}&userLastNameFromFront=${lastName}&userFirstNameFromFront=${firstName}&userEmailFromFront=${email}&userPhoneNumberFromFront=${phone}&userAddressFromFront=${address}&userPostalCodeFromFront=${postalCode}&userCityFromFront=${city}&usertattooZoneFromFront=${tattooZone}&userWidthFromFront=${width}&userHeightFromFront=${height}`
+            body: `userProjectImgFromFront=${tempUrl}userStyleFromFront=${styleValue}&userDisponibilityFromFront=${scheduleValue}&userGenderFromFront=${titleValue}&userLastNameFromFront=${lastName}&userFirstNameFromFront=${firstName}&userEmailFromFront=${email}&userPhoneNumberFromFront=${phone}&userAddressFromFront=${address}&userPostalCodeFromFront=${postalCode}&userCityFromFront=${city}&usertattooZoneFromFront=${tattooZone}&userWidthFromFront=${width}&userHeightFromFront=${height}`
         })
-        console.log(lastName)
+        
+      setTempUrl("")
+    
         
         }}
       
+      
+
+
+
     return (
         <View style={styles.container}>
         <View style = {styles.header}>
@@ -238,12 +275,13 @@ function ProjectFormScreen(props) {
       
       />
       <View style={{ flex:1, flexdirection:"row",alignItems: 'center', justifyContent: 'center', marginTop: 10}}>
-     
-       <Text   >   <MaterialIcons
+      <TouchableOpacity onPress={openImagePickerAsync} >
+        <Text > <MaterialIcons
                   name="save-alt"
                   size={20}
                   color="#C2A77D"/>
          Télécharger une image </Text>
+      </TouchableOpacity>
        </View>
        
     <View style={{ flex:1, alignItems: 'center', justifyContent: 'center', marginTop: 10}} >
@@ -267,7 +305,9 @@ function ProjectFormScreen(props) {
     
 }
 
+
 export default ProjectFormScreen;
+
 
 const styles = StyleSheet.create({
     container: {
@@ -337,3 +377,6 @@ const styles = StyleSheet.create({
       },
     });
     
+  
+    
+     
