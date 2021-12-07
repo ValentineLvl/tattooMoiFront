@@ -14,7 +14,7 @@ const handleLogOut = async () => {
 
     return (
         <View style={styles.container}>
-            <HeaderComponent/>
+            <HeaderComponent navigation={props.navigation}/>
             <Button
             title="Déconnexion"
             titleStyle={{color:'#424D41'}}
@@ -28,6 +28,7 @@ const handleLogOut = async () => {
 const styles = StyleSheet.create({
     container: {
       flex: 1,
+    paddingTop : 50,
       backgroundColor: '#F1EFE5',
       alignItems: 'center',
       justifyContent: 'center',

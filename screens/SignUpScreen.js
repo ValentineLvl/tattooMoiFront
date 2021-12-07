@@ -4,7 +4,8 @@ import { StackActions } from '@react-navigation/native';
 import { Image, Button } from 'react-native-elements';
 import { Dropdown } from 'react-native-element-dropdown';
 import { Ionicons, FontAwesome } from '@expo/vector-icons';
-import {connect} from 'react-redux'
+import {connect} from 'react-redux';
+import * as Facebook from 'expo-facebook';
 
 const data = [
     { label: 'M.', value: 'M.' },
@@ -18,6 +19,7 @@ function SignUpScreen(props) {
   const [value, setValue] = useState(null);
   const [isFocus, setIsFocus] = useState(false);
 
+  //champs du formulaire
   const [signUpLastName, setSignUpLastName] = useState('');
   const [signUpFirstName, setSignUpFirstName] = useState('');
   const [signUpEmail, setSignUpEmail] = useState('');
@@ -28,12 +30,40 @@ function SignUpScreen(props) {
   const [signUpPassword, setSignUpPassword] = useState('');
   const [signUpPasswordConfirmation, setSignUpPasswordConfirmation] = useState('');
 
-  const [userExists, setUserExists] = useState(false)
+  //Definir si le user existe et les erreurs appropriées
+  const [userExists, setUserExists] = useState(false);
   const [listErrorsSignup, setErrorsSignup] = useState([]);
+
+  //Récupérer les informations de Facebook
+  // const [fbLastName, setFbLastName] = useState('');
+  // const [fbFirstName, setFbFirstName] = useState('');
+  // const [fbEmail, setFbEmail] = useState('');
+
+  //SignUp avec facebook
+  // async function FacebookSignUp() {
+  //   try {
+  //     await Facebook.initializeAsync({appId: '866183567383072'});
+  //     const { type, token } = await Facebook.logInWithReadPermissionsAsync({
+  //       permissions: ['public_profile', 'email'],
+  //     });
+  //     if (type === 'success') {
+  //       // Get the user's name using Facebook's Graph API
+  //       const response = await fetch(`https://graph.facebook.com/me?access_token=${token}`);
+  //       var user = await response.json();
+  //       setName(user.name);
+  //       setImg({uri: `http://graph.facebook.com/${user.id}/picture`});
+  //       AsyncStorage.setItem('name',user.name);
+  //       AsyncStorage.setItem('img', `http://graph.facebook.com/${user.id}/picture`);
+  //     }
+  //   } catch ({ message }) {
+  //     alert('Facebook Login Error:', message);
+  //   }
+  // }
+
 
 var handleSubmitSignup = async () => {
     
-  const data = await fetch('http://172.17.1.32:3000/sign-up', {
+  const data = await fetch('http://172.17.1.128:3000/sign-up', {
     method: 'POST',
     headers: {'Content-Type': 'application/x-www-form-urlencoded'},
     body: `userGenderFromFront=${value}&userLastNameFromFront=${signUpLastName}&userFirstNameFromFront=${signUpFirstName}&userEmailFromFront=${signUpEmail}&userPhoneNumberFromFront=${signUpPhoneNumber}&userAddressFromFront=${signUpAddress}&userPostalCodeFromFront=${signUpPostalCode}&userCityFromFront=${signUpCity}&userPasswordFromFront=${signUpPassword}&userPasswordConfirmationFromFront=${signUpPasswordConfirmation}`})

@@ -17,6 +17,8 @@
     "@react-navigation/stack": "^6.0.11",
     "antd": "^4.17.2",
     "expo": "~43.0.2",
+    "expo-facebook": "^12.0.3",
+    "expo-image-picker": "~11.0.3",
     "expo-status-bar": "~1.1.0",
     "link": "^0.1.5",
     "react": "17.0.1",
@@ -34,8 +36,7 @@
     "react-native-vector-icons": "^9.0.0",
     "react-native-web": "0.17.1",
     "react-redux": "^7.2.6",
-    "redux": "^4.1.2",
-    "expo-image-picker": "~11.0.3"
+    "redux": "^4.1.2"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9"

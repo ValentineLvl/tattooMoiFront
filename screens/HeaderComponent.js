@@ -1,19 +1,33 @@
-import React, {useState} from 'react';
-import { View, StyleSheet } from 'react-native';
+import React, {useState, useEffect} from 'react';
+import { View, StyleSheet, Text } from 'react-native';
 import { Image, Button } from 'react-native-elements';
 import {connect} from 'react-redux';
 
 function HeaderComponent(props) {
     
-const [isLoggedIn, setIsLoggedIn] = useState(false)
+const [isLoggedIn, setIsLoggedIn] = useState(false);
+const [userInfo, setUserInfo] = useState('');
+
+useEffect(() => {
+  const findUser = async() => {
+    
+    const reqFind = await fetch('http://172.17.1.128:3000/sign-up')
+    const resultFind = await reqFind.json()
+console.log('coucou result find', resultFind);
+    setUserInfo(resultFind.firstName)
+  }
+
+  findUser()
+}, [])
 
     if (props.token != null) {
         //setIsLoggedIn(true);
         return (
-            <View style = {styles.headerConnected}>
+            <View style = {styles.header}>
             <Image 
             source = {require('../assets/tattoo-moi_1.png')}
-            style={{ width: 200, height: 80 }} />
+            style={{ width: 200, height: 80, marginRight: 70  }} />
+            <Text>Salut !</Text>
         </View>
         )
     }
@@ -35,15 +49,12 @@ return (
 }
 
 const styles = StyleSheet.create({
-headerConnected: {
-    maxHeight : 80,
-  },
   header: {
     flex:2,  
     maxHeight : 80,
     flexDirection : 'row',
     alignItems : 'center',
-   justifyContent :'space-evenly',
+  justifyContent :'space-evenly',
 },
 });
 

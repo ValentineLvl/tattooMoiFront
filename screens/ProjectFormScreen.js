@@ -4,15 +4,12 @@ import { Input } from 'react-native-elements'
 import { Ionicons, FontAwesome, MaterialIcons } from '@expo/vector-icons';
 import { Dropdown } from 'react-native-element-dropdown';
 import * as ImagePicker from 'expo-image-picker';
-
-
-
+import HeaderComponent from './HeaderComponent';
 
 const title = [
     { label: 'Mr.', value: 'Mr.' },
     { label: 'Mme.', value: 'Mme.' },
     { label: 'NC', value: 'NC' },
- 
   ];
 
 const style =[
@@ -25,7 +22,6 @@ const style =[
     { label: 'Dotwork', value: 'Dotwork' },
     { label: 'Geometric', value: 'Geometric' },
     { label: 'Lettering', value: 'Lettering'},
-   
 ]
 
 const schedule = [
@@ -72,7 +68,7 @@ function ProjectFormScreen(props) {
             type: 'image/jpeg',
             name: 'avatar.jpg',
           });
-          var rawResponse = await fetch('http://172.17.1.32:3000/upload', {
+          var rawResponse = await fetch('http://172.17.1.128:3000/upload', {
             method: 'POST',
             body: data
           });
@@ -83,11 +79,9 @@ function ProjectFormScreen(props) {
             }
 
 
-
-
         async function handleClickAddForm () { {
             console.log("activation de la fonction")
-         await fetch('http://172.17.1.32:3000/project-form', {
+         await fetch('http://172.17.1.128:3000/project-form', {
             method: 'POST',
             headers: {'Content-Type': 'application/x-www-form-urlencoded'},
             body: `userProjectImgFromFront=${tempUrl}userStyleFromFront=${styleValue}&userDisponibilityFromFront=${scheduleValue}&userGenderFromFront=${titleValue}&userLastNameFromFront=${lastName}&userFirstNameFromFront=${firstName}&userEmailFromFront=${email}&userPhoneNumberFromFront=${phone}&userAddressFromFront=${address}&userPostalCodeFromFront=${postalCode}&userCityFromFront=${city}&usertattooZoneFromFront=${tattooZone}&userWidthFromFront=${width}&userHeightFromFront=${height}`
@@ -100,21 +94,9 @@ function ProjectFormScreen(props) {
       
       
 
-
-
     return (
         <View style={styles.container}>
-        <View style = {styles.header}>
-                <Image 
-                source = {require('../assets/tattoo-moi_1.png')}
-                style={{ width: 200, height: 80, marginRight: 70 }} />
-            <Button
-            title="Connexion"
-            buttonStyle = {{backgroundColor:'#424D41', padding:1, paddingRight:5, paddingLeft:5, borderRadius:5}}
-            type="solid"
-            onPress={() => props.navigation.navigate('Connexion')}
-            />
-            </View>
+        <HeaderComponent navigation={props.navigation}/>
         <ScrollView style={{flex:1,}} >
         <SafeAreaView style={{margin:40}}>
          <View style={styles.inlign}   >
@@ -138,7 +120,6 @@ function ProjectFormScreen(props) {
             setTitleValue(item.value);
             setIsFocus(false);
           }}
-         
         />
       
       <TextInput
@@ -311,32 +292,25 @@ export default ProjectFormScreen;
 
 const styles = StyleSheet.create({
     container: {
-      flex: 1,
+        flex: 1,
+      flexDirection : 'column',
+      paddingTop : 50,
       backgroundColor: '#F1EFE5',
-        paddingTop : 50,
-    //   alignItems: 'center',
-    //   justifyContent: 'center',
-    
+      alignItems: 'center',
+      justifyContent: 'center',
     },
     input: {
-        flex:1,
-        
-        height: 40,
-        margin: 5,
-        borderWidth: 1,
-        padding: 10,
-        borderRadius: 2,
+      height: 40,
+      margin: 5,
+      borderWidth: 1,
+      padding: 10,
+      width: 300,
+      borderRadius: 2,
       },
     inlign : {
-        flex: 1,
-        flexDirection: "row"
-    },
-    header: {
-        flex:2,  
-        maxHeight : 80,
-        flexDirection : 'row',
-        alignItems : 'center',
-       justifyContent :'space-evenly',
+      flexDirection : 'row',  
+      alignItems : 'center',
+      justifyContent: 'flex-start',
     },
     main: {
         flex:3,
@@ -345,17 +319,17 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     dropdown: {
-        flex:1,
-        height: 40,
-        margin: 5,
-        borderWidth: 1,
-        padding: 10,
-        borderRadius: 2,
+      height: 40,
+      margin: 5,
+      borderWidth: 1,
+      padding: 10,
+      width: 145,
+      borderRadius: 2,
+      paddingHorizontal: 8,
         backgroundColor: '#F1EFE5',
       },
       label: {
         position: 'absolute',
-        
         left: 22,
         top: 8,
         zIndex: 999,
