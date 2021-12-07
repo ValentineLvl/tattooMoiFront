@@ -4,7 +4,8 @@ import { Input } from 'react-native-elements'
 import { Ionicons, FontAwesome, MaterialIcons } from '@expo/vector-icons';
 import { Dropdown } from 'react-native-element-dropdown';
 import * as ImagePicker from 'expo-image-picker';
-
+import HeaderComponent from './HeaderComponent';
+import {connect} from 'react-redux'
 
 
 
@@ -90,7 +91,7 @@ function ProjectFormScreen(props) {
          await fetch('http://172.17.1.32:3000/project-form', {
             method: 'POST',
             headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-            body: `userProjectImgFromFront=${tempUrl}userStyleFromFront=${styleValue}&userDisponibilityFromFront=${scheduleValue}&userGenderFromFront=${titleValue}&userLastNameFromFront=${lastName}&userFirstNameFromFront=${firstName}&userEmailFromFront=${email}&userPhoneNumberFromFront=${phone}&userAddressFromFront=${address}&userPostalCodeFromFront=${postalCode}&userCityFromFront=${city}&usertattooZoneFromFront=${tattooZone}&userWidthFromFront=${width}&userHeightFromFront=${height}`
+            body: `token=${props.token}&userProjectImgFromFront=${tempUrl}&userStyleFromFront=${styleValue}&userDisponibilityFromFront=${scheduleValue}&userGenderFromFront=${titleValue}&userLastNameFromFront=${lastName}&userFirstNameFromFront=${firstName}&userEmailFromFront=${email}&userPhoneNumberFromFront=${phone}&userAddressFromFront=${address}&userPostalCodeFromFront=${postalCode}&userCityFromFront=${city}&usertattooZoneFromFront=${tattooZone}&userWidthFromFront=${width}&userHeightFromFront=${height}`
         })
         
       setTempUrl("")
@@ -104,7 +105,8 @@ function ProjectFormScreen(props) {
 
     return (
         <View style={styles.container}>
-        <View style = {styles.header}>
+            <HeaderComponent/>
+        {/* <View style = {styles.header}>
                 <Image 
                 source = {require('../assets/tattoo-moi_1.png')}
                 style={{ width: 200, height: 80, marginRight: 70 }} />
@@ -114,7 +116,7 @@ function ProjectFormScreen(props) {
             type="solid"
             onPress={() => props.navigation.navigate('Connexion')}
             />
-            </View>
+            </View> */}
         <ScrollView style={{flex:1,}} >
         <SafeAreaView style={{margin:40}}>
          <View style={styles.inlign}   >
@@ -306,7 +308,7 @@ function ProjectFormScreen(props) {
 }
 
 
-export default ProjectFormScreen;
+
 
 
 const styles = StyleSheet.create({
@@ -379,4 +381,11 @@ const styles = StyleSheet.create({
     
   
     
-     
+    function mapStateToProps(state){
+        return { token:state.token}
+      }
+      export default connect(
+        mapStateToProps,
+       null,
+      )(ProjectFormScreen);
+      
