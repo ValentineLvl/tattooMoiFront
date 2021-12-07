@@ -1,16 +1,18 @@
 import React, {useState} from 'react';
-import { StyleSheet, View, Text, TextInput, ScrollView, KeyboardAvoidingView } from 'react-native';
+import { StyleSheet, View, Text, TextInput, ScrollView } from 'react-native';
+import { StackActions } from '@react-navigation/native';
 import { Image, Button } from 'react-native-elements';
 import { Dropdown } from 'react-native-element-dropdown';
 import { Ionicons, FontAwesome } from '@expo/vector-icons';
+import {connect} from 'react-redux'
 
 const data = [
-    { label: 'M.', value: '1' },
-    { label: 'Mme', value: '2' },
-    { label: 'NC', value: '3' },
+    { label: 'M.', value: 'M.' },
+    { label: 'Mme', value: 'Mme' },
+    { label: 'NC', value: 'NC' },
     ];
 
-export default function SignUpScreen() {
+function SignUpScreen(props) {
 
   //Const pour le dropdown
   const [value, setValue] = useState(null);
@@ -24,41 +26,36 @@ export default function SignUpScreen() {
   const [signUpPostalCode, setSignUpPostalCode] = useState('');
   const [signUpCity, setSignUpCity] = useState('');
   const [signUpPassword, setSignUpPassword] = useState('');
+  const [signUpPasswordConfirmation, setSignUpPasswordConfirmation] = useState('');
 
   const [userExists, setUserExists] = useState(false)
   const [listErrorsSignup, setErrorsSignup] = useState([]);
-
-// const renderLabel = () => {
-//     if (value || isFocus) {
-//       return (
-//         <Text style={styles.label}>
-//         </Text>
-//       );
-//     }
-//     return null;
-//   };
 
 var handleSubmitSignup = async () => {
     
   const data = await fetch('http://172.17.1.128:3000/sign-up', {
     method: 'POST',
     headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-    body: `userGenderFromFront=${value}&userLastNameFromFront=${signUpLastName}&userFirstNameFromFront=${signUpFirstName}&userEmailFromFront=${signUpEmail}&userPhoneNumberFromFront=${signUpPhoneNumber}&userAddressFromFront=${signUpAddress}&userPostalCodeFromFront=${signUpPostalCode}&userCityFromFront=${signUpCity}&userPasswordFromFront=${signUpPassword}`})
+    body: `userGenderFromFront=${value}&userLastNameFromFront=${signUpLastName}&userFirstNameFromFront=${signUpFirstName}&userEmailFromFront=${signUpEmail}&userPhoneNumberFromFront=${signUpPhoneNumber}&userAddressFromFront=${signUpAddress}&userPostalCodeFromFront=${signUpPostalCode}&userCityFromFront=${signUpCity}&userPasswordFromFront=${signUpPassword}&userPasswordConfirmationFromFront=${signUpPasswordConfirmation}`})
 
   const body = await data.json()
 
   if(body.result == true){
-   // props.addToken(body.token)
+   props.addToken(body.token)
    console.log('user creater');
     setUserExists(true)
     
+    if(!userExists){
+      return (props.navigation.dispatch(StackActions.pop(2)))
+    }
+
   } else {
     setErrorsSignup(body.error)
   }
 }
 
   var tabErrorsSignup = listErrorsSignup.map((error,i) => {
-    return(<p>{error}</p>)
+    return(<Text style={{textAlign:'center', color:'#b33939'}}>{error}</Text>)
   })
 
     return (
@@ -143,14 +140,16 @@ var handleSubmitSignup = async () => {
             placeholder="Mot de passe"
             onChangeText={setSignUpPassword}
             value={signUpPassword}
+            secureTextEntry
         />
         <TextInput
             style={styles.input}
             placeholder="Confirmation mot de passe"
-            //onChangeText={onChangeText}
-            //value={text}
+            onChangeText={setSignUpPasswordConfirmation}
+            value={signUpPasswordConfirmation}
+            secureTextEntry
         />
-       
+       {tabErrorsSignup}
      <View style = {{ flex:4}}>
 
      <Button
@@ -245,12 +244,18 @@ input: {
     backgroundColor: '#F1EFE5',
     fontSize: 14,
   },
-// inscriptionRS: {
-//     flex:4,
-//     flexDirection : 'column',  
-//     alignItems : 'center',
-//     justifyContent: 'center',
-//     //marginTop : 270,
-// },
 
 });
+
+function mapDispatchToProps(dispatch){
+  return {
+      addToken: function(token){
+      dispatch({type: 'addToken', token: token})
+      }
+  }
+  }
+  
+  export default connect(
+  null,
+  mapDispatchToProps
+  )(SignUpScreen)

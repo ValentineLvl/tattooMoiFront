@@ -2,9 +2,7 @@ import { LogBox } from 'react-native';
 LogBox.ignoreLogs(['Warning: ...']);
 
 import React from 'react';
-// import { StyleSheet , Text, View } from 'react-native';
 
-//import HomeScreen from './screens/HomeScreen';
 import SearchScreen from './screens/SearchScreen';
 import AccountScreen from './screens/AccountScreen';
 import AppointmentScreen from './screens/AppointmentScreen';
@@ -17,12 +15,12 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { FontAwesome } from '@expo/vector-icons';
 
-// import {createStore, combineReducers} from 'redux';
-// import {Provider} from 'react-redux';
-// import pseudo from './reducers/pseudo';
+import {createStore, combineReducers} from 'redux';
+import {Provider} from 'react-redux';
+import token from './reducers/token';
 // import photoList from './reducers/photo';
 
-// const store = createStore(combineReducers({photoList, pseudo}));
+const store = createStore(combineReducers({token}));
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -41,7 +39,7 @@ const Tab = createBottomTabNavigator();
 
 export default function App() {
   return (
-    //<Provider store={store}>
+    <Provider store={store}>
     <NavigationContainer>
       <Tab.Navigator
     screenOptions={({ route }) => ({
@@ -68,6 +66,6 @@ export default function App() {
       <Tab.Screen name="Mon compte" component={AccountScreen} />
     </Tab.Navigator>
   </NavigationContainer>
-  //</Provider>
+  </Provider>
   );
 }

@@ -2,8 +2,9 @@ import React, {useState} from 'react';
 import { StyleSheet, View, Text, TextInput, ScrollView } from 'react-native';
 import { Image, Button } from 'react-native-elements';
 import { Ionicons, FontAwesome } from '@expo/vector-icons';
+import {connect} from 'react-redux'
 
-export default function SignInScreen(props) {
+function SignInScreen(props) {
 
     const [signInEmail, setSignInEmail] = useState('');
     const [signInPassword, setSignInPassword] = useState('');
@@ -23,22 +24,21 @@ export default function SignInScreen(props) {
         const body = await data.json()
     
         if(body.result == true){
-          //props.addToken(body.token)
-          //props.navigate.goBack()
+          props.addToken(body.token)
           console.log('user connected')
           setUserExists(true)
           
+          if(!userExists){
+            return (props.navigation.pop())
+          }
+
         }  else {
           setErrorsSignin(body.error)
         }
       }
-
-    //   if(userExists){
-    //     return <Redirect to='/screensource' />
-    //   }
     
       var tabErrorsSignin = listErrorsSignin.map((error,i) => {
-        return(<p>{error}</p>)
+        return(<Text style={{textAlign:'center', color:'#b33939'}}>{error}</Text>)
       })
 
 
@@ -55,7 +55,7 @@ export default function SignInScreen(props) {
                 title="Continuer sans s'inscrire"
                 buttonStyle = {styles.greenButton}
                 type="solid"
-                //onPress={() => props.navigation.navigate('Connexion')}
+                //onPress={() => props.navigation.push('Formulaire')}
             />
             
             <TextInput
@@ -71,6 +71,7 @@ export default function SignInScreen(props) {
                 value={signInPassword}
                 secureTextEntry
             />
+            {tabErrorsSignin}
             <Button
                 title="Se connecter"
                 buttonStyle = {styles.greenButton}
@@ -150,3 +151,16 @@ const styles = StyleSheet.create({
         borderRadius: 2,
       },
     });
+
+function mapDispatchToProps(dispatch){
+    return {
+        addToken: function(token){
+        dispatch({type: 'addToken', token: token})
+        }
+    }
+    }
+    
+    export default connect(
+    null,
+    mapDispatchToProps
+    )(SignInScreen)
