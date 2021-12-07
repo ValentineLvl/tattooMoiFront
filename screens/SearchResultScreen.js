@@ -11,13 +11,13 @@ function SearchResultScreen(props) {
 
     const searchResults = props.saveTatoueurInfos.map((info, i) => {
         return (
-            <TouchableOpacity onPress={() => props.navigation.navigate('TattooArtist')}>
+            <TouchableOpacity key={i} onPress={() => {props.selectedArtistInfos([info]), props.navigation.navigate('TattooArtist')}}>
                 <Card containerStyle={styles.cards} pointerEvents="none">
-                    <Card.Image source={{ uri: info.profilePicture }}>
+                    <Card.Image source={{ uri: info.galleryPhoto[0] }}>
                         <AntDesign
                             name="heart"
                             size={30}
-                            color="#BF5F5F"
+                            color="#FFF"
                             style={{
                                 position: 'absolute',
                                 left: '87%',
@@ -131,4 +131,10 @@ function mapStateToProps(state) {
     return { saveTatoueurInfos: state.saveTatoueurInfos }
 }
 
-export default connect(mapStateToProps, null)(SearchResultScreen);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        selectedArtistInfos: (artistInfos) => dispatch({ type: 'selectedArtistInfos', artistInfos } )
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SearchResultScreen);

@@ -17,8 +17,9 @@ import { Ionicons, FontAwesome } from '@expo/vector-icons';
 import { Provider } from 'react-redux';
 import { createStore, combineReducers } from 'redux';
 import saveTatoueurInfos from './reducers/saveTatoueurInfos';
+import selectedArtistInfos from './reducers/selectedArtistInfos';
 
-const store = createStore(combineReducers({ saveTatoueurInfos }));
+const store = createStore(combineReducers({ saveTatoueurInfos, selectedArtistInfos }));
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();

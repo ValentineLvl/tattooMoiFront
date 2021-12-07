@@ -14,13 +14,6 @@ function SearchScreen(props) {
 
     const [dropdownValue, setDropdownValue] = useState(null);
 
-    // const [profileImg, setProfileImg] = useState('');
-    // const [firstname, setFirstname] = useState('');
-    // const [shopName, setShopName] = useState('');
-    // const [schedule, setSchedule] = useState('');
-    // const [city, setCity] = useState('');
-    // const [style, setStyle] = useState([]);
-
     const onClickBtn = async (value) => {
         let rawResponse = await fetch(`http://192.168.1.101:3000/search-tattoo?styleList=${value}`)
         let response = await rawResponse.json()
@@ -240,7 +233,7 @@ const styles = StyleSheet.create({
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        saveTatoueurInfos: (styleList) => dispatch({ type: 'saveTatoueurInfos', styleList } )
+        saveTatoueurInfos: (infos) => dispatch({ type: 'saveTatoueurInfos', infos } )
     }
 }
 export default connect(null, mapDispatchToProps)(SearchScreen)

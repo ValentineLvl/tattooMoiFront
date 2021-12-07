@@ -1,8 +1,8 @@
-export default function (styleList = [], action) {
+export default function (infos = [], action) {
     if (action.type == 'saveTatoueurInfos') {
-        console.log('REDUCER INFOS:', action.styleList);
-        return action.styleList;
+        console.log('REDUCER INFOS:', action.infos);
+        return action.infos;
     } else {
-        return styleList;
+        return infos;
     }
 }
