@@ -10,6 +10,8 @@ import SearchResultScreen from './screens/SearchResultScreen';
 import SignInScreen from './screens/SignInScreen';
 import SignUpScreen from './screens/SignUpScreen';
 //import HeaderComponent from './screens/HeaderComponent';
+import SelectedTattooArtistScreen from './screens/SelectedTattooArtistScreen';
+import ProjectFormScreen from './screens/ProjectFormScreen';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -34,6 +36,8 @@ const Tab = createBottomTabNavigator();
       <Stack.Screen name="Resultat" component={SearchResultScreen} />
       <Stack.Screen name="Connexion" component={SignInScreen} />
       <Stack.Screen name="Inscription" component={SignUpScreen} />
+      <Stack.Screen name="TattooArtist" component={SelectedTattooArtistScreen} />
+      <Stack.Screen name="Formulaire" component={ProjectFormScreen} />
       </Stack.Navigator>
   );
   }
