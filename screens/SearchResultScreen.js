@@ -1,10 +1,56 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { connect } from 'react-redux';
 import { StyleSheet, View, Image, Text, ScrollView } from 'react-native';
 import { Card, Button } from 'react-native-elements';
 import { AntDesign } from '@expo/vector-icons';
 import { TouchableOpacity } from 'react-native';
 
-export default function SearchResultScreen(props) {
+function SearchResultScreen(props) {
+
+    console.log('STATE FROM STORE:', props.saveTatoueurInfos)
+
+    const searchResults = props.saveTatoueurInfos.map((info, i) => {
+        return (
+            <TouchableOpacity onPress={() => props.navigation.navigate('TattooArtist')}>
+                <Card containerStyle={styles.cards} pointerEvents="none">
+                    <Card.Image source={{ uri: info.profilePicture }}>
+                        <AntDesign
+                            name="heart"
+                            size={30}
+                            color="#BF5F5F"
+                            style={{
+                                position: 'absolute',
+                                left: '87%',
+                                top: '5%'
+                            }}
+                        />
+                    </Card.Image>
+                    <View style={styles.cardDesc}>
+                        <View>
+                            <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#454543' }}>{info.firstName}</Text>
+                            {info.tattooShopAddress.map((name) => {
+                                return (
+                                    <Text style={{ marginBottom: 10, fontWeight: 'bold', paddingTop: 5, color: '#454543' }}>
+                                        {name.tattooShop}
+                                    </Text>
+                                )
+                            })}
+                            <Text style={{ fontStyle: 'italic', color: 'rgba(69, 69, 67, 0.8)' }}>{info.styleList.join(' ')}</Text>
+                        </View>
+                        <View>
+                            <Text style={{ color: '#454543' }}>Attente: {info.schedule}</Text>
+                            {info.tattooShopAddress.map((address) => {
+                                return (
+                                    <Text style={{ paddingTop: 5, color: '#454543' }}>{address.city}</Text>
+                                )
+                            })}
+                        </View>
+                    </View>
+                </Card>
+            </TouchableOpacity>
+        );
+    });
+
 
     return (
 
@@ -23,91 +69,9 @@ export default function SearchResultScreen(props) {
             </View>
 
             <ScrollView style={{ width: '90%', flex: 2 }}>
-                <TouchableOpacity onPress={() => props.navigation.navigate('TattooArtist')}>
-                    <Card containerStyle={styles.cards} pointerEvents="none">
-                        <Card.Image source={{ uri: 'https://i.pinimg.com/564x/f1/1a/c2/f11ac2d3650b2d71817dc2a533c60031.jpg' }}>
-                            <AntDesign
-                                name="heart"
-                                size={30}
-                                color="#BF5F5F"
-                                style={{
-                                    position: 'absolute',
-                                    left: '87%',
-                                    top: '5%'
-                                }}
-                            />
-                        </Card.Image>
-                        <View style={styles.cardDesc}>
-                            <View>
-                                <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#454543' }}>Marcus</Text>
-                                <Text style={{ marginBottom: 10, fontWeight: 'bold', paddingTop: 5, color: '#454543' }}>Jungle Tattoo</Text>
-                                <Text style={{ fontStyle: 'italic', color: 'rgba(69, 69, 67, 0.8)' }}>Tribal, Lettering, Realism</Text>
-                            </View>
-                            <View>
-                                <Text style={{ color: '#454543' }}>Attente: 2 Mois</Text>
-                                <Text style={{ paddingTop: 5, color: '#454543' }}>Paris 16</Text>
-                            </View>
-                        </View>
-                    </Card>
-                </TouchableOpacity>
 
-                <TouchableOpacity onPress={() => props.navigation.navigate('TattooArtist')}>
-                    <Card containerStyle={styles.cards} pointerEvents="none">
-                        <Card.Image
-                            source={{ uri: 'https://i.pinimg.com/564x/c8/a3/c9/c8a3c92b6b1b2d74ed0aef3583dd2fc7.jpg' }}>
-                            <AntDesign
-                                name="heart"
-                                size={30}
-                                color="#F1EFE5"
-                                style={{
-                                    position: 'absolute',
-                                    left: '87%',
-                                    top: '5%'
-                                }}
-                            />
-                        </Card.Image>
-                        <View style={styles.cardDesc}>
-                            <View>
-                                <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#454543' }}>Marcus</Text>
-                                <Text style={{ marginBottom: 10, fontWeight: 'bold', paddingTop: 5, color: '#454543' }}>Jungle Tattoo</Text>
-                                <Text style={{ fontStyle: 'italic', color: 'rgba(69, 69, 67, 0.8)' }}>Tribal, Lettering, Realism</Text>
-                            </View>
-                            <View>
-                                <Text style={{ color: '#454543' }}>Attente: 2 Mois</Text>
-                                <Text style={{ paddingTop: 5, color: '#454543' }}>Paris 16</Text>
-                            </View>
-                        </View>
-                    </Card>
-                </TouchableOpacity>
+                {searchResults}
 
-                <TouchableOpacity onPress={() => props.navigation.navigate('TattooArtist')}>
-                    <Card containerStyle={styles.cards} pointerEvents="none">
-                        <Card.Image
-                            source={{ uri: 'https://i.pinimg.com/564x/9f/8e/7a/9f8e7ac059e49b08e6f7f7d751eae4ed.jpg' }}>
-                            <AntDesign
-                                name="heart"
-                                size={30}
-                                color="#F1EFE5"
-                                style={{
-                                    position: 'absolute',
-                                    left: '87%',
-                                    top: '5%'
-                                }}
-                            />
-                        </Card.Image>
-                        <View style={styles.cardDesc}>
-                            <View>
-                                <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#454543' }}>Marcus</Text>
-                                <Text style={{ marginBottom: 10, fontWeight: 'bold', paddingTop: 5, color: '#454543' }}>Jungle Tattoo</Text>
-                                <Text style={{ fontStyle: 'italic', color: 'rgba(69, 69, 67, 0.8)' }}>Tribal, Lettering, Realism</Text>
-                            </View>
-                            <View>
-                                <Text style={{ color: '#454543' }}>Attente: 2 Mois</Text>
-                                <Text style={{ paddingTop: 5, color: '#454543' }}>Paris 16</Text>
-                            </View>
-                        </View>
-                    </Card>
-                </TouchableOpacity>
             </ScrollView>
         </View>
     )
@@ -162,3 +126,9 @@ const styles = StyleSheet.create({
         borderColor: '#454543'
     }
 });
+
+function mapStateToProps(state) {
+    return { saveTatoueurInfos: state.saveTatoueurInfos }
+}
+
+export default connect(mapStateToProps, null)(SearchResultScreen);

@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+
+import { connect } from 'react-redux';
+
 import { StyleSheet, View, Image, TextInput } from 'react-native';
 import { Button } from 'react-native-elements';
 import { Dropdown } from 'react-native-element-dropdown';
@@ -8,7 +11,22 @@ const data = [
     { label: 'Couleur', value: 'couleur' },
 ];
 function SearchScreen(props) {
-    const [value, setValue] = useState(null);
+
+    const [dropdownValue, setDropdownValue] = useState(null);
+
+    // const [profileImg, setProfileImg] = useState('');
+    // const [firstname, setFirstname] = useState('');
+    // const [shopName, setShopName] = useState('');
+    // const [schedule, setSchedule] = useState('');
+    // const [city, setCity] = useState('');
+    // const [style, setStyle] = useState([]);
+
+    const onClickBtn = async (value) => {
+        let rawResponse = await fetch(`http://192.168.1.101:3000/search-tattoo?styleList=${value}`)
+        let response = await rawResponse.json()
+
+        props.saveTatoueurInfos(response)
+    }
 
     return (
         <View style={styles.container}>
@@ -39,18 +57,21 @@ function SearchScreen(props) {
                     type="outline"
                     buttonStyle={styles.button}
                     titleStyle={{ color: '#C2A77D', fontSize: 17, fontWeight: 'bold' }}
+                    onPress={() => onClickBtn('old school')}
                 />
                 <Button
                     title="New School"
                     type="outline"
                     buttonStyle={styles.selectedButton}
                     titleStyle={{ color: '#F1EFE5', fontSize: 17, fontWeight: 'bold' }}
+                    onPress={() => onClickBtn('new school')}
                 />
                 <Button
                     title="Realism"
                     type="outline"
                     buttonStyle={styles.button}
                     titleStyle={{ color: '#C2A77D', fontSize: 17, fontWeight: 'bold' }}
+                    onPress={() => onClickBtn('realism')}
                 />
             </View>
 
@@ -60,18 +81,21 @@ function SearchScreen(props) {
                     type="outline"
                     buttonStyle={styles.button}
                     titleStyle={{ color: '#C2A77D', fontSize: 17, fontWeight: 'bold' }}
+                    onPress={() => onClickBtn('japanese')}
                 />
                 <Button
                     title="Tribal"
                     type="outline"
                     buttonStyle={styles.button}
                     titleStyle={{ color: '#C2A77D', fontSize: 17, fontWeight: 'bold' }}
+                    onPress={() => onClickBtn('tribal')}
                 />
                 <Button
                     title="Fineline"
                     type="outline"
                     buttonStyle={styles.selectedButton}
                     titleStyle={{ color: '#F1EFE5', fontSize: 17, fontWeight: 'bold' }}
+                    onPress={() => onClickBtn('fineline')}
                 />
             </View>
 
@@ -81,18 +105,21 @@ function SearchScreen(props) {
                     type="outline"
                     buttonStyle={styles.button}
                     titleStyle={{ color: '#C2A77D', fontSize: 17, fontWeight: 'bold' }}
+                    onPress={() => onClickBtn('dotwork')}
                 />
                 <Button
                     title="Geometric"
                     type="outline"
                     buttonStyle={styles.button}
                     titleStyle={{ color: '#C2A77D', fontSize: 17, fontWeight: 'bold' }}
+                    onPress={() => onClickBtn('geometric')}
                 />
                 <Button
                     title="Lettering"
                     type="outline"
                     buttonStyle={styles.selectedButton}
                     titleStyle={{ color: '#F1EFE5', fontSize: 17, fontWeight: 'bold' }}
+                    onPress={() => onClickBtn('lettering')}
                 />
             </View>
 
@@ -107,9 +134,9 @@ function SearchScreen(props) {
                 labelField="label"
                 valueField="value"
                 placeholder="Couleur"
-                value={value}
+                value={dropdownValue}
                 onChange={item => {
-                    setValue(item.value);
+                    setDropdownValue(item.value);
                 }}
             />
 
@@ -130,8 +157,6 @@ function SearchScreen(props) {
         </View>
     )
 }
-
-export default SearchScreen;
 
 const styles = StyleSheet.create({
     container: {
@@ -212,3 +237,10 @@ const styles = StyleSheet.create({
         color: '#454543'
     },
 });
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        saveTatoueurInfos: (styleList) => dispatch({ type: 'saveTatoueurInfos', styleList } )
+    }
+}
+export default connect(null, mapDispatchToProps)(SearchScreen)
