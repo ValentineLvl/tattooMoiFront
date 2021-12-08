@@ -21,9 +21,10 @@ import { FontAwesome } from '@expo/vector-icons';
 import {createStore, combineReducers} from 'redux';
 import {Provider} from 'react-redux';
 import token from './reducers/token';
+import formList from './reducers/form';
 // import photoList from './reducers/photo';
 
-const store = createStore(combineReducers({token}));
+const store = createStore(combineReducers({token, formList}));
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
