@@ -10,12 +10,12 @@ function SearchResultScreen(props) {
     // console.log('STATE FROM STORE:', props.saveTatoueurInfos)
 
     const searchResults = props.saveTatoueurInfos.map((style, i) => {
-
         return (
 
             style.map((info, i) => {
+
                 return (
-                    <TouchableOpacity key={1} onPress={() => { props.selectedArtistInfos([info]), props.navigation.navigate('TattooArtist') }}>
+                    <TouchableOpacity key={i} onPress={() => { props.selectedArtistInfos([info]), props.navigation.navigate('TattooArtist') }}>
                         <Card key={2} containerStyle={styles.cards} pointerEvents="none">
                             <Card.Image source={{ uri: info.galleryPhoto[0] }}>
                                 <AntDesign
