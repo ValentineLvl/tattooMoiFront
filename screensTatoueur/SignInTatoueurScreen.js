@@ -80,7 +80,7 @@ function SignInTatoueurScreen(props) {
                     title="S'inscrire"
                     buttonStyle = {styles.greenButton}
                     type="solid"
-                    onPress={() => props.navigation.navigate('Inscription')}
+                    onPress={() => props.navigation.navigate('Inscription Tatoueur')}
                 />
             </View>
         </ScrollView>
