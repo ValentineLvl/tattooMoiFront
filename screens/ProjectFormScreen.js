@@ -5,6 +5,9 @@ import { Ionicons, FontAwesome, MaterialIcons } from '@expo/vector-icons';
 import { Dropdown } from 'react-native-element-dropdown';
 import * as ImagePicker from 'expo-image-picker';
 import HeaderComponent from './HeaderComponent';
+import {connect} from 'react-redux'
+
+
 
 const title = [
     { label: 'Mr.', value: 'Mr.' },
@@ -34,6 +37,10 @@ const schedule = [
 function ProjectFormScreen(props) {
     
         
+        const [form, setForm] = useState({
+
+        })
+
         const [lastName, setLastName] = useState("");
         const [firstName, setFirstName] = useState("");
         const [email, setEmail] = useState("");
@@ -80,25 +87,122 @@ function ProjectFormScreen(props) {
 
 
         async function handleClickAddForm () { {
+            
             console.log("activation de la fonction")
-         await fetch('http://172.17.1.128:3000/project-form', {
+         const data = await fetch('http://172.17.1.32:3000/project-form', {
             method: 'POST',
             headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-            body: `userProjectImgFromFront=${tempUrl}userStyleFromFront=${styleValue}&userDisponibilityFromFront=${scheduleValue}&userGenderFromFront=${titleValue}&userLastNameFromFront=${lastName}&userFirstNameFromFront=${firstName}&userEmailFromFront=${email}&userPhoneNumberFromFront=${phone}&userAddressFromFront=${address}&userPostalCodeFromFront=${postalCode}&userCityFromFront=${city}&usertattooZoneFromFront=${tattooZone}&userWidthFromFront=${width}&userHeightFromFront=${height}`
+            body: `token=${props.dataUser.token}&userProjectImgFromFront=${tempUrl}&userStyleFromFront=${styleValue}&userDisponibilityFromFront=${scheduleValue}&userGenderFromFront=${titleValue}&userLastNameFromFront=${lastName}&userFirstNameFromFront=${firstName}&userEmailFromFront=${email}&userPhoneNumberFromFront=${phone}&userAddressFromFront=${address}&userPostalCodeFromFront=${postalCode}&userCityFromFront=${city}&usertattooZoneFromFront=${tattooZone}&userWidthFromFront=${width}&userHeightFromFront=${height}&userDescriptionFromFront=${description}`
+        
         })
+        const body= await data.json()
+        console.log("c la", body.projectFormSave)
+        if (body.result == true){
+            props.addForm(body.projectFormSave)
+        }
         
       setTempUrl("")
     
         
         }}
       
+        // let clientInfo = () => {
+        //     if (props.token == null) {
+              
+        //        <View>
+        //       <View style={styles.inlign}>
+
+        //         <Dropdown
+        //          style={styles.dropdown}
+        //           placeholderStyle={styles.placeholderStyle}
+        //           selectedTextStyle={styles.selectedTextStyle}
+        //           inputSearchStyle={styles.inputSearchStyle}
+        //           data={title}
+        //           containerStyle={{backgroundColor:'#F1EFE5', marginTop:-42}}
+        //           activeColor={'#C2A77D'}
+        //           maxHeight={100}
+        //           labelField="label"
+        //           valueField="value"
+        //           placeholder='Civilité' 
+        //           value={titleValue}
+        //           onFocus={() => setIsFocus(true)}
+        //           onBlur={() => setIsFocus(false)}
+        //           onChange={item => {
+        //             setTitleValue(item.value);
+        //             setIsFocus(false);
+        //           }}
+                 
+        //         />
+              
+        //       <TextInput
+        //         style={styles.input}
+        //         onChangeText={setLastName}
+        //         value={lastName}
+        //         placeholder="Nom"
+        //       />
+             
+        //       </View>
+        //       <TextInput
+        //         style={styles.input}
+        //         onChangeText={setFirstName}
+        //         value={firstName}
+        //         placeholder="Prénom"
+              
+        //       />
+        //       <TextInput
+        //         style={styles.input}
+        //         onChangeText={setEmail}
+        //         value={email}
+        //         placeholder="Adresse email"
+              
+        //       />
+        //       <TextInput
+        //         style={styles.input}
+        //         onChangeText={setPhone}
+        //         value={phone}
+        //         placeholder="Numéro de téléphone"
+              
+        //       />
+        //       <TextInput
+        //         style={styles.input}
+        //         onChangeText={setAddress}
+        //         value={address}
+        //         placeholder="Adresse postale"
+              
+        //       />
+        //        <View style={styles.inlign}   >
+        //       <TextInput
+        //         style={styles.input}
+        //         onChangeText={setPostalCode}
+        //         value={postalCode}
+        //         placeholder="Code postal"
+              
+        //       />
+        //       <TextInput
+        //         style={styles.input}
+        //         onChangeText={setCity}
+        //         value={city}
+        //         placeholder="Ville"
+              
+        //       />
+        //       </View> 
+        //       </View>
+             
+        //        }}
+
+
 
     return (
+
+  
         <View style={styles.container}>
         <HeaderComponent navigation={props.navigation}/>
         <ScrollView style={styles.form} >
         
          <View style={styles.smallForm} >
+
+            {/* {clientInfo} */}
+
 
         <Dropdown
          style={styles.dropdown}
@@ -283,7 +387,7 @@ function ProjectFormScreen(props) {
 }
 
 
-export default ProjectFormScreen;
+
 
 
 const styles = StyleSheet.create({
@@ -355,4 +459,19 @@ smallInput: {
     
   
     
-     
+    function mapStateToProps(state){
+        return { dataUser:state.dataUser}
+      }
+
+      function mapDispatchToProps(dispatch) {
+        return {
+          addForm: function(dataForm) {
+              dispatch( {type: 'addForm',  dataForm: dataForm } )
+          }
+        }
+       }
+      export default connect(
+        mapStateToProps,
+       mapDispatchToProps,
+      )(ProjectFormScreen);
+      
