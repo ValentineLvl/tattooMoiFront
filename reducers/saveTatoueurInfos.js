@@ -1,7 +1,9 @@
 export default function (infos = [], action) {
     if (action.type == 'saveTatoueurInfos') {
-        console.log('REDUCER INFOS:', action.infos);
-        return action.infos;
+        let infosCopy = [...infos];
+        infosCopy.push(action.infos)
+        console.log('REDUCER INFOS:', infosCopy);
+        return infosCopy;
     } else {
         return infos;
     }
