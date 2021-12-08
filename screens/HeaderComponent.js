@@ -3,35 +3,20 @@ import { View, StyleSheet, Text } from 'react-native';
 import { Image, Button } from 'react-native-elements';
 import {connect} from 'react-redux';
 
+
 function HeaderComponent(props) {
-    
-const [isLoggedIn, setIsLoggedIn] = useState(false);
-const [userInfo, setUserInfo] = useState('');
-
-useEffect(() => {
-  const findUser = async() => {
-    
-    const reqFind = await fetch('http://172.17.1.128:3000/sign-up')
-    const resultFind = await reqFind.json()
-console.log('coucou result find', resultFind);
-    setUserInfo(resultFind.firstName)
-  }
-
-  findUser()
-}, [])
-
-    if (props.token != null) {
-        //setIsLoggedIn(true);
+   console.log('(store de props data user)', props.dataUser); 
+  if (props.dataUser !== null) {
         return (
             <View style = {styles.header}>
             <Image 
             source = {require('../assets/tattoo-moi_1.png')}
-            style={{ width: 200, height: 80, marginRight: 70  }} />
-            <Text>Salut !</Text>
+            style={{ width: 200, height: 80, marginRight: 50  }} />
+            <Text style = {styles.titre}>Salut {props.dataUser.firstName} !</Text>
         </View>
         )
     }
-else if (props.token == null) {
+else if (props.dataUser == null) {
 return (
         <View style = {styles.header}>
             <Image 
@@ -56,13 +41,18 @@ const styles = StyleSheet.create({
     alignItems : 'center',
   justifyContent :'space-evenly',
 },
+titre :{
+  fontSize:14,
+  fontWeight: 'bold',
+  color: '#454543',
+},
 });
 
 function mapStateToProps(state){
-    return {token:state.token}
+    return {dataUser:state.dataUser}
   }
 
-  export default connect(
+  export default connect (
     mapStateToProps,
     null
   )(HeaderComponent);

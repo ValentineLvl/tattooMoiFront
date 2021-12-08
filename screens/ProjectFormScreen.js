@@ -92,14 +92,13 @@ function ProjectFormScreen(props) {
         
         }}
       
-      
 
     return (
         <View style={styles.container}>
         <HeaderComponent navigation={props.navigation}/>
-        <ScrollView style={{flex:1,}} >
-        <SafeAreaView style={{margin:40}}>
-         <View style={styles.inlign}   >
+        <ScrollView style={styles.form} >
+        
+         <View style={styles.smallForm} >
 
         <Dropdown
          style={styles.dropdown}
@@ -123,7 +122,7 @@ function ProjectFormScreen(props) {
         />
       
       <TextInput
-        style={styles.input}
+        style={styles.smallInput}
         onChangeText={setLastName}
         value={lastName}
         placeholder="Nom"
@@ -158,16 +157,16 @@ function ProjectFormScreen(props) {
         placeholder="Adresse postale"
       
       />
-       <View style={styles.inlign}   >
+       <View style={styles.smallForm}   >
       <TextInput
-        style={styles.input}
+        style={styles.smallInput}
         onChangeText={setPostalCode}
         value={postalCode}
         placeholder="Code postal"
       
       />
       <TextInput
-        style={styles.input}
+        style={styles.smallInput}
         onChangeText={setCity}
         value={city}
         placeholder="Ville"
@@ -175,10 +174,10 @@ function ProjectFormScreen(props) {
       />
       </View>
 
-      <View style={styles.inlign}   >
+      <View style={styles.smallForm}   >
 
       <Dropdown
-         style={styles.input}
+         style={styles.smallInput}
           placeholderStyle={styles.placeholderStyle}
           selectedTextStyle={styles.selectedTextStyle}
           inputSearchStyle={styles.inputSearchStyle}
@@ -202,23 +201,23 @@ function ProjectFormScreen(props) {
         />
      
       <TextInput
-        style={styles.input}
+        style={styles.smallInput}
         onChangeText={setTattooZone}
         value={tattooZone}
         placeholder="Zone à tatouer "
       
       />
       </View>
-      <View style={styles.inlign}   >
+      <View style={styles.smallForm}   >
        <TextInput
-        style={styles.input}
+        style={styles.smallInput}
         onChangeText={setWidth}
         value={width}
         placeholder="Largeur (cm) "
       
       />
       <TextInput
-        style={styles.input}
+        style={styles.smallInput}
         onChangeText={setHeight}
         value={height}
         placeholder="Longueur (cm)"
@@ -265,7 +264,7 @@ function ProjectFormScreen(props) {
       </TouchableOpacity>
        </View>
        
-    <View style={{ flex:1, alignItems: 'center', justifyContent: 'center', marginTop: 10}} >
+    <View style={{ flex:1, alignSelf: 'center', marginTop: 30}} >
             <Button 
             title="Valider"
             type="solid"
@@ -276,9 +275,6 @@ function ProjectFormScreen(props) {
      />
      </View>
      
-    </SafeAreaView>
-
-
      </ScrollView>
      
         </View>
@@ -299,6 +295,23 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       justifyContent: 'center',
     },
+    form: {
+      flex:3,
+      marginTop: 20,
+  },
+  smallForm: {
+    flexDirection : 'row',  
+    alignItems : 'center',
+    justifyContent: 'flex-start',
+},
+smallInput: {
+  height: 40,
+  margin: 5,
+  borderWidth: 1,
+  padding: 10,
+  width: 145,
+  borderRadius: 2,
+},
     input: {
       height: 40,
       margin: 5,
@@ -307,17 +320,6 @@ const styles = StyleSheet.create({
       width: 300,
       borderRadius: 2,
       },
-    inlign : {
-      flexDirection : 'row',  
-      alignItems : 'center',
-      justifyContent: 'flex-start',
-    },
-    main: {
-        flex:3,
-        flexDirection : 'column',  
-        alignItems : 'center',
-        justifyContent: 'center',
-    },
     dropdown: {
       height: 40,
       margin: 5,

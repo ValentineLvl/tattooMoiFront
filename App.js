@@ -3,15 +3,19 @@ LogBox.ignoreLogs(['Warning: ...']);
 
 import React from 'react';
 
+//Screens client
 import SearchScreen from './screens/SearchScreen';
 import AccountScreen from './screens/AccountScreen';
 import AppointmentScreen from './screens/AppointmentScreen';
 import SearchResultScreen from './screens/SearchResultScreen';
 import SignInScreen from './screens/SignInScreen';
 import SignUpScreen from './screens/SignUpScreen';
-//import HeaderComponent from './screens/HeaderComponent';
 import SelectedTattooArtistScreen from './screens/SelectedTattooArtistScreen';
 import ProjectFormScreen from './screens/ProjectFormScreen';
+import ClientInfoScreen from './screens/ClientInfoScreen';
+
+//Screens tatoueur
+import SignInTatoueurScreen from './screensTatoueur/SignInTatoueurScreen';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -20,10 +24,9 @@ import { FontAwesome } from '@expo/vector-icons';
 
 import {createStore, combineReducers} from 'redux';
 import {Provider} from 'react-redux';
-import token from './reducers/token';
-// import photoList from './reducers/photo';
+import dataUser from './reducers/dataUser';
 
-const store = createStore(combineReducers({token}));
+const store = createStore(combineReducers({dataUser}));
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -38,6 +41,8 @@ const Tab = createBottomTabNavigator();
       <Stack.Screen name="Inscription" component={SignUpScreen} />
       <Stack.Screen name="TattooArtist" component={SelectedTattooArtistScreen} />
       <Stack.Screen name="Formulaire" component={ProjectFormScreen} />
+      <Stack.Screen name="Mes infos" component={ClientInfoScreen} />
+      <Stack.Screen name="Connexion Tatoueur" component={SignInTatoueurScreen} />
       </Stack.Navigator>
   );
   }

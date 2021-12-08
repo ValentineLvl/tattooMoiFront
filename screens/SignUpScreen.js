@@ -6,6 +6,8 @@ import { Dropdown } from 'react-native-element-dropdown';
 import { Ionicons, FontAwesome } from '@expo/vector-icons';
 import {connect} from 'react-redux';
 import * as Facebook from 'expo-facebook';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 const data = [
     { label: 'M.', value: 'M.' },
@@ -71,9 +73,10 @@ var handleSubmitSignup = async () => {
   const body = await data.json()
 
   if(body.result == true){
-   props.addToken(body.token)
-   console.log('user creater');
-    setUserExists(true)
+   props.addDataUser(body.saveClient);
+   //console.log('user created', body.saveClient);
+   AsyncStorage.setItem("dataUserToken", body.token);
+    setUserExists(true);
     
     if(!userExists){
       return (props.navigation.dispatch(StackActions.pop(2)))
@@ -279,9 +282,9 @@ input: {
 
 function mapDispatchToProps(dispatch){
   return {
-      addToken: function(token){
-      dispatch({type: 'addToken', token: token})
-      }
+      addDataUser: function(dataUser){
+      dispatch({type: 'addDataUser', dataUser: dataUser})
+      },
   }
   }
   

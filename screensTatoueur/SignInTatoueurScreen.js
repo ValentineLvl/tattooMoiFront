@@ -6,7 +6,7 @@ import {connect} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
-function SignInScreen(props) {
+function SignInTatoueurScreen(props) {
 
     const [signInEmail, setSignInEmail] = useState('');
     const [signInPassword, setSignInPassword] = useState('');
@@ -52,14 +52,8 @@ function SignInScreen(props) {
                 source = {require('../assets/tattoo-moi_1.png')}
                 style={{ width: 200, height: 80 }} />
             </View>
+
             <ScrollView style = {styles.scroll}>
-       
-            <Button
-                title="Continuer sans s'inscrire"
-                buttonStyle = {styles.greenButton}
-                type="solid"
-                //onPress={() => props.navigation.push('Formulaire')}
-            />
             
             <TextInput
                 style={styles.input}
@@ -81,38 +75,17 @@ function SignInScreen(props) {
                 type="solid"
                 onPress={() => handleSubmitSignin() }
             />
-
-            <Button
-                title=" Se connecter avec Google"
-                buttonStyle = {styles.beigeButton}
-                type="solid"
-                icon={<Ionicons
-                    name='logo-google'
-                    size={30}
-                    color='#F1EFE5'
-                />}
-                //onPress={() => props.navigation.navigate('Connexion')}
-            />
-            <Button
-                title=" Se connecter avec Facebook"
-                buttonStyle = {styles.beigeButton}
-                type="solid"
-                icon={<FontAwesome
-                    name='facebook'
-                    size={30}
-                    color='#F1EFE5'
-                />}
-                //onPress={() => props.navigation.navigate('Connexion')}
-            />
-            <Button
-                title="S'inscrire"
-                buttonStyle = {styles.greenButton}
-                type="solid"
-                onPress={() => props.navigation.navigate('Inscription')}
-            />
-            
+            <View style={styles.inscription}>
+                <Button
+                    title="S'inscrire"
+                    buttonStyle = {styles.greenButton}
+                    type="solid"
+                    onPress={() => props.navigation.navigate('Inscription')}
+                />
+            </View>
         </ScrollView>
         </View>
+       
     )
 }
 
@@ -129,21 +102,15 @@ const styles = StyleSheet.create({
         maxHeight : 80,
     },
     scroll: {
-        flex:3,
-        marginTop:20,
+        flex:2,
+        marginTop:100,
     },
     greenButton: {
         backgroundColor:'#424D41', 
         borderRadius:2,
         alignSelf : 'center',
-        marginTop:20,
-        marginBottom:20,
-    },
-    beigeButton : {
-        backgroundColor:'#C2A77D', 
-        borderRadius:2,
-        alignSelf : 'center',
         marginTop:30,
+        marginBottom:30,
     },
     input: {
         height: 40,
@@ -152,6 +119,9 @@ const styles = StyleSheet.create({
         padding: 10,
         width: 300,
         borderRadius: 2,
+      },
+      inscription: {
+        marginTop:70,
       },
     });
 
@@ -166,4 +136,4 @@ function mapDispatchToProps(dispatch){
     export default connect(
     null,
     mapDispatchToProps
-    )(SignInScreen)
+    )(SignInTatoueurScreen)
