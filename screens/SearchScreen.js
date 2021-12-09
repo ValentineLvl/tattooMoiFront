@@ -49,7 +49,7 @@ function SearchScreen(props) {
 
             if (data) {
                 const findUser = async () => {
-                    const reqFind = await fetch(`http://192.168.1.15:3000/client-data?token=${data}`)
+                    const reqFind = await fetch(`http://192.168.0.38:3000/client-data?token=${data}`)
                     const resultFind = await reqFind.json()
 
                     props.addDataUser(resultFind.client)
@@ -72,7 +72,7 @@ function SearchScreen(props) {
             :
             setSelected([...selected, tattooStyle]);
 
-        let rawResponse = await fetch(`http://192.168.1.15:3000/search-tattoo?styleList=${tattooStyle}`)
+        let rawResponse = await fetch(`http://192.168.0.38:3000/search-tattoo?styleList=${tattooStyle}`)
         let response = await rawResponse.json()
 
         console.log(response.result)
@@ -154,6 +154,7 @@ function SearchScreen(props) {
                 buttonStyle={{ backgroundColor: '#F1EFE5', padding: 1, paddingRight: 5, paddingLeft: 5, borderRadius: 5 }}
                 titleStyle={{ color: '#424D41', marginBottom: 10, fontSize: 15 }}
                 type="solid"
+                onPress={() => props.navigation.navigate('Connexion Tatoueur')}
             />
         </View>
     )
