@@ -40,7 +40,14 @@ const tattooStyles = ['old school', 'new school', 'realism', 'japanese', 'tribal
 
 function SearchScreen(props) {
 
-    const [userToken, setUserToken] = useState(false)
+    const [userToken, setUserToken] = useState(false);
+    const [dropdownValue, setDropdownValue] = useState(null);
+    const [selected, setSelected] = useState([]);
+    const [tattooshopName, setTattooshopName] = useState('');
+
+    const [styleArray, setStyleArray] = useState([]);
+
+    console.log(tattooshopName);
 
     //A l'initialisation de searchScreen, si le user était connecté on remet ses infos dans le store avec une route get
     useEffect(() => {
@@ -61,9 +68,6 @@ function SearchScreen(props) {
 
     }, []);
 
-    const [dropdownValue, setDropdownValue] = useState(null);
-
-    const [selected, setSelected] = useState([]);
 
     const handlePress = async (tattooStyle) => {
         selected.includes(tattooStyle)
@@ -74,13 +78,34 @@ function SearchScreen(props) {
 
         let rawResponse = await fetch(`http://192.168.1.101:3000/search-tattoo?styleList=${tattooStyle}`)
         let response = await rawResponse.json()
+        setStyleArray(styleArray => [...styleArray, response.searchResult])
 
-        console.log(response.result)
-
-        props.saveTatoueurInfos(response.searchResult)
+        // console.log('STYLEARRAY', styleArray);
+        
+        // props.saveTatoueurInfos(response.searchResult)
     }
 
-    const tmp = tattooStyles.map((tattooStyle, i) => (
+    useEffect(() => {
+        console.log('STYLEARRAY', styleArray)
+    }, [styleArray])
+
+    const onSearchInput = async (name) => {
+
+        let rawResponse = await fetch(`http://192.168.1.101:3000/search-tattoo?firstName=${name}`)
+        let response = await rawResponse.json()
+
+        response.searchTatoueur.map((tatoueur) => {
+            if (tatoueur.firstName === name) {
+                props.saveTatoueurInfos(response.searchTatoueur)
+                // props.navigation.navigate('Resultat')
+            } else {
+                console.log('TATOUEUR NON EXISTANT')
+            }
+        })
+
+    }
+
+    const tattooStyleBtn = tattooStyles.map((tattooStyle, i) => (
 
         <TouchableOpacity
             key={i}
@@ -95,21 +120,11 @@ function SearchScreen(props) {
 
     return (
         <View style={styles.container}>
-            {/* <View style={styles.header}>
-                <Image
-                    source={require('../assets/tattoo-moi_1.png')}
-                    style={{ width: 200, height: 80, marginRight: 70 }} />
-                <Button
-                    title="Connexion"
-                    buttonStyle={{ backgroundColor: '#F1EFE5', paddingRight: 5, paddingLeft: 5, marginRight: 10, marginTop: 20 }}
-                    titleStyle={{ color: '#424D41', marginBottom: 10, fontSize: 15 }}
-                    type="solid"
-                />
-            </View> */}
-
             <HeaderComponent navigation={props.navigation} />
 
             <TextInput
+                onChangeText={(value) => setTattooshopName(value)}
+                value={tattooshopName}
                 style={styles.input}
                 placeholder="Tatoueur, TattooShop"
             />
@@ -120,7 +135,7 @@ function SearchScreen(props) {
 
             <View style={styles.btnGroup}>
 
-                {tmp}
+                {tattooStyleBtn}
 
             </View>
 
@@ -146,7 +161,7 @@ function SearchScreen(props) {
                     title="Rechercher"
                     type="solid"
                     buttonStyle={{ backgroundColor: '#424D41', paddingLeft: 30, paddingRight: 30, paddingTop: 10, paddingBottom: 10 }}
-                    onPress={() => props.navigation.navigate('Resultat')}
+                    onPress={() => { props.navigation.navigate('Resultat'), onSearchInput(tattooshopName), props.saveTatoueurInfos(styleArray) }}
                 />
             </View>
             <Button
@@ -186,6 +201,7 @@ const styles = StyleSheet.create({
         height: 40,
         width: '80%',
         margin: 12,
+        marginTop: 30,
         borderWidth: 0.5,
         padding: 10,
     },
@@ -263,6 +279,6 @@ const mapDispatchToProps = (dispatch) => {
     return {
         saveTatoueurInfos: (infos) => dispatch({ type: 'saveTatoueurInfos', infos }),
         addDataUser: (dataUser) => dispatch({ type: 'addDataUser', dataUser: dataUser })
-        }
     }
+}
 export default connect(mapStateToProps, mapDispatchToProps)(SearchScreen)

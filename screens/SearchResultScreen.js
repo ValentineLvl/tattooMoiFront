@@ -8,54 +8,64 @@ import HeaderComponent from './HeaderComponent';
 
 function SearchResultScreen(props) {
 
-    // console.log('STATE FROM STORE:', props.saveTatoueurInfos)
+    console.log('STATE FROM STORE:', props.saveTatoueurInfos)
 
     const searchResults = props.saveTatoueurInfos.map((style, i) => {
+
         return (
 
-            style.map((info, i) => {
+            style.map((tmp) => {
 
                 return (
-                    <TouchableOpacity key={i} onPress={() => { props.selectedArtistInfos([info]), props.navigation.navigate('TattooArtist') }}>
-                        <Card key={2} containerStyle={styles.cards} pointerEvents="none">
-                            <Card.Image source={{ uri: info.galleryPhoto[0] }}>
-                                <AntDesign
-                                    name="heart"
-                                    size={30}
-                                    color="#FFF"
-                                    style={{
-                                        position: 'absolute',
-                                        left: '87%',
-                                        top: '5%'
-                                    }}
-                                />
-                            </Card.Image>
-                            <View style={styles.cardDesc}>
-                                <View>
-                                    <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#454543' }}>{info.firstName}</Text>
-                                    {info.tattooShopAddress.map((name) => {
-                                        return (
-                                            <Text style={{ marginBottom: 10, fontWeight: 'bold', paddingTop: 5, color: '#454543' }}>
-                                                {name.tattooShop}
-                                            </Text>
-                                        )
-                                    })}
-                                    <Text style={{ fontStyle: 'italic', color: 'rgba(69, 69, 67, 0.8)' }}>{info.styleList.join(' ')}</Text>
-                                </View>
-                                <View>
-                                    <Text style={{ color: '#454543' }}>Attente: {info.schedule}</Text>
-                                    {info.tattooShopAddress.map((address) => {
-                                        return (
-                                            <Text style={{ paddingTop: 5, color: '#454543' }}>{address.city}</Text>
-                                        )
-                                    })}
-                                </View>
-                            </View>
-                        </Card>
-                    </TouchableOpacity>
-                );
-            })
-        )
+                    tmp.map((info, i) => {
+
+                        return (
+                            <TouchableOpacity key={i} onPress={() => { props.selectedArtistInfos([info]), props.navigation.navigate('TattooArtist') }}>
+                                <Card key={2} containerStyle={styles.cards} pointerEvents="none">
+                                    <Card.Image source={{ uri: info.galleryPhoto[0] }}>
+                                        <AntDesign
+                                            name="heart"
+                                            size={30}
+                                            color="#FFF"
+                                            style={{
+                                                position: 'absolute',
+                                                left: '87%',
+                                                top: '5%'
+                                            }}
+                                        />
+                                    </Card.Image>
+                                    <View style={styles.cardDesc}>
+                                        <View>
+                                            <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#454543' }}>{info.firstName}</Text>
+                                            {info.tattooShopAddress.map((name) => {
+                                                return (
+                                                    <Text style={{ marginBottom: 10, fontWeight: 'bold', paddingTop: 5, color: '#454543' }}>
+                                                        {name.tattooShop}
+                                                    </Text>
+                                                )
+                                            })}
+                                            <Text style={{ fontStyle: 'italic', color: 'rgba(69, 69, 67, 0.8)' }}>{info.styleList.join(' ')}</Text>
+                                        </View>
+                                        <View>
+                                            <Text style={{ color: '#454543' }}>Attente: {info.schedule}</Text>
+                                            {info.tattooShopAddress.map((address) => {
+                                                return (
+                                                    <Text style={{ paddingTop: 5, color: '#454543' }}>{address.city}</Text>
+                                                )
+                                            })}
+                                        </View>
+                                    </View>
+                                </Card>
+                            </TouchableOpacity>
+                        );
+                    })
+                )
+            }))
+
+        // return (
+
+
+        // )
     });
 
 
