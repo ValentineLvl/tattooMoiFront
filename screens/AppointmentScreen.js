@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { SafeAreaView, StyleSheet, Text, View, Image, ScrollView, SafeAreaViewBase } from 'react-native';
+import { SafeAreaView, StyleSheet, Text, View, Image, ScrollView, SafeAreaViewBase, TouchableOpacity } from 'react-native';
 import { Card, ListItem, Button, Icon } from 'react-native-elements'
 import { connect } from 'react-redux'
 import HeaderComponent from './HeaderComponent';
+import { FontAwesome } from '@expo/vector-icons';
 
 function AppointmentScreen(props) {
 
@@ -11,7 +12,7 @@ function AppointmentScreen(props) {
     useEffect(() => {
         console.log("App is loaded");
         const findProjectForm = async () => {
-            const dataProjectForm = await fetch(`http://192.168.1.101:3000/project-form?token=${props.dataUser.token}`)
+            const dataProjectForm = await fetch(`http://192.168.1.15:3000/project-form?token=${props.dataUser.token}`)
             const body = await dataProjectForm.json()
             console.log("body", body.user.formId)
             props.saveForm(body.user.formId)
@@ -24,7 +25,7 @@ function AppointmentScreen(props) {
 
     var deleteForm = async (_id) => {
 
-        const deleteReq = await fetch('http://192.168.1.101:3000/project-form', {
+        const deleteReq = await fetch('http://192.168.1.15:3000/project-form', {
             method: 'DELETE',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: `formId=${_id}&token=${props.dataUser.token}`,
@@ -41,36 +42,42 @@ function AppointmentScreen(props) {
         console.log("image", form.projectImg)
         return (
 
-            <Card>
-                <Card.Title>Projet </Card.Title>
-                <Card.Divider />
-                {
-
-
-                    <View   >
-                        <Image
-                            style={{ width: 200, height: 200 }}
-                            //   resizeMode="cover"
-                            source={{ uri: form.projectImg }}
-
-                        />
-                        <Text >Style: {form.style}</Text>
-                        <Text >Zone à tatouer: {form.tattooZone}</Text>
-                        <Text > Taille:  {form.height} cm x {form.width} cm</Text>
-                        <Text > Description:  {form.description} </Text>
-                        <Text > Disponibilité:  {form.disponibility} </Text>
-                        <Button
+            <Card containerStyle={styles.cards}>
+                
+                
+                    <View  >
+                        <Card.Image source={{ uri: form.projectImg }} >
+                        <TouchableOpacity key={i}  onPress={() => deleteForm(form._id)}>
+                        <Text style={{ left: '89%',top: '5%'}}>
+                        <FontAwesome
+                                    name="trash"
+                                    size={30}
+                                    color="#FFF"
+                                    
+                                />
+                                </Text>
+                        </TouchableOpacity>
+                        </Card.Image>
+                        <View  style={styles.cardDesc}  >
+                        <Text style={{ marginBottom: 10, fontWeight: 'bold', paddingTop: 5, color: '#454543' }}> Projet : {form.request}</Text>
+                        <Text style={styles.text} >Style: {form.style}</Text>
+                        <Text style={styles.text} >Zone à tatouer: {form.tattooZone}</Text>
+                        <Text style={styles.text}>Taille:  {form.heigth} cm x {form.width} cm</Text>
+                        <Text style={styles.text} >Description:  {form.description} </Text>
+                        <Text style={styles.text} >Disponibilité:  {form.disponibility} </Text>
+                        {/* <Button
                             title="Delete"
                             type="solid"
                             padding="30"
                             color='#424D41'
 
                             onPress={() => deleteForm(form._id)}
-                        />
+                        /> */}
+                        </View>
                     </View>
 
 
-                }
+                
             </Card>
 
 
@@ -84,16 +91,8 @@ function AppointmentScreen(props) {
     return (
         <View style={styles.container}>
             <HeaderComponent navigation={props.navigation} />
-            <ScrollView style={{ flex: 1, }} >
-                <SafeAreaView style={{ margin: 40 }}>
-
+            <ScrollView style={{ width: '90%', flex: 2 }} >
                     {projectForm}
-
-
-
-
-
-                </SafeAreaView>
             </ScrollView>
         </View>
     )
@@ -104,11 +103,29 @@ function AppointmentScreen(props) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#F1EFE5',
         paddingTop: 50,
-        //   alignItems: 'center',
-        //   justifyContent: 'center',
+        backgroundColor: '#F1EFE5',
+        alignItems: 'center',
+        justifyContent: 'center',
     },
+    cardDesc: {
+        // flexDirection: 'row',
+        // justifyContent: 'space-between',
+        paddingTop: 5,
+        paddingLeft: 10,
+        paddingRight: 10,
+        paddingBottom: 10,
+        backgroundColor: '#F1EFE5',
+    },
+    cards: {
+        padding: 0,
+        borderWidth: 0.1,
+        borderColor: '#454543'
+    },
+    text: {
+       color: '#454543',
+    }
+
 });
 
 
