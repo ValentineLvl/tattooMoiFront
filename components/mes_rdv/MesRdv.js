@@ -3,7 +3,6 @@ import { Alert, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 // @ts-expect-error
 import { Agenda } from 'react-native-calendars';
 import { LocaleConfig } from 'react-native-calendars';
-import testIDs from './testIDs';
 
 LocaleConfig.locales['fr'] = {
   monthNames: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'],
