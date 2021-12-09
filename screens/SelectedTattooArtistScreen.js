@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { connect } from 'react-redux';
 
-import { StyleSheet, View, Image, Text, ScrollView, Linking } from 'react-native';
+import { StyleSheet, View, Image, Text, ScrollView, Linking, TouchableOpacity } from 'react-native';
 import { Button } from 'react-native-elements';
 import { AntDesign, Feather, MaterialIcons } from '@expo/vector-icons';
 
@@ -11,32 +11,44 @@ import HeaderComponent from './HeaderComponent';
 
 function SelectedTattooArtistScreen(props) {
 
+    const [tattooLiked, setTattooLiked] = useState(false);
+
+    var colorHeart;
+    if(tattooLiked){
+         colorHeart = {color: '#BF5F5F'}
+      } else {
+         colorHeart = {color: '#454543'}
+      }
+      console.log('tattooLiked 2', tattooLiked);
+
     const selectedArtistInfos = props.selectedArtistInfos.map((info, i) => {
 
         return (
 
             <ScrollView contentContainerStyle={{ alignItems: 'center' }}>
+                
                 <View style={{ alignItems: 'center' }}>
+                
                     <Image
                         source={{ uri: info.profilePicture }}
                         style={styles.imgTatoueur}
                     />
+                    
                     <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#454543', marginTop: 10 }}>{info.firstName}</Text>
                     {info.tattooShopAddress.map((address) => {
                         return (
                             <Text style={{ fontSize: 14, marginBottom: 10, fontWeight: 'bold', color: '#454543' }}>{address.tattooShop}</Text>
                         )
                     })}
-                    <AntDesign
-                        name="heart"
-                        size={30}
-                        color="#BF5F5F"
-                        style={{
-                            position: 'relative',
-                            left: '19%',
-                            top: '-16%',
-                        }}
-                    />
+                    <TouchableOpacity onPress={() => setTattooLiked(!tattooLiked)}>
+                                <Text style={{ left: '20%', top: '-160%'}}>
+                            <AntDesign
+                                    name="heart"
+                                    size={30}
+                                    style={colorHeart}
+                                />
+                                </Text>
+                        </TouchableOpacity>
                     <View style={{ alignItems: 'center' }}>
                         {info.tattooShopAddress.map((address) => {
                             return (

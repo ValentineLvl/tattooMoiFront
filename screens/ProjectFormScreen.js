@@ -84,40 +84,6 @@ function ProjectFormScreen(props) {
           setTempUrl(response.url);
           console.log("response", response)
             }
-
-
-        // async function handleClickAddForm () { {
-            
-        //     console.log("activation de la fonction")
-        //  const data = await fetch('http://192.168.1.15:3000/project-form', {
-        //     method: 'POST',
-        //     headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-        //     body: `token=${props.dataUser.token}&userProjectImgFromFront=${tempUrl}&userStyleFromFront=${styleValue}&userDisponibilityFromFront=${scheduleValue}&userGenderFromFront=${titleValue}&userLastNameFromFront=${lastName}&userFirstNameFromFront=${firstName}&userEmailFromFront=${email}&userPhoneNumberFromFront=${phone}&userAddressFromFront=${address}&userPostalCodeFromFront=${postalCode}&userCityFromFront=${city}&usertattooZoneFromFront=${tattooZone}&userWidthFromFront=${width}&userHeightFromFront=${height}&userDescriptionFromFront=${description}`
-        
-        // })
-        // const body= await data.json()
-        // console.log("c la", body.projectFormSave)
-        // if (body.result == true){
-        //     props.addForm(body.projectFormSave)
-        // }
-    
-    //     let pickerResult = await ImagePicker.launchImageLibraryAsync();
-    //    //console.log(pickerResult);
-    //     var data = new FormData();
-    //       data.append('avatar', {
-    //       uri: pickerResult.uri,
-    //       type: 'image/jpeg',
-    //       name: 'avatar.jpg',
-    //     });
-    //   var rawResponse = await fetch('http://192.168.0.38:3000/upload', {
-    //     method: 'POST',
-    //     body: data
-    //   });
-    //   var response = await rawResponse.json();
-    // //   props.onSnap(response.url);
-    //   setTempUrl(response.url);
-    //   //console.log("response", response)
-    //     }
       
     async function handleClickAddForm () { { 
         console.log("activation de la fonction")
@@ -132,6 +98,7 @@ function ProjectFormScreen(props) {
     //console.log("c la", body.projectFormSave)
     if (body.result == true){
         props.addForm(body.projectFormSave)
+        props.navigation.navigate('Mes demandes')
     }
   setTempUrl("")
     }};

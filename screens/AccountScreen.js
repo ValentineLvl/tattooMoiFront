@@ -34,7 +34,7 @@ function AccountScreen(props) {
                             />
                         }
                         title="Mes rendez-vous / devis"
-                        onPress={() => props.navigation.navigate('Mes RDV')}
+                        onPress={() => props.navigation.navigate('Mes demandes')}
                     />
                     <Button
                         titleStyle={{ color: '#424D41' }}
@@ -47,7 +47,7 @@ function AccountScreen(props) {
                             />
                         }
                         title="Mes favoris"
-
+                        onPress={() => props.navigation.navigate('Mes favoris')}
                     />
                     <Button
                         titleStyle={{ color: '#424D41' }}
@@ -60,6 +60,7 @@ function AccountScreen(props) {
                             />
                         }
                         title="Mes informations personnelles"
+                        onPress={() => props.navigation.navigate('Mes infos')}
 
                     />
                     <Button
