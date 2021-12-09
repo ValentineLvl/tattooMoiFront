@@ -1,85 +1,39 @@
-import { LogBox } from 'react-native';
-LogBox.ignoreLogs(['Warning: ...']);
-
+import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-
-//Screens client
-import SearchScreen from './screens/SearchScreen';
-import AccountScreen from './screens/AccountScreen';
-import AppointmentScreen from './screens/AppointmentScreen';
-import SearchResultScreen from './screens/SearchResultScreen';
-import SignInScreen from './screens/SignInScreen';
-import SignUpScreen from './screens/SignUpScreen';
-import ProjectFormScreen from './screens/ProjectFormScreen';
-import ClientInfoScreen from './screens/ClientInfoScreen';
-
-//Screens tatoueur
-import SignInTatoueurScreen from './screensTatoueur/SignInTatoueurScreen';
-import SelectedTattooArtistScreen from './screens/SelectedTattooArtistScreen';
+import { StyleSheet, Text, View } from 'react-native';
 
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { FontAwesome } from '@expo/vector-icons';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import { createStore, combineReducers } from 'redux';
-import { Provider } from 'react-redux';
+import Inscription from './components/inscription/Inscription';
+import Presentation from './components/presentation/Presentation';
+import Connexion from './components/connexion/Connexion';
+import MenuTatoueur from './components/menu_tatoueur/MenuTatoueur';
+import MesInfos from './components/mes_infos/MesInfos';
+import MesRdv from './components/mes_rdv/MesRdv';
 
-import formList from './reducers/form';
-import dataUser from './reducers/dataUser';
-import saveTatoueurInfos from './reducers/saveTatoueurInfos';
-import selectedArtistInfos from './reducers/selectedArtistInfos';
-// import photoList from './reducers/photo';
-
-const store = createStore(combineReducers({ formList, dataUser, saveTatoueurInfos, selectedArtistInfos }));
-
-const Stack = createStackNavigator();
-const Tab = createBottomTabNavigator();
-
-function SearchStack() {
-    return (
-        <Stack.Navigator screenOptions={{ headerShown: false }} >
-            <Stack.Screen name="Search" component={SearchScreen} />
-            <Stack.Screen name="Resultat" component={SearchResultScreen} />
-            <Stack.Screen name="Connexion" component={SignInScreen} />
-            <Stack.Screen name="Inscription" component={SignUpScreen} />
-            <Stack.Screen name="TattooArtist" component={SelectedTattooArtistScreen} />
-            <Stack.Screen name="Formulaire" component={ProjectFormScreen} />
-            <Stack.Screen name="Mes infos" component={ClientInfoScreen} />
-            <Stack.Screen name="Connexion Tatoueur" component={SignInTatoueurScreen} />
-        </Stack.Navigator>
-    );
-}
+const Stack = createNativeStackNavigator();
 
 export default function App() {
-    return (
-        <Provider store={store}>
-            <NavigationContainer>
-                <Tab.Navigator
-                    screenOptions={({ route }) => ({
-                        tabBarIcon: ({ color }) => {
-                            let iconName;
-                            if (route.name === 'Recherche') {
-                                iconName = 'search';
-                            } else if (route.name === 'Mes RDV') {
-                                iconName = 'calendar-o';
-                            } else if (route.name === 'Mon compte') {
-                                iconName = 'user';
-                            }
-                            return <FontAwesome name={iconName} size={25} color={color} />;
-                        },
-                        tabBarActiveTintColor: "#C2A77D",
-                        tabBarInactiveTintColor: "#F1EFE5",
-                        tabBarStyle: { backgroundColor: "#424D41" },
-                        headerShown: false
-                    }
-                    )}
-                >
-                    <Tab.Screen name="Recherche" component={SearchStack} />
-                    <Tab.Screen name="Mes RDV" component={AppointmentScreen} />
-                    <Tab.Screen name="Mon compte" component={AccountScreen} />
-                </Tab.Navigator>
-            </NavigationContainer>
-        </Provider>
-    );
+  return (
+    <NavigationContainer>
+      <Stack.Navigator>
+        {/* <Stack.Screen options={{ headerShown: false }} name="presentation" component={Presentation} /> */}
+        {/* <Stack.Screen name="inscription" component={Inscription} /> */}
+        {/* <Stack.Screen name="connexion" component={Connexion} /> */}
+        {/* <Stack.Screen name="menuTatoueur" component={MenuTatoueur} options={{ title: 'Menu tatoueur' }} /> */}
+        {/* <Stack.Screen options={{ headerShown: false }} name="mesinfos" component={MesInfos} /> */}
+        <Stack.Screen options={{ headerShown: false }} name="mes_rdv" component={MesRdv} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});
