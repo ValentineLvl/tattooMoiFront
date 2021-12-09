@@ -34,178 +34,95 @@ const schedule = [
     { label: 'Peu importe', value: 'Peu importe' },
  
   ];
-function ProjectFormScreen(props) {
-    
-        
-        const [form, setForm] = useState({
-
-        })
-
-        const [lastName, setLastName] = useState("");
-        const [firstName, setFirstName] = useState("");
-        const [email, setEmail] = useState("");
-        const [phone, setPhone] = useState("");
-        const [postalCode, setPostalCode] = useState("");
-        const [city, setCity] = useState("");
-        const [tattooZone, setTattooZone] = useState("");
-        const [width, setWidth] = useState("");
-        const [height, setHeight] = useState("");
-        const [description, setDescription] = useState("");
-        const [address, setAddress] = useState("");
-        const [titleValue, setTitleValue] = useState(null);
-        const [isFocus, setIsFocus] = useState(false);
-        const [styleValue, setStyleValue] = useState(null);
-        const [scheduleValue, setScheduleValue] = useState(null);
-        const [tempUrl, setTempUrl] = useState("")
-      
-        
-        let openImagePickerAsync = async () => {
-            let permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
-        
-            if (permissionResult.granted === false) {
-              alert('Permission to access camera roll is required!');
-              return;
-            }
-        
-            let pickerResult = await ImagePicker.launchImageLibraryAsync();
-            console.log(pickerResult);
-            var data = new FormData();
-            data.append('avatar', {
-            uri: pickerResult.uri,
-            type: 'image/jpeg',
-            name: 'avatar.jpg',
-          });
-          var rawResponse = await fetch('http://192.168.0.38:3000/upload', {
-            method: 'POST',
-            body: data
-          });
-          var response = await rawResponse.json();
-        //   props.onSnap(response.url);
-          setTempUrl(response.url);
-          console.log("response", response)
-            }
-
-
-        async function handleClickAddForm () { {
-            
-            console.log("activation de la fonction")
-         const data = await fetch('http://192.168.0.38:3000/project-form', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-            body: `token=${props.dataUser.token}&userProjectImgFromFront=${tempUrl}&userStyleFromFront=${styleValue}&userDisponibilityFromFront=${scheduleValue}&userGenderFromFront=${titleValue}&userLastNameFromFront=${lastName}&userFirstNameFromFront=${firstName}&userEmailFromFront=${email}&userPhoneNumberFromFront=${phone}&userAddressFromFront=${address}&userPostalCodeFromFront=${postalCode}&userCityFromFront=${city}&usertattooZoneFromFront=${tattooZone}&userWidthFromFront=${width}&userHeightFromFront=${height}&userDescriptionFromFront=${description}`
-        
-        })
-        const body= await data.json()
-        console.log("c la", body.projectFormSave)
-        if (body.result == true){
-            props.addForm(body.projectFormSave)
-        }
-        
-      setTempUrl("")
-    
-        
-        }}
-      
-        // let clientInfo = () => {
-        //     if (props.token == null) {
-              
-        //        <View>
-        //       <View style={styles.inlign}>
-
-        //         <Dropdown
-        //          style={styles.dropdown}
-        //           placeholderStyle={styles.placeholderStyle}
-        //           selectedTextStyle={styles.selectedTextStyle}
-        //           inputSearchStyle={styles.inputSearchStyle}
-        //           data={title}
-        //           containerStyle={{backgroundColor:'#F1EFE5', marginTop:-42}}
-        //           activeColor={'#C2A77D'}
-        //           maxHeight={100}
-        //           labelField="label"
-        //           valueField="value"
-        //           placeholder='Civilité' 
-        //           value={titleValue}
-        //           onFocus={() => setIsFocus(true)}
-        //           onBlur={() => setIsFocus(false)}
-        //           onChange={item => {
-        //             setTitleValue(item.value);
-        //             setIsFocus(false);
-        //           }}
-                 
-        //         />
-              
-        //       <TextInput
-        //         style={styles.input}
-        //         onChangeText={setLastName}
-        //         value={lastName}
-        //         placeholder="Nom"
-        //       />
-             
-        //       </View>
-        //       <TextInput
-        //         style={styles.input}
-        //         onChangeText={setFirstName}
-        //         value={firstName}
-        //         placeholder="Prénom"
-              
-        //       />
-        //       <TextInput
-        //         style={styles.input}
-        //         onChangeText={setEmail}
-        //         value={email}
-        //         placeholder="Adresse email"
-              
-        //       />
-        //       <TextInput
-        //         style={styles.input}
-        //         onChangeText={setPhone}
-        //         value={phone}
-        //         placeholder="Numéro de téléphone"
-              
-        //       />
-        //       <TextInput
-        //         style={styles.input}
-        //         onChangeText={setAddress}
-        //         value={address}
-        //         placeholder="Adresse postale"
-              
-        //       />
-        //        <View style={styles.inlign}   >
-        //       <TextInput
-        //         style={styles.input}
-        //         onChangeText={setPostalCode}
-        //         value={postalCode}
-        //         placeholder="Code postal"
-              
-        //       />
-        //       <TextInput
-        //         style={styles.input}
-        //         onChangeText={setCity}
-        //         value={city}
-        //         placeholder="Ville"
-              
-        //       />
-        //       </View> 
-        //       </View>
-             
-        //        }}
-
-
-
-    return (
 
   
+function ProjectFormScreen(props) {
+     
+  const [form, setForm] = useState({});
+
+  const [lastName, setLastName] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [postalCode, setPostalCode] = useState("");
+  const [city, setCity] = useState("");
+  const [tattooZone, setTattooZone] = useState("");
+  const [width, setWidth] = useState("");
+  const [height, setHeight] = useState("");
+  const [description, setDescription] = useState("");
+  const [address, setAddress] = useState("");
+  const [titleValue, setTitleValue] = useState(null);
+  const [isFocus, setIsFocus] = useState(false);
+  const [styleValue, setStyleValue] = useState(null);
+  const [scheduleValue, setScheduleValue] = useState(null);
+  const [tempUrl, setTempUrl] = useState("");
+  const [request, setRequest] = useState("");
+      
+
+    let openImagePickerAsync = async () => {
+        let permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    
+        if (permissionResult.granted === false) {
+          alert('Permission to access camera roll is required!');
+          return;
+        }
+    
+        let pickerResult = await ImagePicker.launchImageLibraryAsync();
+       //console.log(pickerResult);
+        var data = new FormData();
+          data.append('avatar', {
+          uri: pickerResult.uri,
+          type: 'image/jpeg',
+          name: 'avatar.jpg',
+        });
+      var rawResponse = await fetch('http://192.168.0.38:3000/upload', {
+        method: 'POST',
+        body: data
+      });
+      var response = await rawResponse.json();
+    //   props.onSnap(response.url);
+      setTempUrl(response.url);
+      //console.log("response", response)
+        }
+
+    async function handleClickAddForm () { { 
+        console.log("activation de la fonction")
+
+    const data = await fetch('http://192.168.0.38:3000/project-form', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        body: `token=${props.dataUser.token}&userProjectImgFromFront=${tempUrl}&userStyleFromFront=${styleValue}&userDisponibilityFromFront=${scheduleValue}&userGenderFromFront=${titleValue}&userLastNameFromFront=${lastName}&userFirstNameFromFront=${firstName}&userEmailFromFront=${email}&userPhoneNumberFromFront=${phone}&userAddressFromFront=${address}&userPostalCodeFromFront=${postalCode}&userCityFromFront=${city}&usertattooZoneFromFront=${tattooZone}&userWidthFromFront=${width}&userHeightFromFront=${height}&userDescriptionFromFront=${description}&userRequestFromFront=${request}`
+    })
+
+    const body= await data.json()
+    //console.log("c la", body.projectFormSave)
+    if (body.result == true){
+        props.addForm(body.projectFormSave)
+    }
+  setTempUrl("")
+    }};
+
+    // var clientInfo = () => {
+    //   if (props.dataUser == null) {
+    //   return (  
+
+    //   <View style={styles.form} >
+      
+        
+      
+    //        </View>
+    //         )
+    //            } }
+
+    return (
         <View style={styles.container}>
         <HeaderComponent navigation={props.navigation}/>
-        <ScrollView style={styles.form} >
-        
-         <View style={styles.smallForm} >
-
-            {/* {clientInfo} */}
-
-
+        <ScrollView>
+        <View style={styles.form} >
+        {(props.dataUser == null)? <>
+        <View style={styles.smallForm} >
         <Dropdown
-         style={styles.dropdown}
+          style={styles.dropdown}
           placeholderStyle={styles.placeholderStyle}
           selectedTextStyle={styles.selectedTextStyle}
           inputSearchStyle={styles.inputSearchStyle}
@@ -224,62 +141,71 @@ function ProjectFormScreen(props) {
             setIsFocus(false);
           }}
         />
-      
-      <TextInput
-        style={styles.smallInput}
-        onChangeText={setLastName}
-        value={lastName}
-        placeholder="Nom"
-      />
-     
-      </View>
-      <TextInput
-        style={styles.input}
-        onChangeText={setFirstName}
-        value={firstName}
-        placeholder="Prénom"
-      
-      />
-      <TextInput
-        style={styles.input}
-        onChangeText={setEmail}
-        value={email}
-        placeholder="Adresse email"
-      
-      />
-      <TextInput
-        style={styles.input}
-        onChangeText={setPhone}
-        value={phone}
-        placeholder="Numéro de téléphone"
-      
-      />
-      <TextInput
-        style={styles.input}
-        onChangeText={setAddress}
-        value={address}
-        placeholder="Adresse postale"
-      
-      />
-       <View style={styles.smallForm}   >
-      <TextInput
-        style={styles.smallInput}
-        onChangeText={setPostalCode}
-        value={postalCode}
-        placeholder="Code postal"
-      
-      />
-      <TextInput
-        style={styles.smallInput}
-        onChangeText={setCity}
-        value={city}
-        placeholder="Ville"
-      
-      />
-      </View>
+          
+          <TextInput
+            style={styles.smallInput}
+            onChangeText={setLastName}
+            value={lastName}
+            placeholder="Nom"
+          />
+          </View>
 
-      <View style={styles.smallForm}   >
+          <TextInput
+            style={styles.input}
+            onChangeText={setFirstName}
+            value={firstName}
+            placeholder="Prénom"
+          
+          />
+          <TextInput
+            style={styles.input}
+            onChangeText={setEmail}
+            value={email}
+            placeholder="Adresse email"
+          
+          />
+          <TextInput
+            style={styles.input}
+            onChangeText={setPhone}
+            value={phone}
+            placeholder="Numéro de téléphone"
+          
+          />
+          <TextInput
+            style={styles.input}
+            onChangeText={setAddress}
+            value={address}
+            placeholder="Adresse postale"
+          
+          />
 
+           <View style={styles.smallForm}>
+          <TextInput
+            style={styles.smallInput}
+            onChangeText={setPostalCode}
+            value={postalCode}
+            placeholder="Code postal"
+          
+          />
+          <TextInput
+            style={styles.smallInput}
+            onChangeText={setCity}
+            value={city}
+            placeholder="Ville"
+          
+          />
+          </View>
+          </>
+        : null}
+
+      <TextInput
+            style={styles.input}
+            onChangeText={setRequest}
+            value={request}
+            placeholder="Objet de la demande"
+          
+          />
+        <View style={styles.smallForm}   >
       <Dropdown
          style={styles.smallInput}
           placeholderStyle={styles.placeholderStyle}
@@ -378,16 +304,12 @@ function ProjectFormScreen(props) {
             onPress={() => handleClickAddForm()}
      />
      </View>
-     
-     </ScrollView>
-     
+     </View>
+        </ScrollView>
         </View>
     )
     
 }
-
-
-
 
 
 const styles = StyleSheet.create({

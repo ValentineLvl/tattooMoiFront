@@ -6,6 +6,8 @@ import { StyleSheet, View, Image, Text, ScrollView, Linking } from 'react-native
 import { Button } from 'react-native-elements';
 import { AntDesign, Feather, MaterialIcons } from '@expo/vector-icons';
 
+import HeaderComponent from './HeaderComponent';
+
 
 function SelectedTattooArtistScreen(props) {
 
@@ -149,16 +151,9 @@ function SelectedTattooArtistScreen(props) {
 
     return (
         <View style={styles.container}>
+            
             <View style={styles.header}>
-                <Image
-                    source={require('../assets/tattoo-moi_1.png')}
-                    style={{ width: 200, height: 80, marginRight: 70 }} />
-                <Button
-                    title="Connexion"
-                    buttonStyle={{ backgroundColor: '#F1EFE5', paddingRight: 5, paddingLeft: 5, marginRight: 10, marginTop: 20 }}
-                    titleStyle={{ color: '#454543', marginBottom: 10, fontSize: 15, height: 30 }}
-                    type="solid"
-                />
+            <HeaderComponent navigation={props.navigation}/>
             </View>
 
             {selectedArtistInfos}
