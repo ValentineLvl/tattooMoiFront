@@ -22,7 +22,7 @@ function SearchResultScreen(props) {
     var handlePressAddFavorite = async (tattooId) => {
         setTattooLiked(!tattooLiked)
 
-        const response = await fetch('http://192.168.1.101:3000/favorites', {
+        const response = await fetch('http://192.168.0.38:3000/favorites', {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: `IdFromFront=${tattooId}&token=${props.dataUser.token}`
