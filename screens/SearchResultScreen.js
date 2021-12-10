@@ -8,21 +8,19 @@ import HeaderComponent from './HeaderComponent';
 
 function SearchResultScreen(props) {
 
-    console.log('STATE FROM STORE:', props.saveTatoueurInfos)
-
-    const searchResults = props.saveTatoueurInfos.map((style, i) => {
+    const searchResults = props.saveTatoueurInfos.map((style) => {
 
         return (
 
             style.map((tmp) => {
 
                 return (
-                    tmp.map((info, i) => {
+                    tmp.map((info) => {
 
                         return (
-                            <TouchableOpacity key={i} onPress={() => { props.selectedArtistInfos([info]), props.navigation.navigate('TattooArtist') }}>
+                            <TouchableOpacity key={info._id} onPress={() => { props.selectedArtistInfos([info]), props.navigation.navigate('TattooArtist') }}>
                                 <Card key={2} containerStyle={styles.cards} pointerEvents="none">
-                                    <Card.Image source={{ uri: info.galleryPhoto[0] }}>
+                                    <Card.Image key={3} source={{ uri: info.galleryPhoto[0] }}>
                                         <AntDesign
                                             name="heart"
                                             size={30}
@@ -34,23 +32,23 @@ function SearchResultScreen(props) {
                                             }}
                                         />
                                     </Card.Image>
-                                    <View style={styles.cardDesc}>
-                                        <View>
-                                            <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#454543' }}>{info.firstName}</Text>
+                                    <View key={4} style={styles.cardDesc}>
+                                        <View key={5}>
+                                            <Text key={6} style={{ fontSize: 18, fontWeight: 'bold', color: '#454543' }}>{info.firstName}</Text>
                                             {info.tattooShopAddress.map((name) => {
                                                 return (
-                                                    <Text style={{ marginBottom: 10, fontWeight: 'bold', paddingTop: 5, color: '#454543' }}>
+                                                    <Text key={7} style={{ marginBottom: 10, fontWeight: 'bold', paddingTop: 5, color: '#454543' }}>
                                                         {name.tattooShop}
                                                     </Text>
                                                 )
                                             })}
-                                            <Text style={{ fontStyle: 'italic', color: 'rgba(69, 69, 67, 0.8)' }}>{info.styleList.join(' ')}</Text>
+                                            <Text key={8} style={{ fontStyle: 'italic', color: 'rgba(69, 69, 67, 0.8)' }}>{info.styleList.join(' ')}</Text>
                                         </View>
-                                        <View>
-                                            <Text style={{ color: '#454543' }}>Attente: {info.schedule}</Text>
+                                        <View key={9}>
+                                            <Text key={10} style={{ color: '#454543' }}>Attente: {info.schedule}</Text>
                                             {info.tattooShopAddress.map((address) => {
                                                 return (
-                                                    <Text style={{ paddingTop: 5, color: '#454543' }}>{address.city}</Text>
+                                                    <Text key={11} style={{ paddingTop: 5, color: '#454543' }}>{address.city}</Text>
                                                 )
                                             })}
                                         </View>
