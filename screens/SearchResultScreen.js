@@ -21,7 +21,7 @@ function SearchResultScreen(props) {
 
     var handlePressAddFavorite = async (tattooId) => {
         setTattooLiked(!tattooLiked)
-
+        
         const response = await fetch('http://192.168.1.101:3000/favorites', {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -35,70 +35,21 @@ function SearchResultScreen(props) {
     //   method: 'DELETE'
     // })
     // }
-
-    // const searchResults = props.saveTatoueurInfos.map((style) => {
-
-    //     return (
-
-    //         style.map((info, i) => {
-
-
-        //         return (
-        //             <TouchableOpacity onPress={() => { props.selectedArtistInfos([info]), props.navigation.navigate('TattooArtist') }}>
-        //                 <Card key={i} containerStyle={styles.cards}>
-        //                     <Card.Image source={{ uri: info.galleryPhoto[0] }}>
-        //                         <TouchableOpacity onPress={() => { handlePressAddFavorite(info._id) }}>
-        //                             <Text style={{ left: '87%', top: '5%' }}>
-        //                                 <AntDesign
-        //                                     name="heart"
-        //                                     size={30}
-        //                                     style={colorHeart}
-
-        //                                 />
-        //                             </Text>
-        //                         </TouchableOpacity>
-        //                     </Card.Image>
-        //                     <View style={styles.cardDesc}>
-        //                         <View>
-        //                             <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#454543' }}>{info.firstName}</Text>
-        //                             {info.tattooShopAddress.map((name, i) => {
-        //                                 return (
-        //                                     <Text key={i} style={{ marginBottom: 10, fontWeight: 'bold', paddingTop: 5, color: '#454543' }}>
-        //                                         {name.tattooShop}
-        //                                     </Text>
-        //                                 )
-        //                             })}
-        //                             <Text style={{ fontStyle: 'italic', color: 'rgba(69, 69, 67, 0.8)' }}>{info.styleList.join(' ')}</Text>
-        //                         </View>
-        //                         <View>
-        //                             <Text style={{ color: '#454543' }}>Attente: {info.schedule}</Text>
-        //                             {info.tattooShopAddress.map((address, i) => {
-        //                                 return (
-        //                                     <Text key={i} style={{ paddingTop: 5, color: '#454543' }}>{address.city}</Text>
-        //                                 )
-        //                             })}
-        //                         </View>
-        //                     </View>
-        //                 </Card>
-        //             </TouchableOpacity>
-        //         );
-        //     })
-        // )
         const searchResults = props.saveTatoueurInfos.map((style) => {
 
             return (
 
-                style.map((tmp) => {
+                style.map((tmp, i) => {
 
                     return (
-                        tmp.map((info) => {
+                        tmp.map((info, i) => {
 
                             return (
-                                <TouchableOpacity key={info._id} onPress={() => { props.selectedArtistInfos([info]), props.navigation.navigate('TattooArtist') }}>
-                                    <Card key={2} containerStyle={styles.cards}>
+                                <TouchableOpacity onPress={() => { props.selectedArtistInfos([info]), props.navigation.navigate('TattooArtist') }}>
+                                    <Card containerStyle={styles.cards}>
                                         <Card.Image key={3} source={{ uri: info.galleryPhoto[0] }}>
-                                            <TouchableOpacity onPress={() => { handlePressAddFavorite(info._id) }}>
-                                                < Text style={{ left: '87%', top: '5%' }
+                                            <TouchableOpacity onPress={() => handlePressAddFavorite(info._id)}>
+                                                <Text style={{ left: '87%', top: '5%' }
                                                 }>
                                                     <AntDesign
                                                         name="heart"
@@ -109,23 +60,23 @@ function SearchResultScreen(props) {
                                                 </Text >
                                             </TouchableOpacity >
                                         </Card.Image>
-                                        <View key={4} style={styles.cardDesc}>
-                                            <View key={5}>
-                                                <Text key={6} style={{ fontSize: 18, fontWeight: 'bold', color: '#454543' }}>{info.firstName}</Text>
+                                        <View style={styles.cardDesc}>
+                                            <View>
+                                                <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#454543' }}>{info.firstName}</Text>
                                                 {info.tattooShopAddress.map((name) => {
                                                     return (
-                                                        <Text key={7} style={{ marginBottom: 10, fontWeight: 'bold', paddingTop: 5, color: '#454543' }}>
+                                                        <Text style={{ marginBottom: 10, fontWeight: 'bold', paddingTop: 5, color: '#454543' }}>
                                                             {name.tattooShop}
                                                         </Text>
                                                     )
                                                 })}
-                                                <Text key={8} style={{ fontStyle: 'italic', color: 'rgba(69, 69, 67, 0.8)' }}>{info.styleList.join(' ')}</Text>
+                                                <Text style={{ fontStyle: 'italic', color: 'rgba(69, 69, 67, 0.8)' }}>{info.styleList.join(' ')}</Text>
                                             </View>
-                                            <View key={9}>
-                                                <Text key={10} style={{ color: '#454543' }}>Attente: {info.schedule}</Text>
+                                            <View>
+                                                <Text style={{ color: '#454543' }}>Attente: {info.schedule}</Text>
                                                 {info.tattooShopAddress.map((address) => {
                                                     return (
-                                                        <Text key={11} style={{ paddingTop: 5, color: '#454543' }}>{address.city}</Text>
+                                                        <Text style={{ paddingTop: 5, color: '#454543' }}>{address.city}</Text>
                                                     )
                                                 })}
                                             </View>

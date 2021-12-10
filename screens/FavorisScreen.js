@@ -8,24 +8,24 @@ import HeaderComponent from './HeaderComponent';
 
 
 function FavorisScreen(props) {
-    
-const [favoritesList, setFavoritesList] = useState([]);
-const [tattooLiked, setTattooLiked] = useState(false);
+
+    const [favoritesList, setFavoritesList] = useState([]);
+    const [tattooLiked, setTattooLiked] = useState(false);
 
     var colorHeart;
-    if(!tattooLiked){
-         colorHeart = {color: '#BF5F5F'}
-      } else {
-         colorHeart = {color: '#454543'}
-      }
+    if (!tattooLiked) {
+        colorHeart = { color: '#BF5F5F' }
+    } else {
+        colorHeart = { color: '#454543' }
+    }
 
-var handlePressDeleteFavorite = async () => {
-    setTattooLiked(tattooLiked)
+    var handlePressDeleteFavorite = async () => {
+        setTattooLiked(tattooLiked)
 
-    // const response = await fetch(`http://192.168.0.38:3000/favorites/${name}`, {
-    //   method: 'DELETE'
-    // })
-}
+        // const response = await fetch(`http://192.168.0.38:3000/favorites/${name}`, {
+        //   method: 'DELETE'
+        // })
+    }
 
     useEffect(() => {
         console.log("Favoris is loaded");
@@ -42,46 +42,46 @@ var handlePressDeleteFavorite = async () => {
 
     const favoritesResults = favoritesList.map((favorites, i) => {
 
-                return (
-                    <TouchableOpacity key={i} onPress={() => {props.selectedArtistInfos([favorites]), props.navigation.navigate('TattooArtist')} }>
-                        <Card key={i} containerStyle={styles.cards}>
-                            <Card.Image source={{ uri: favorites.galleryPhoto[0] }}>
-                            <TouchableOpacity onPress={() => {handlePressDeleteFavorite(favorites._id)} }>
-                                <Text style={{ left: '87%',top: '5%'}}>
-                            <AntDesign
+        return (
+            <TouchableOpacity key={i} onPress={() => { props.selectedArtistInfos([favorites]), props.navigation.navigate('TattooArtist') }}>
+                <Card key={i} containerStyle={styles.cards}>
+                    <Card.Image source={{ uri: favorites.galleryPhoto[0] }}>
+                        <TouchableOpacity onPress={() => { handlePressDeleteFavorite(favorites._id) }}>
+                            <Text style={{ left: '87%', top: '5%' }}>
+                                <AntDesign
                                     name="heart"
                                     size={30}
                                     style={colorHeart}
 
                                 />
-                                </Text>
-                                </TouchableOpacity>
-                            </Card.Image>
-                            <View style={styles.cardDesc}>
-                                <View>
-                                    <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#454543' }}>{favorites.firstName}</Text>
-                                    {favorites.tattooShopAddress.map((name) => {
-                                        return (
-                                            <Text style={{ marginBottom: 10, fontWeight: 'bold', paddingTop: 5, color: '#454543' }}>
-                                                {name.tattooShop}
-                                            </Text>
-                                        )
-                                    })}
-                                    <Text style={{ fontStyle: 'italic', color: 'rgba(69, 69, 67, 0.8)' }}>{favorites.styleList.join(' ')}</Text>
-                                </View>
-                                <View>
-                                    <Text style={{ color: '#454543' }}>Attente: {favorites.schedule}</Text>
-                                    {favorites.tattooShopAddress.map((address) => {
-                                        return (
-                                            <Text style={{ paddingTop: 5, color: '#454543' }}>{address.city}</Text>
-                                        )
-                                    })}
-                                </View>
-                            </View>
-                        </Card>
-                    </TouchableOpacity>
-                );
-            });
+                            </Text>
+                        </TouchableOpacity>
+                    </Card.Image>
+                    <View style={styles.cardDesc}>
+                        <View>
+                            <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#454543' }}>{favorites.firstName}</Text>
+                            {favorites.tattooShopAddress.map((name) => {
+                                return (
+                                    <Text style={{ marginBottom: 10, fontWeight: 'bold', paddingTop: 5, color: '#454543' }}>
+                                        {name.tattooShop}
+                                    </Text>
+                                )
+                            })}
+                            <Text style={{ fontStyle: 'italic', color: 'rgba(69, 69, 67, 0.8)' }}>{favorites.styleList.join(' ')}</Text>
+                        </View>
+                        <View>
+                            <Text style={{ color: '#454543' }}>Attente: {favorites.schedule}</Text>
+                            {favorites.tattooShopAddress.map((address) => {
+                                return (
+                                    <Text style={{ paddingTop: 5, color: '#454543' }}>{address.city}</Text>
+                                )
+                            })}
+                        </View>
+                    </View>
+                </Card>
+            </TouchableOpacity>
+        );
+    });
 
 
     return (
