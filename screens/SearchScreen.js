@@ -75,7 +75,7 @@ function SearchScreen(props) {
         let rawResponse = await fetch(`http://192.168.0.38:3000/search-tattoo?styleList=${tattooStyle}`)
         let response = await rawResponse.json()
 
-        console.log(response.result)
+        //console.log(response.result)
 
         props.saveTatoueurInfos(response.searchResult)
     }

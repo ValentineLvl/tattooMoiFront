@@ -88,7 +88,7 @@ var handleSubmitSignup = async () => {
 }
 
   var tabErrorsSignup = listErrorsSignup.map((error,i) => {
-    return(<Text style={{textAlign:'center', color:'#b33939'}}>{error}</Text>)
+    return(<Text style={{textAlign:'center', color:'#BF5F5F'}}>{error}</Text>)
   })
 
     return (

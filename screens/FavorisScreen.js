@@ -32,7 +32,7 @@ var handlePressDeleteFavorite = async () => {
         const findFavorites = async () => {
             const dataFavorites = await fetch(`http://192.168.0.38:3000/favorites?token=${props.dataUser.token}`)
             const body = await dataFavorites.json();
-            console.log("récupérer le favoris body", body.user.tattooId)
+            //console.log("récupérer le favoris body", body.user.tattooId)
             //props.saveForm(body.user.formId)
             setFavoritesList(body.user.tattooId)
 

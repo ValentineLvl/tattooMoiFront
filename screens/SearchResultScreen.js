@@ -36,7 +36,7 @@ var handlePressAddFavorite = async (tattooId) => {
     // })
 // }
 
-    const searchResults = props.saveTatoueurInfos.map((style, i) => {
+    const searchResults = props.saveTatoueurInfos.map((style) => {
        
         return (
 
@@ -44,7 +44,7 @@ var handlePressAddFavorite = async (tattooId) => {
                 
 
                 return (
-                    <TouchableOpacity key={i} onPress={() => { props.selectedArtistInfos([info]), props.navigation.navigate('TattooArtist') }}>
+                    <TouchableOpacity onPress={() => { props.selectedArtistInfos([info]), props.navigation.navigate('TattooArtist') }}>
                         <Card key={i} containerStyle={styles.cards}>
                             <Card.Image source={{ uri: info.galleryPhoto[0] }}>
                             <TouchableOpacity onPress={() => {handlePressAddFavorite(info._id)} }>
@@ -61,9 +61,9 @@ var handlePressAddFavorite = async (tattooId) => {
                             <View style={styles.cardDesc}>
                                 <View>
                                     <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#454543' }}>{info.firstName}</Text>
-                                    {info.tattooShopAddress.map((name) => {
+                                    {info.tattooShopAddress.map((name, i) => {
                                         return (
-                                            <Text style={{ marginBottom: 10, fontWeight: 'bold', paddingTop: 5, color: '#454543' }}>
+                                            <Text key={i} style={{ marginBottom: 10, fontWeight: 'bold', paddingTop: 5, color: '#454543' }}>
                                                 {name.tattooShop}
                                             </Text>
                                         )
@@ -72,9 +72,9 @@ var handlePressAddFavorite = async (tattooId) => {
                                 </View>
                                 <View>
                                     <Text style={{ color: '#454543' }}>Attente: {info.schedule}</Text>
-                                    {info.tattooShopAddress.map((address) => {
+                                    {info.tattooShopAddress.map((address, i) => {
                                         return (
-                                            <Text style={{ paddingTop: 5, color: '#454543' }}>{address.city}</Text>
+                                            <Text key={i} style={{ paddingTop: 5, color: '#454543' }}>{address.city}</Text>
                                         )
                                     })}
                                 </View>

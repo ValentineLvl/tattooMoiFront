@@ -3,7 +3,7 @@ import { SafeAreaView, StyleSheet, Text, View, Image, ScrollView, SafeAreaViewBa
 import { Card, ListItem, Button, Icon } from 'react-native-elements'
 import { connect } from 'react-redux'
 import HeaderComponent from './HeaderComponent';
-import { FontAwesome } from '@expo/vector-icons';
+import { FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons';
 
 function AppointmentScreen(props) {
 
@@ -14,7 +14,7 @@ function AppointmentScreen(props) {
         const findProjectForm = async () => {
             const dataProjectForm = await fetch(`http://192.168.0.38:3000/project-form?token=${props.dataUser.token}`)
             const body = await dataProjectForm.json()
-            console.log("body", body.user.formId)
+            //console.log("body", body.user.formId)
             props.saveForm(body.user.formId)
             setFormsList(body.user.formId)
 
@@ -32,28 +32,27 @@ function AppointmentScreen(props) {
 
         })
         const newForm = await deleteReq.json()
-        console.log("newForm", newForm)
+        //console.log("newForm", newForm)
         setFormsList(newForm.newForm.formId)
         props.deleteForm(_id)
     }
 
 
     var projectForm = props.formList.map((form, i) => {
-        console.log("image", form.projectImg)
+        //console.log("image", form.projectImg)
         return (
 
-            <Card containerStyle={styles.cards}>
+            <Card key={i} containerStyle={styles.cards}>
                 
                 
                     <View  >
                         <Card.Image source={{ uri: form.projectImg }} >
-                        <TouchableOpacity key={i}  onPress={() => deleteForm(form._id)}>
+                        <TouchableOpacity onPress={() => deleteForm(form._id)}>
                         <Text style={{ left: '89%',top: '5%'}}>
-                        <FontAwesome
-                                    name="trash"
+                        <MaterialCommunityIcons
+                                    name="trash-can"
                                     size={30}
-                                    color="#FFF"
-                                    
+                                    color="#F1EFE5"  
                                 />
                                 </Text>
                         </TouchableOpacity>

@@ -19,7 +19,7 @@ function SelectedTattooArtistScreen(props) {
       } else {
          colorHeart = {color: '#454543'}
       }
-      console.log('tattooLiked 2', tattooLiked);
+      //console.log('tattooLiked 2', tattooLiked);
 
     const selectedArtistInfos = props.selectedArtistInfos.map((info, i) => {
 
