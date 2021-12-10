@@ -58,7 +58,7 @@ function SignInScreen(props) {
                     title="Continuer sans s'inscrire"
                     buttonStyle={styles.greenButton}
                     type="solid"
-                //onPress={() => props.navigation.push('Formulaire')}
+                    onPress={() => props.navigation.pop()}
                 />
 
                 <TextInput

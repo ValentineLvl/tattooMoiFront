@@ -57,8 +57,11 @@ function ProjectFormScreen(props) {
     const [tempUrl, setTempUrl] = useState("");
     const [request, setRequest] = useState("");
 
+    //Etat du modal
+    const [visible, setVisible] = useState(false);
 
     let openImagePickerAsync = async () => {
+        setVisible(!visible)
         let permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
 
         if (permissionResult.granted === false) {
@@ -82,6 +85,8 @@ function ProjectFormScreen(props) {
         //   props.onSnap(response.url);
         setTempUrl(response.url);
         //console.log("response", response)
+        if (response) {
+        setVisible(false)}
     }
 
     async function handleClickAddForm() {
@@ -288,6 +293,10 @@ function ProjectFormScreen(props) {
                                 Télécharger une image </Text>
                         </TouchableOpacity>
                     </View>
+
+                    <Overlay isVisible={visible} overlayStyle={{backgroundColor:'#F1EFE5'}}>
+                        <Text>Chargement...</Text>
+                    </Overlay>
 
                     <View style={{ flex: 1, alignSelf: 'center', marginTop: 20 }} >
                         <Button

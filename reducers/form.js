@@ -16,7 +16,9 @@ export default function(formList = [], action) {
          formListCopy.splice(index, 1);
          return formListCopy;
   
-      } else {
+      } else if( action.type == "deconnectForms") {
+        return formList
+      }else {
         return formList;
       }  
      }

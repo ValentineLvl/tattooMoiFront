@@ -1,17 +1,58 @@
 import React, { useState } from 'react';
 
 import { connect } from 'react-redux';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import { StyleSheet, View, Image, Text, ScrollView, Linking, TouchableOpacity } from 'react-native';
-import { Button } from 'react-native-elements';
+import { StyleSheet, View, Image, Text, ScrollView, Linking, TouchableOpacity, TextInput } from 'react-native';
+import { Button, Overlay } from 'react-native-elements';
 import { AntDesign, Feather, MaterialIcons } from '@expo/vector-icons';
 
 import HeaderComponent from './HeaderComponent';
 
 
 function SelectedTattooArtistScreen(props) {
-
+        //etats du coeur favoris
     const [tattooLiked, setTattooLiked] = useState(false);
+        //etats des overlay
+    const [overlayVisibleDevis, setOverlayVisibleDevis] = useState(false);
+    const [overlayVisibleRDV, setOverlayVisibleRDV] = useState(false);
+        //etats de connexion
+    const [signInEmail, setSignInEmail] = useState('');
+    const [signInPassword, setSignInPassword] = useState('');
+
+    const [userExists, setUserExists] = useState(false);
+        //erreur envoyé par le back
+    const [listErrorsSignin, setErrorsSignin] = useState([]);
+
+    var handleSubmitSignin = async () => {
+
+        const data = await fetch('http://192.168.0.38:3000/sign-in', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: `userEmailFromFront=${signInEmail}&userPasswordFromFront=${signInPassword}`
+        })
+
+        const body = await data.json()
+
+        if (body.result == true) {
+            props.addDataUser(body.user)
+            //console.log('user connected', body)
+            AsyncStorage.setItem("dataUserToken", body.token);
+            setUserExists(true);
+
+            if (!userExists) {
+                return (props.navigation.navigate('Formulaire'))
+            }
+
+        } else {
+            setErrorsSignin(body.error)
+        }
+      }
+    
+      var tabErrorsSignin = listErrorsSignin.map((error,i) => {
+        return(<Text style={{textAlign:'center', color:'#BF5F5F'}}>{error}</Text>)
+      })
+
 
     var colorHeart;
     if(tattooLiked){
@@ -20,6 +61,14 @@ function SelectedTattooArtistScreen(props) {
          colorHeart = {color: '#454543'}
       }
       //console.log('tattooLiked 2', tattooLiked);
+
+      const handlePressDevis = () => {
+        setOverlayVisibleDevis(!overlayVisibleDevis);
+      };
+
+      const handlePressRDV = () => {
+        setOverlayVisibleRDV(!overlayVisibleRDV);
+      };
 
     const selectedArtistInfos = props.selectedArtistInfos.map((info, i) => {
 
@@ -139,19 +188,95 @@ function SelectedTattooArtistScreen(props) {
                         style={{ marginTop: 30 }} />
                 </View>
 
-                <View key={19} style={{ flexDirection: 'row', marginBottom: 40 }}>
-                    <Button key={20}
+                <View key={19} style={{ flexDirection: 'row', marginBottom: 40}}>
+                {(props.dataUser == null) ? <>
+                    <Button 
                         title="Demande devis"
                         type="solid"
                         buttonStyle={{ backgroundColor: '#C2A77D', marginTop: 40, marginRight: 30, paddingLeft: 10, paddingRight: 10, paddingTop: 10, paddingBottom: 10 }}
-                        onPress={() => props.navigation.navigate('Formulaire')}
+                        onPress={() => handlePressDevis()}
                     />
-                    <Button key={21}
+                     </>
+                    : <Button 
+                    title="Demande devis"
+                    type="solid"
+                    buttonStyle={{ backgroundColor: '#C2A77D', marginTop: 40, marginRight: 30, paddingLeft: 10, paddingRight: 10, paddingTop: 10, paddingBottom: 10 }}
+                    onPress={() => props.navigation.navigate('Formulaire')}
+                /> 
+                    }
+                    <Overlay isVisible={overlayVisibleDevis} overlayStyle={{backgroundColor:'#F1EFE5'}}>
+                        <Text style={styles.textOverlay}>Demander un devis</Text>
+                        <Button
+                        title="Continuer sans s'inscrire"
+                        buttonStyle={styles.greenButton}
+                        type="solid"
+                        onPress={() => {handlePressDevis(), props.navigation.navigate('Formulaire')}}
+                    />
+                        <TextInput
+                    style={styles.input}
+                    placeholder="Adresse email"
+                    onChangeText={setSignInEmail}
+                    value={signInEmail}
+                />
+                <TextInput
+                    style={styles.input}
+                    placeholder="Mot de passe"
+                    onChangeText={setSignInPassword}
+                    value={signInPassword}
+                    secureTextEntry
+                />
+                {tabErrorsSignin}
+                <Button
+                    title="Se connecter"
+                    buttonStyle={styles.greenButton}
+                    type="solid"
+                    onPress={() => handleSubmitSignin()}
+                />
+                    </Overlay>
+                    {(props.dataUser == null) ? 
+                    <Button 
                         title="Demande RDV"
                         type="solid"
                         buttonStyle={{ backgroundColor: '#C2A77D', marginTop: 40, paddingLeft: 10, paddingRight: 10, paddingTop: 10, paddingBottom: 10 }}
-                        onPress={() => props.navigation.navigate('Formulaire')}
+                        onPress={() => handlePressRDV()}
                     />
+                    
+                    : <Button 
+                    title="Demande RDV"
+                    type="solid"
+                    buttonStyle={{ backgroundColor: '#C2A77D', marginTop: 40, marginRight: 30, paddingLeft: 10, paddingRight: 10, paddingTop: 10, paddingBottom: 10 }}
+                    onPress={() => props.navigation.navigate('Formulaire')}
+                /> 
+                    }
+                    <Overlay isVisible={overlayVisibleRDV} overlayStyle={{backgroundColor:'#F1EFE5'}}>
+                    <Text style={styles.textOverlay}>Prendre un RDV</Text>
+                        <Button
+                        title="Continuer sans s'inscrire"
+                        buttonStyle={styles.greenButton}
+                        type="solid"
+                        onPress={() => {handlePressRDV(), props.navigation.navigate('Formulaire')}}
+                    />
+                        <TextInput
+                    style={styles.input}
+                    placeholder="Adresse email"
+                    onChangeText={setSignInEmail}
+                    value={signInEmail}
+                />
+                <TextInput
+                    style={styles.input}
+                    placeholder="Mot de passe"
+                    onChangeText={setSignInPassword}
+                    value={signInPassword}
+                    secureTextEntry
+                />
+                {tabErrorsSignin}
+                <Button
+                    title="Se connecter"
+                    buttonStyle={styles.greenButton}
+                    type="solid"
+                    onPress={() => handleSubmitSignin()}
+                />
+                    </Overlay>
                 </View>
             </ScrollView>
         )
@@ -198,6 +323,13 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-evenly'
     },
+    greenButton: {
+        backgroundColor: '#424D41',
+        borderRadius: 2,
+        alignSelf: 'center',
+        marginTop: 20,
+        marginBottom: 20,
+    },
     imgTatoueur: {
         marginTop: 10,
         width: 135,
@@ -208,11 +340,34 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         marginTop: 30,
         width: '90%',
-    }
+    },
+    input: {
+        height: 40,
+        margin: 12,
+        borderWidth: 1,
+        padding: 10,
+        width: 300,
+        borderRadius: 2,
+    },
+    textOverlay: {
+        fontSize:14,
+        fontWeight:'bold',
+        color:'#424D41',
+        textAlign: 'center',
+        marginTop:10,
+    },
 });
 
 function mapStateToProps(state) {
-    return { selectedArtistInfos: state.selectedArtistInfos }
+    return { selectedArtistInfos: state.selectedArtistInfos, dataUser: state.dataUser }
 }
 
-export default connect(mapStateToProps, null)(SelectedTattooArtistScreen);
+function mapDispatchToProps(dispatch) {
+    return {
+        addDataUser: function (dataUser) {
+            dispatch({ type: 'addDataUser', dataUser: dataUser })
+        }
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SelectedTattooArtistScreen);
