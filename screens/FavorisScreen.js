@@ -30,7 +30,7 @@ var handlePressDeleteFavorite = async () => {
     useEffect(() => {
         console.log("Favoris is loaded");
         const findFavorites = async () => {
-            const dataFavorites = await fetch(`http://192.168.0.38:3000/favorites?token=${props.dataUser.token}`)
+            const dataFavorites = await fetch(`http://192.168.1.101:3000/favorites?token=${props.dataUser.token}`)
             const body = await dataFavorites.json();
             //console.log("récupérer le favoris body", body.user.tattooId)
             //props.saveForm(body.user.formId)
