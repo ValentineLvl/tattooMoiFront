@@ -19,18 +19,23 @@ const [tattooLiked, setTattooLiked] = useState(false);
          colorHeart = {color: '#454543'}
       }
 
-var handlePressDeleteFavorite = async () => {
+var handlePressDeleteFavorite = async (_id) => {
     setTattooLiked(tattooLiked)
 
-    // const response = await fetch(`http://192.168.0.38:3000/favorites/${name}`, {
-    //   method: 'DELETE'
-    // })
+    const deleteReq = await fetch('http://192.168.1.15:3000/delete-favorites', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: `tattooIdFromFront=${_id}&token=${props.dataUser.token}`
+    })
+    const newFavorite = await deleteReq.json()
+    console.log("TATTOO", newFavorite.newFavorite.tattooId)
+     setFavoritesList(newFavorite.newFavorite.tattooId)
 }
 
     useEffect(() => {
         console.log("Favoris is loaded");
         const findFavorites = async () => {
-            const dataFavorites = await fetch(`http://192.168.1.101:3000/favorites?token=${props.dataUser.token}`)
+            const dataFavorites = await fetch(`http://192.168.1.15:3000/favorites?token=${props.dataUser.token}`)
             const body = await dataFavorites.json();
             //console.log("récupérer le favoris body", body.user.tattooId)
             //props.saveForm(body.user.formId)

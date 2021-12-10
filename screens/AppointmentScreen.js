@@ -13,7 +13,7 @@ function AppointmentScreen(props) {
         console.log("App is loaded");
         // console.log("formList", props.formList[0]._id)
         const findProjectForm = async () => {
-            const dataProjectForm = await fetch(`http://192.168.1.101:3000/project-form?token=${props.dataUser.token}`)
+            const dataProjectForm = await fetch(`http://192.168.1.15:3000/project-form?token=${props.dataUser.token}`)
             const body = await dataProjectForm.json()
             console.log("C BON????", body)
             //console.log("body", body.user.formId)
@@ -28,7 +28,7 @@ function AppointmentScreen(props) {
 
     var deleteForm = async (_id) => {
 
-        const deleteReq = await fetch('http://192.168.1.101:3000/project-form', {
+        const deleteReq = await fetch('http://192.168.1.15:3000/project-form', {
             method: 'DELETE',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: `formId=${_id}&token=${props.dataUser.token}`,
