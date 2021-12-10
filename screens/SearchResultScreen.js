@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { StyleSheet, View, Image, Text, ScrollView } from 'react-native';
 import { Card, Button } from 'react-native-elements';
-import { AntDesign } from '@expo/vector-icons';
+import { AntDesign, FontAwesome} from '@expo/vector-icons';
 import { TouchableOpacity } from 'react-native';
 import HeaderComponent from './HeaderComponent';
 
@@ -17,9 +17,9 @@ function SearchResultScreen(props) {
 
                 return (
                     <TouchableOpacity key={i} onPress={() => { props.selectedArtistInfos([info]), props.navigation.navigate('TattooArtist') }}>
-                        <Card key={2} containerStyle={styles.cards} pointerEvents="none">
+                        <Card key={2} containerStyle={styles.cards} >
                             <Card.Image source={{ uri: info.galleryPhoto[0] }}>
-                                <AntDesign
+                                {/* <AntDesign
                                     name="heart"
                                     size={30}
                                     color="#FFF"
@@ -28,7 +28,17 @@ function SearchResultScreen(props) {
                                         left: '87%',
                                         top: '5%'
                                     }}
+                                /> */}
+                                <TouchableOpacity key={i}  onPress={() => deleteForm(form._id)}>
+                        <Text style={{ left: '89%',top: '5%'}}>
+                        <FontAwesome
+                                    name="trash"
+                                    size={30}
+                                    color="#FFF"
+                                    
                                 />
+                                </Text>
+                                </TouchableOpacity>
                             </Card.Image>
                             <View style={styles.cardDesc}>
                                 <View>
@@ -52,7 +62,7 @@ function SearchResultScreen(props) {
                                 </View>
                             </View>
                         </Card>
-                    </TouchableOpacity>
+                      </TouchableOpacity> 
                 );
             })
         )

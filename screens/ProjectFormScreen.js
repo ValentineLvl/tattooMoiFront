@@ -75,7 +75,7 @@ function ProjectFormScreen(props) {
             type: 'image/jpeg',
             name: 'avatar.jpg',
           });
-          var rawResponse = await fetch('http://192.168.0.38:3000/upload', {
+          var rawResponse = await fetch('http://192.168.1.15:3000/upload', {
             method: 'POST',
             body: data
           });
@@ -122,14 +122,14 @@ function ProjectFormScreen(props) {
     async function handleClickAddForm () { { 
         console.log("activation de la fonction")
 
-    const data = await fetch('http://192.168.0.38:3000/project-form', {
+    const data = await fetch('http://192.168.1.15:3000/project-form', {
         method: 'POST',
         headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-        body: `token=${props.dataUser.token}&userProjectImgFromFront=${tempUrl}&userStyleFromFront=${styleValue}&userDisponibilityFromFront=${scheduleValue}&userGenderFromFront=${titleValue}&userLastNameFromFront=${lastName}&userFirstNameFromFront=${firstName}&userEmailFromFront=${email}&userPhoneNumberFromFront=${phone}&userAddressFromFront=${address}&userPostalCodeFromFront=${postalCode}&userCityFromFront=${city}&usertattooZoneFromFront=${tattooZone}&userWidthFromFront=${width}&userHeightFromFront=${height}&userDescriptionFromFront=${description}&userRequestFromFront=${request}`
+        body: `tattooIdFromFront=${props.saveTatoueurInfos[0][0]._id}&token=${props.dataUser.token}&userProjectImgFromFront=${tempUrl}&userStyleFromFront=${styleValue}&userDisponibilityFromFront=${scheduleValue}&userGenderFromFront=${titleValue}&userLastNameFromFront=${lastName}&userFirstNameFromFront=${firstName}&userEmailFromFront=${email}&userPhoneNumberFromFront=${phone}&userAddressFromFront=${address}&userPostalCodeFromFront=${postalCode}&userCityFromFront=${city}&usertattooZoneFromFront=${tattooZone}&userWidthFromFront=${width}&userHeightFromFront=${height}&userDescriptionFromFront=${description}&userRequestFromFront=${request}`
     })
 
     const body= await data.json()
-    //console.log("c la", body.projectFormSave)
+    console.log("c la", props.saveTatoueurInfos[0][0]._id)
     if (body.result == true){
         props.addForm(body.projectFormSave)
     }
@@ -417,7 +417,7 @@ smallInput: {
   
     
     function mapStateToProps(state){
-        return { dataUser:state.dataUser}
+        return { dataUser:state.dataUser, saveTatoueurInfos: state.saveTatoueurInfos }
       }
 
       function mapDispatchToProps(dispatch) {
