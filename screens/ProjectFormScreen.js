@@ -8,7 +8,6 @@ import HeaderComponent from './HeaderComponent';
 import {connect} from 'react-redux'
 
 
-
 const title = [
     { label: 'Mr.', value: 'Mr.' },
     { label: 'Mme.', value: 'Mme.' },
@@ -68,61 +67,27 @@ function ProjectFormScreen(props) {
             }
         
             let pickerResult = await ImagePicker.launchImageLibraryAsync();
-            console.log(pickerResult);
+            //console.log(pickerResult);
             var data = new FormData();
             data.append('avatar', {
             uri: pickerResult.uri,
             type: 'image/jpeg',
             name: 'avatar.jpg',
           });
-          var rawResponse = await fetch('http://192.168.1.15:3000/upload', {
+          var rawResponse = await fetch('http://192.168.0.38:3000/upload', {
             method: 'POST',
             body: data
           });
           var response = await rawResponse.json();
         //   props.onSnap(response.url);
           setTempUrl(response.url);
-          console.log("response", response)
+          //console.log("response", response)
             }
-
-
-        // async function handleClickAddForm () { {
-            
-        //     console.log("activation de la fonction")
-        //  const data = await fetch('http://192.168.1.15:3000/project-form', {
-        //     method: 'POST',
-        //     headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-        //     body: `token=${props.dataUser.token}&userProjectImgFromFront=${tempUrl}&userStyleFromFront=${styleValue}&userDisponibilityFromFront=${scheduleValue}&userGenderFromFront=${titleValue}&userLastNameFromFront=${lastName}&userFirstNameFromFront=${firstName}&userEmailFromFront=${email}&userPhoneNumberFromFront=${phone}&userAddressFromFront=${address}&userPostalCodeFromFront=${postalCode}&userCityFromFront=${city}&usertattooZoneFromFront=${tattooZone}&userWidthFromFront=${width}&userHeightFromFront=${height}&userDescriptionFromFront=${description}`
-        
-        // })
-        // const body= await data.json()
-        // console.log("c la", body.projectFormSave)
-        // if (body.result == true){
-        //     props.addForm(body.projectFormSave)
-        // }
-    
-    //     let pickerResult = await ImagePicker.launchImageLibraryAsync();
-    //    //console.log(pickerResult);
-    //     var data = new FormData();
-    //       data.append('avatar', {
-    //       uri: pickerResult.uri,
-    //       type: 'image/jpeg',
-    //       name: 'avatar.jpg',
-    //     });
-    //   var rawResponse = await fetch('http://192.168.0.38:3000/upload', {
-    //     method: 'POST',
-    //     body: data
-    //   });
-    //   var response = await rawResponse.json();
-    // //   props.onSnap(response.url);
-    //   setTempUrl(response.url);
-    //   //console.log("response", response)
-    //     }
       
     async function handleClickAddForm () { { 
         console.log("activation de la fonction")
 
-    const data = await fetch('http://192.168.1.15:3000/project-form', {
+    const data = await fetch('http://192.168.0.38:3000/project-form', {
         method: 'POST',
         headers: {'Content-Type': 'application/x-www-form-urlencoded'},
         body: `tattooIdFromFront=${props.saveTatoueurInfos[0][0]._id}&token=${props.dataUser.token}&userProjectImgFromFront=${tempUrl}&userStyleFromFront=${styleValue}&userDisponibilityFromFront=${scheduleValue}&userGenderFromFront=${titleValue}&userLastNameFromFront=${lastName}&userFirstNameFromFront=${firstName}&userEmailFromFront=${email}&userPhoneNumberFromFront=${phone}&userAddressFromFront=${address}&userPostalCodeFromFront=${postalCode}&userCityFromFront=${city}&usertattooZoneFromFront=${tattooZone}&userWidthFromFront=${width}&userHeightFromFront=${height}&userDescriptionFromFront=${description}&userRequestFromFront=${request}`
@@ -132,27 +97,17 @@ function ProjectFormScreen(props) {
     console.log("c la", props.saveTatoueurInfos[0][0]._id)
     if (body.result == true){
         props.addForm(body.projectFormSave)
+        props.navigation.navigate('Mes demandes')
     }
   setTempUrl("")
     }};
 
-    // var clientInfo = () => {
-    //   if (props.dataUser == null) {
-    //   return (  
-
-    //   <View style={styles.form} >
-      
-        
-      
-    //        </View>
-    //         )
-    //            } }
 
     return (
         <View style={styles.container}>
         <HeaderComponent navigation={props.navigation}/>
-        <ScrollView>
-        <View style={styles.form} >
+        <ScrollView style={styles.form}>
+        <SafeAreaView >
         {(props.dataUser == null)? <>
         <View style={styles.smallForm} >
         <Dropdown
@@ -161,7 +116,7 @@ function ProjectFormScreen(props) {
           selectedTextStyle={styles.selectedTextStyle}
           inputSearchStyle={styles.inputSearchStyle}
           data={title}
-          containerStyle={{backgroundColor:'#F1EFE5', marginTop:-42}}
+          containerStyle={{backgroundColor:'#F1EFE5', marginTop:-30}}
           activeColor={'#C2A77D'}
           maxHeight={100}
           labelField="label"
@@ -246,7 +201,7 @@ function ProjectFormScreen(props) {
           selectedTextStyle={styles.selectedTextStyle}
           inputSearchStyle={styles.inputSearchStyle}
           data={style}
-          containerStyle={{backgroundColor:'#F1EFE5', marginTop:-42}}
+          containerStyle={{backgroundColor:'#F1EFE5', marginTop:-30}}
           activeColor={'#C2A77D'}
           search
           maxHeight={200}
@@ -294,7 +249,7 @@ function ProjectFormScreen(props) {
           selectedTextStyle={styles.selectedTextStyle}
           inputSearchStyle={styles.inputSearchStyle}
           data={schedule}
-          containerStyle={{backgroundColor:'#F1EFE5', marginTop:10}}
+          containerStyle={{backgroundColor:'#F1EFE5', marginBottom:40,  marginTop:-30}}
           activeColor={'#C2A77D'}
           maxHeight={200}
           labelField="label"
@@ -312,11 +267,13 @@ function ProjectFormScreen(props) {
       
      
       <TextInput
-        style={{ flex:1,height: 80,margin: 5,borderWidth: 1, padding: 10,borderRadius:2}}
+        style={styles.descriptionInput}
         onChangeText={setDescription}
         value={description}
         placeholder="Description du projet"
-        maxLength={60}
+        multiline
+        numberOfLines={5}
+        maxLength={300}
       
       />
       <View style={{ flex:1, flexdirection:"row",alignItems: 'center', justifyContent: 'center', marginTop: 10}}>
@@ -329,7 +286,7 @@ function ProjectFormScreen(props) {
       </TouchableOpacity>
        </View>
        
-    <View style={{ flex:1, alignSelf: 'center', marginTop: 30}} >
+    <View style={{ flex:1, alignSelf: 'center', marginTop: 20}} >
             <Button 
             title="Valider"
             type="solid"
@@ -339,80 +296,90 @@ function ProjectFormScreen(props) {
             onPress={() => handleClickAddForm()}
      />
      </View>
-     </View>
-        </ScrollView>
+     </SafeAreaView>
+     </ScrollView>
+ 
         </View>
     )
     
 }
 
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-      flexDirection : 'column',
-      paddingTop : 50,
-      backgroundColor: '#F1EFE5',
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-    form: {
-      flex:3,
-      marginTop: 20,
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    flexDirection : 'column',
+    paddingTop : 40,
+    backgroundColor: '#F1EFE5',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  form: {
+    flex:3,
+    marginTop: 20,
   },
   smallForm: {
-    flexDirection : 'row',  
+    flexDirection : 'row', 
     alignItems : 'center',
     justifyContent: 'flex-start',
-},
-smallInput: {
-  height: 40,
-  margin: 5,
-  borderWidth: 1,
-  padding: 10,
-  width: 145,
-  borderRadius: 2,
-},
-    input: {
-      height: 40,
+  },
+  smallInput: {
+    height: 40,
+    margin: 5,
+    borderWidth: 1,
+    padding: 10,
+    width: 145,
+    borderRadius: 2,
+  },
+  input: {
+    height: 40,
+    margin: 5,
+    borderWidth: 1,
+    padding: 10,
+    width: 300,
+    borderRadius: 2,
+    },
+    descriptionInput: {
+      textAlignVertical:'top',
+      height: 90,
       margin: 5,
-      borderWidth: 1,
+      borderWidth: 1, 
       padding: 10,
-      width: 300,
-      borderRadius: 2,
-      },
-    dropdown: {
-      height: 40,
-      margin: 5,
-      borderWidth: 1,
-      padding: 10,
-      width: 145,
-      borderRadius: 2,
-      paddingHorizontal: 8,
-        backgroundColor: '#F1EFE5',
-      },
-      label: {
-        position: 'absolute',
-        left: 22,
-        top: 8,
-        zIndex: 999,
-        paddingHorizontal: 8,
-        fontSize: 14,
-      },
-      placeholderStyle: {
-        fontSize: 16,
-        
-      },
-      selectedTextStyle: {
-        fontSize: 16,
-        
-      },
-      inputSearchStyle: {
-        height: 40,
-        fontSize: 16,
-        
-      },
-    });
+      borderRadius:2,
+      width: 300
+    },
+  dropdown: {
+    height: 40,
+    margin: 5,
+    borderWidth: 1,
+    padding: 10,
+    width: 145,
+    borderRadius: 2,
+    paddingHorizontal: 8,
+    backgroundColor: '#F1EFE5',
+    },
+  label: {
+    position: 'absolute',
+    left: 22,
+    top: 8,
+    zIndex: 999,
+    paddingHorizontal: 8,
+    fontSize: 14,
+  },
+  placeholderStyle: {
+    fontSize: 16,
+    
+  },
+  selectedTextStyle: {
+    fontSize: 16,
+    
+  },
+  inputSearchStyle: {
+    height: 40,
+    fontSize: 16,
+    
+  },
+  });
     
   
     
@@ -420,16 +387,15 @@ smallInput: {
         return { dataUser:state.dataUser, saveTatoueurInfos: state.saveTatoueurInfos }
       }
 
-      function mapDispatchToProps(dispatch) {
-        return {
-          addForm: function(dataForm) {
-              dispatch( {type: 'addForm',  dataForm: dataForm } )
-          }
-        }
-       }
+function mapDispatchToProps(dispatch) {
+  return {
+    addForm: function(dataForm) {
+        dispatch( {type: 'addForm',  dataForm: dataForm } )
+    }
+  }
+}
 
-      export default connect(
-        mapStateToProps,
-       mapDispatchToProps,
-      )(ProjectFormScreen);
-      
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(ProjectFormScreen);

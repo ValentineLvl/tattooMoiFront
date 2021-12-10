@@ -12,6 +12,7 @@ import SignInScreen from './screens/SignInScreen';
 import SignUpScreen from './screens/SignUpScreen';
 import ProjectFormScreen from './screens/ProjectFormScreen';
 import ClientInfoScreen from './screens/ClientInfoScreen';
+import FavorisScreen from './screens/FavorisScreen';
 
 //Screens tatoueur
 import SignInTatoueurScreen from './screensTatoueur/SignInTatoueurScreen';
@@ -46,6 +47,7 @@ function SearchStack() {
             <Stack.Screen name="TattooArtist" component={SelectedTattooArtistScreen} />
             <Stack.Screen name="Formulaire" component={ProjectFormScreen} />
             <Stack.Screen name="Mes infos" component={ClientInfoScreen} />
+            <Stack.Screen name="Mes favoris" component={FavorisScreen} />
             <Stack.Screen name="Connexion Tatoueur" component={SignInTatoueurScreen} />
         </Stack.Navigator>
     );
@@ -61,7 +63,7 @@ export default function App() {
                             let iconName;
                             if (route.name === 'Recherche') {
                                 iconName = 'search';
-                            } else if (route.name === 'Mes RDV') {
+                            } else if (route.name === 'Mes demandes') {
                                 iconName = 'calendar-o';
                             } else if (route.name === 'Mon compte') {
                                 iconName = 'user';
@@ -76,7 +78,7 @@ export default function App() {
                     )}
                 >
                     <Tab.Screen name="Recherche" component={SearchStack} />
-                    <Tab.Screen name="Mes RDV" component={AppointmentScreen} />
+                    <Tab.Screen name="Mes demandes" component={AppointmentScreen} />
                     <Tab.Screen name="Mon compte" component={AccountScreen} />
                 </Tab.Navigator>
             </NavigationContainer>

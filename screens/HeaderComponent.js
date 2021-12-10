@@ -5,7 +5,7 @@ import {connect} from 'react-redux';
 
 
 function HeaderComponent(props) {
-   console.log('(store de props data user)', props.dataUser); 
+   //console.log('(store de props data user)', props.dataUser); 
   if (props.dataUser !== null) {
         return (
             <View style = {styles.header}>
@@ -24,7 +24,7 @@ return (
             style={{ width: 200, height: 80, marginRight: 70 }} />
             <Button
             title="Connexion"
-            titleStyle={{color:'#424D41'}}
+            titleStyle={{fontSize:14, color:'#424D41'}}
             type="clear"
             onPress={() => props.navigation.navigate('Connexion')}
             />
@@ -40,6 +40,7 @@ const styles = StyleSheet.create({
     flexDirection : 'row',
     alignItems : 'center',
   justifyContent :'space-evenly',
+  //paddingBottom: 20
 },
 titre :{
   fontSize:14,

@@ -65,7 +65,7 @@ function SignUpScreen(props) {
 
 var handleSubmitSignup = async () => {
     
-  const data = await fetch('http://192.168.1.15:3000/sign-up', {
+  const data = await fetch('http://192.168.0.38:3000/sign-up', {
     method: 'POST',
     headers: {'Content-Type': 'application/x-www-form-urlencoded'},
     body: `userGenderFromFront=${value}&userLastNameFromFront=${signUpLastName}&userFirstNameFromFront=${signUpFirstName}&userEmailFromFront=${signUpEmail}&userPhoneNumberFromFront=${signUpPhoneNumber}&userAddressFromFront=${signUpAddress}&userPostalCodeFromFront=${signUpPostalCode}&userCityFromFront=${signUpCity}&userPasswordFromFront=${signUpPassword}&userPasswordConfirmationFromFront=${signUpPasswordConfirmation}`})
@@ -88,7 +88,7 @@ var handleSubmitSignup = async () => {
 }
 
   var tabErrorsSignup = listErrorsSignup.map((error,i) => {
-    return(<Text style={{textAlign:'center', color:'#b33939'}}>{error}</Text>)
+    return(<Text style={{textAlign:'center', color:'#BF5F5F'}}>{error}</Text>)
   })
 
     return (

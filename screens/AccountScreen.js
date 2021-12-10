@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, SafeAreaView } from 'react-native';
 import { Button } from 'react-native-elements';
-import { Ionicons, FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import HeaderComponent from './HeaderComponent';
 import { connect } from 'react-redux';
@@ -13,18 +13,18 @@ function AccountScreen(props) {
         props.disconnectUser(null);
         props.navigation.navigate('Search');
         AsyncStorage.removeItem("dataUserToken");
-    }
+    } 
 
     if (props.dataUser !== null) {
         return (
             <View style={styles.container}>
                 <HeaderComponent navigation={props.navigation} />
 
-                <SafeAreaView style={{ margin: 40 }}>
-
+                <SafeAreaView style={styles.safeArea}>
+                   
                     <Button
-                        titleStyle={{ color: '#424D41' }}
-                        style={{ borderColor: '#424D41' }}
+                        titleStyle={styles.titleStyle}
+                        buttonStyle={styles.buttonStyle}
                         type="outline"
                         icon={
                             <MaterialCommunityIcons
@@ -33,11 +33,12 @@ function AccountScreen(props) {
                                 color="#424D41"
                             />
                         }
-                        title="Mes rendez-vous / devis"
-                        onPress={() => props.navigation.navigate('Mes RDV')}
+                        title="  Mes rendez-vous / devis"
+                        onPress={() => props.navigation.navigate('Mes demandes')}
                     />
                     <Button
-                        titleStyle={{ color: '#424D41' }}
+                        titleStyle={styles.titleStyle}
+                        buttonStyle={styles.buttonStyle}
                         type="outline"
                         icon={
                             <MaterialCommunityIcons
@@ -46,11 +47,12 @@ function AccountScreen(props) {
                                 color="#424D41"
                             />
                         }
-                        title="Mes favoris"
-
+                        title="  Mes favoris"
+                        onPress={() => props.navigation.navigate('Mes favoris')}
                     />
                     <Button
-                        titleStyle={{ color: '#424D41' }}
+                        titleStyle={styles.titleStyle}
+                        buttonStyle={styles.buttonStyle}
                         type="outline"
                         icon={
                             <MaterialCommunityIcons
@@ -59,23 +61,30 @@ function AccountScreen(props) {
                                 color="#424D41"
                             />
                         }
-                        title="Mes informations personnelles"
+                        title="  Mes informations personnelles"
+                        onPress={() => props.navigation.navigate('Mes infos')}
 
                     />
+                
+                </SafeAreaView>
+                <View style={styles.deconnexion}>
                     <Button
                         title="Déconnexion"
-                        titleStyle={{ color: '#424D41' }}
+                        titleStyle={{ color: '#424D41' , fontSize:14}}
                         type="clear"
                         onPress={() => handleLogOut()}
                     />
-
-                </SafeAreaView>
+                </View>
+     
             </View>
         )
     } else {
         return (
             <View style={styles.container}>
                 <HeaderComponent navigation={props.navigation} />
+                <View style={{flex:3, justifyContent:'center', padding:40}}>
+                <Text style={{color:'#BF5F5F', textAlign:'center', fontSize:14}}>Veuillez vous inscrire ou vous connecter pour accéder à cette page</Text>
+                </View>
             </View>
         )
     }
@@ -86,25 +95,31 @@ const styles = StyleSheet.create({
         flex: 1,
         paddingTop: 50,
         backgroundColor: '#F1EFE5',
-        paddingTop: 50,
         //   alignItems: 'center',
         //   justifyContent: 'center',
     },
-    main: {
-        flex: 3,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-evenly',
+    safeArea:{
+        marginLeft:30,
+        marginRight:30,
+        marginBottom:30,
+        marginTop:90
     },
-    input: {
-
-        flex: 1,
-        height: 40,
-        margin: 5,
-        borderWidth: 1,
-        padding: 10,
-        borderRadius: 2,
+    titleStyle: {
+        color: '#424D41',
+        fontSize:14
     },
+    buttonStyle: {
+        borderColor: '#424D41', 
+        marginBottom:20,
+        justifyContent: 'flex-start',
+        borderWidth: 1
+    },
+    deconnexion: {
+        flex:4,
+        justifyContent: 'flex-end',
+        paddingBottom:20
+    },
+    
 });
 
 function mapStateToProps(state) {
