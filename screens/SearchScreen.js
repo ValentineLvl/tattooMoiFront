@@ -6,41 +6,26 @@ import { connect } from 'react-redux';
 
 import HeaderComponent from './HeaderComponent';
 
-import { StyleSheet, View, Image, TextInput, Text, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Image, TextInput, Text, TouchableOpacity, Alert } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
 
-
-
-
-//     return (
-//         <View style={styles.container}>
-//             <HeaderComponent navigation={props.navigation}/>
-
-// <View style = {styles.main}>
-//             <Button 
-//             title="Rechercher"
-//             type="solid"
-//             buttonStyle = {{backgroundColor : '#424D41'}}
-//             onPress={() => props.navigation.navigate('Resultat')}
-//      />
-//      </View>
-{/* <Button
-            title="Vous êtes pro ? Cliquez ici"
-            titleStyle={{color:'#424D41'}}
-            type="clear"
-            onPress={() => props.navigation.navigate('Connexion Tatoueur')} */}
-
-
 const data = [
-    { label: 'Noir', value: 'noir' },
-    { label: 'Couleur', value: 'couleur' },
+    { label: 'Noir', value: 'black&grey' },
+    { label: 'Couleur', value: 'color' },
 ];
 
 const tattooStyles = ['old school', 'new school', 'realism', 'japanese', 'tribal', 'fineline', 'dotwork', 'geometric', 'lettering'];
 
 function SearchScreen(props) {
 
-    const [userToken, setUserToken] = useState(false)
+    const [userToken, setUserToken] = useState(false);
+    const [dropdownValue, setDropdownValue] = useState(null);
+    const [selected, setSelected] = useState([]);
+    const [tattooshopName, setTattooshopName] = useState('');
+
+    const [styleArray, setStyleArray] = useState([]);
+
+    console.log(tattooshopName);
 
     //A l'initialisation de searchScreen, si le user était connecté on remet ses infos dans le store avec une route get
     useEffect(() => {
@@ -61,9 +46,6 @@ function SearchScreen(props) {
 
     }, []);
 
-    const [dropdownValue, setDropdownValue] = useState(null);
-
-    const [selected, setSelected] = useState([]);
 
     const handlePress = async (tattooStyle) => {
         selected.includes(tattooStyle)
@@ -74,13 +56,51 @@ function SearchScreen(props) {
 
         let rawResponse = await fetch(`http://192.168.0.38:3000/search-tattoo?styleList=${tattooStyle}`)
         let response = await rawResponse.json()
-
-        //console.log(response.result)
-
-        props.saveTatoueurInfos(response.searchResult)
+        setStyleArray(styleArray => [...styleArray, response.searchResult])
     }
 
-    const tmp = tattooStyles.map((tattooStyle, i) => (
+    useEffect(() => {
+        console.log('STYLEARRAY', styleArray)  // Permet just ed'afficher le tableau en temps réel
+    }, [styleArray])
+
+    const onSearchInput = async (name) => {
+
+        let rawResponse = await fetch(`http://192.168.1.101:3000/search-tattoo?firstName=${name}`)
+        let response = await rawResponse.json()
+
+        let nameResult = [response.searchTatoueur]
+
+        nameResult.map((tatoueur) => {
+            console.log('TATOUEUR', tatoueur);
+            if (tatoueur !== null) {
+                setStyleArray(styleArray => [...styleArray, tatoueur])
+                props.saveTatoueurInfos([nameResult])
+            }
+            // else {
+            //     Alert.alert(
+            //         "Sorry...",
+            //         "Tatoueur non trouvé",
+            //         [
+            //             { text: "OK", onPress: () => props.navigation.goBack() }
+            //         ]
+            //     );
+            // }
+        })
+
+    }
+
+    const onSearchStylePress = () => {
+        props.navigation.navigate('Resultat')
+        props.saveTatoueurInfos(styleArray)
+
+    }
+
+    const onSearchNamePress = () => {
+        onSearchInput(tattooshopName)
+
+    }
+
+    const tattooStyleBtn = tattooStyles.map((tattooStyle, i) => (
 
         <TouchableOpacity
             key={i}
@@ -95,21 +115,11 @@ function SearchScreen(props) {
 
     return (
         <View style={styles.container}>
-            {/* <View style={styles.header}>
-                <Image
-                    source={require('../assets/tattoo-moi_1.png')}
-                    style={{ width: 200, height: 80, marginRight: 70 }} />
-                <Button
-                    title="Connexion"
-                    buttonStyle={{ backgroundColor: '#F1EFE5', paddingRight: 5, paddingLeft: 5, marginRight: 10, marginTop: 20 }}
-                    titleStyle={{ color: '#424D41', marginBottom: 10, fontSize: 15 }}
-                    type="solid"
-                />
-            </View> */}
-
             <HeaderComponent navigation={props.navigation} />
 
             <TextInput
+                onChangeText={(value) => setTattooshopName(value)}
+                value={tattooshopName}
                 style={styles.input}
                 placeholder="Tatoueur, TattooShop"
             />
@@ -120,7 +130,7 @@ function SearchScreen(props) {
 
             <View style={styles.btnGroup}>
 
-                {tmp}
+                {tattooStyleBtn}
 
             </View>
 
@@ -146,7 +156,7 @@ function SearchScreen(props) {
                     title="Rechercher"
                     type="solid"
                     buttonStyle={{ backgroundColor: '#424D41', paddingLeft: 30, paddingRight: 30, paddingTop: 10, paddingBottom: 10 }}
-                    onPress={() => props.navigation.navigate('Resultat')}
+                    onPress={() => { onSearchStylePress(), onSearchNamePress() }}
                 />
             </View>
             <Button
@@ -187,6 +197,7 @@ const styles = StyleSheet.create({
         height: 40,
         width: '80%',
         margin: 12,
+        marginTop: 30,
         borderWidth: 0.5,
         padding: 10,
     },
@@ -264,6 +275,6 @@ const mapDispatchToProps = (dispatch) => {
     return {
         saveTatoueurInfos: (infos) => dispatch({ type: 'saveTatoueurInfos', infos }),
         addDataUser: (dataUser) => dispatch({ type: 'addDataUser', dataUser: dataUser })
-        }
     }
+}
 export default connect(mapStateToProps, mapDispatchToProps)(SearchScreen)

@@ -25,16 +25,13 @@ function SelectedTattooArtistScreen(props) {
 
         return (
 
-            <ScrollView contentContainerStyle={{ alignItems: 'center' }}>
-                
-                <View style={{ alignItems: 'center' }}>
-                
-                    <Image
+            <ScrollView key={info._id} contentContainerStyle={{ alignItems: 'center' }}>
+                <View key={1} style={{ alignItems: 'center' }}>
+                    <Image key={2}
                         source={{ uri: info.profilePicture }}
                         style={styles.imgTatoueur}
                     />
-                    
-                    <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#454543', marginTop: 10 }}>{info.firstName}</Text>
+                    <Text key={3} style={{ fontSize: 20, fontWeight: 'bold', color: '#454543', marginTop: 10 }}>{info.firstName}</Text>
                     {info.tattooShopAddress.map((address) => {
                         return (
                             <Text style={{ fontSize: 14, marginBottom: 10, fontWeight: 'bold', color: '#454543' }}>{address.tattooShop}</Text>
@@ -52,17 +49,17 @@ function SelectedTattooArtistScreen(props) {
                     <View style={{ alignItems: 'center' }}>
                         {info.tattooShopAddress.map((address) => {
                             return (
-                                <Text style={{ fontSize: 18, color: '#454543' }}>{address.address} {address.postalCode} {address.city}</Text>
+                                <Text key={30} style={{ fontSize: 18, color: '#454543' }}>{address.address} {address.postalCode} {address.city}</Text>
                             )
                         })}
-                        <Text style={{ fontSize: 18, paddingTop: 5, color: '#454543' }}>Temps d'attente: <Text style={{ fontWeight: 'bold' }}>{info.schedule}</Text></Text>
+                        <Text key={5} style={{ fontSize: 18, paddingTop: 5, color: '#454543' }}>Temps d'attente: <Text style={{ fontWeight: 'bold' }}>{info.schedule}</Text></Text>
                     </View>
                 </View>
 
-                <View style={styles.btnGroup}>
+                <View key={6} style={styles.btnGroup}>
                     {info.styleList.map((style) => {
                         return (
-                            <Button
+                            <Button key={i}
                                 title={`#${style}`}
                                 type="solid"
                                 buttonStyle={styles.button}
@@ -72,7 +69,7 @@ function SelectedTattooArtistScreen(props) {
                     })}
                 </View>
 
-                <View style={styles.ig}>
+                <View key={7} style={styles.ig}>
                     <AntDesign name="instagram" size={30} color="#454543" style={{ marginRight: 5 }} />
                     <Text style={{
                         fontSize: 20,
@@ -82,7 +79,7 @@ function SelectedTattooArtistScreen(props) {
                         color: '#454543'
                     }}>Instagram</Text>
                 </View>
-                <View style={{ width: '90%', margin: 10, flexDirection: 'row', justifyContent: 'space-evenly', flexWrap: 'wrap' }}>
+                <View key={8} style={{ width: '90%', margin: 10, flexDirection: 'row', justifyContent: 'space-evenly', flexWrap: 'wrap' }}>
                     {info.galleryPhoto.map((photo) => {
                         return (
                             <Image
@@ -93,7 +90,7 @@ function SelectedTattooArtistScreen(props) {
                     })}
                 </View>
 
-                <Button
+                <Button key={9}
                     title="En voir plus"
                     onPress={() => Linking.openURL(`instagram://user?username=${info.instagram}`)}
                     buttonStyle={{ backgroundColor: '#F1EFE5', padding: 2, borderBottomWidth: 1, borderBottomColor: '#454543', marginBottom: 15 }}
@@ -101,7 +98,7 @@ function SelectedTattooArtistScreen(props) {
                     type="solid"
                 />
 
-                <View style={{ width: '90%', flexDirection: 'row', justifyContent: 'flex-start', marginTop: 20 }}>
+                <View key={10} style={{ width: '90%', flexDirection: 'row', justifyContent: 'flex-start', marginTop: 20 }}>
                     <AntDesign
                         onPress={() => Linking.openURL(`http://${info.website}`)}
                         name="earth" size={20} color="#454543" style={{ marginRight: 10 }} />
@@ -110,31 +107,31 @@ function SelectedTattooArtistScreen(props) {
                         style={{ marginTop: 3, fontSize: 16 }}>{info.website}</Text>
                 </View>
 
-                <View style={{ width: '90%', flexDirection: 'row', justifyContent: 'flex-start', marginTop: 10 }}>
-                    <Feather
+                <View key={11} style={{ width: '90%', flexDirection: 'row', justifyContent: 'flex-start', marginTop: 10 }}>
+                    <Feather key={111}
                         onPress={() => Linking.openURL(`tel:${info.phoneNumber}`)}
                         name="phone" size={20} color="#454543" style={{ marginRight: 10 }} />
-                    <Text
+                    <Text key={12}
                         onPress={() => Linking.openURL(`tel:${info.phoneNumber}`)}
                         style={{ marginTop: 3, fontSize: 16 }}>{info.phoneNumber}</Text>
                 </View>
 
-                <View style={{ width: '90%', flexDirection: 'row', justifyContent: 'flex-start', marginTop: 10 }}>
-                    <MaterialIcons
+                <View key={13} style={{ width: '90%', flexDirection: 'row', justifyContent: 'flex-start', marginTop: 10 }}>
+                    <MaterialIcons key={14}
                         onPress={() => Linking.openURL(`mailto:${info.email}`)}
                         name="alternate-email" size={20} color="#454543" style={{ marginRight: 10 }} />
-                    <Text
+                    <Text key={15}
                         onPress={() => Linking.openURL(`mailto:${info.email}`)}
                         style={{ marginTop: 3, fontSize: 16 }}>{info.email}</Text>
                 </View>
-                <View style={{ flexDirection: 'row' }}>
-                    <AntDesign
+                <View key={16} style={{ flexDirection: 'row' }}>
+                    <AntDesign key={17}
                         name="facebook-square"
                         onPress={() => Linking.openURL('fb://')}
                         size={32}
                         color="#454543"
                         style={{ marginTop: 30, marginRight: 10 }} />
-                    <AntDesign
+                    <AntDesign key={18}
                         name="instagram"
                         onPress={() => Linking.openURL(`instagram://user?username=${info.instagram}`)}
                         size={32}
@@ -142,14 +139,14 @@ function SelectedTattooArtistScreen(props) {
                         style={{ marginTop: 30 }} />
                 </View>
 
-                <View style={{ flexDirection: 'row', marginBottom: 40 }}>
-                    <Button
+                <View key={19} style={{ flexDirection: 'row', marginBottom: 40 }}>
+                    <Button key={20}
                         title="Demande devis"
                         type="solid"
                         buttonStyle={{ backgroundColor: '#C2A77D', marginTop: 40, marginRight: 30, paddingLeft: 10, paddingRight: 10, paddingTop: 10, paddingBottom: 10 }}
                         onPress={() => props.navigation.navigate('Formulaire')}
                     />
-                    <Button
+                    <Button key={21}
                         title="Demande RDV"
                         type="solid"
                         buttonStyle={{ backgroundColor: '#C2A77D', marginTop: 40, paddingLeft: 10, paddingRight: 10, paddingTop: 10, paddingBottom: 10 }}
