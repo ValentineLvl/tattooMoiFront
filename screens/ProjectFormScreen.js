@@ -57,7 +57,7 @@ function ProjectFormScreen(props) {
     const [tempUrl, setTempUrl] = useState("");
     const [request, setRequest] = useState("");
 
-    //Etat du modal
+    //Etat de l'overlay
     const [visible, setVisible] = useState(false);
 
     let openImagePickerAsync = async () => {

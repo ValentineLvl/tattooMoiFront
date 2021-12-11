@@ -66,7 +66,7 @@ function AccountScreen(props) {
                         onPress={() => props.navigation.navigate('Mes infos')}
 
                     />
-                
+               
                 </SafeAreaView>
                 <View style={styles.deconnexion}>
                     <Button

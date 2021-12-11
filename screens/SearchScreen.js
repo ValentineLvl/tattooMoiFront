@@ -25,8 +25,6 @@ function SearchScreen(props) {
 
     const [styleArray, setStyleArray] = useState([]);
 
-    console.log(tattooshopName);
-
     //A l'initialisation de searchScreen, si le user était connecté on remet ses infos dans le store avec une route get
     useEffect(() => {
 

@@ -17,22 +17,22 @@ function SignInTatoueurScreen(props) {
 
     var handleSubmitSignin = async () => {
  
-        const data = await fetch('http://192.168.0.38:3000/sign-in', {
+        const data = await fetch('http://192.168.0.38:3000/sign-in-tattoo', {
           method: 'POST',
           headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-          body: `userEmailFromFront=${signInEmail}&userPasswordFromFront=${signInPassword}`
+          body: `emailFromFront=${signInEmail}&passwordFromFront=${signInPassword}`
         })
     
         const body = await data.json()
     
         if(body.result == true){
-          props.addDataUser(body.user)
-          //console.log('user connected', body)
-          AsyncStorage.setItem("dataUserToken", body.token);
+          props.addDataTattoo(body.user)
+          console.log('user connected', body.user)
+          AsyncStorage.setItem("dataTattooToken", body.token);
         setUserExists(true);
           
           if(!userExists){
-            return (props.navigation.pop())
+            return (props.navigation.navigate('TabBottomTattoo',{screen : 'Calendrier'}))
           }
 
         }  else {
@@ -125,13 +125,13 @@ const styles = StyleSheet.create({
       },
     });
 
-function mapDispatchToProps(dispatch){
-    return {
-        addDataUser: function(dataUser){
-        dispatch({type: 'addDataUser', dataUser: dataUser})
-        }
-    }
-    }
+    function mapDispatchToProps(dispatch){
+      return {
+        addDataTattoo: function(dataTattoo){
+          dispatch({type: 'addDataTattoo', dataTattoo: dataTattoo})
+          },
+      }
+      }
     
     export default connect(
     null,
