@@ -8,18 +8,21 @@ import { FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons';
 function AppointmentScreen(props) {
 
     const [formsList, setFormsList] = useState([]);
+    const [tattooInfo, setTattooInfo] = useState([[]]);
 
     useEffect(() => {
         console.log("App is loaded");
+        // ASYNC STORAGE
         // console.log("formList", props.formList[0]._id)
         const findProjectForm = async () => {
             const dataProjectForm = await fetch(`http://192.168.1.15:3000/project-form?token=${props.dataUser.token}`)
             const body = await dataProjectForm.json()
-            console.log("C BON????", body)
+            console.log("C BON????", body.project)
             //console.log("body", body.user.formId)
             props.saveForm(body.user.formId)
             setFormsList(body.user.formId)
-            
+            setTattooInfo(body.project)
+           
 
         }
         findProjectForm()
@@ -62,6 +65,13 @@ function AppointmentScreen(props) {
                         </Card.Image>
                         <View  style={styles.cardDesc}  >
                         <Text style={{ marginBottom: 10, fontWeight: 'bold', paddingTop: 5, color: '#454543' }}> Projet : {form.request}</Text>
+                        {tattooInfo.map((tattoo, i) => ( <>
+                          <Text style={{  fontWeight: 'bold', paddingTop: 5, color: '#454543' }}> tatoueur: {tattoo.lastName} </Text> 
+                        <Text style={{ marginBottom: 10, fontWeight: 'bold',  color: '#454543' }}> Adresse : {tattoo.tattooShopAddress[0].address}, {tattoo.tattooShopAddress[0].postalCode}, {tattoo.tattooShopAddress[0].city} </Text> 
+                        </>))}
+        
+    
+                        
                         <Text style={styles.text} >Style: {form.style}</Text>
                         <Text style={styles.text} >Zone à tatouer: {form.tattooZone}</Text>
                         <Text style={styles.text}>Taille:  {form.heigth} cm x {form.width} cm</Text>

@@ -87,20 +87,21 @@ function ProjectFormScreen(props) {
     async function handleClickAddForm() {
         {
             console.log("activation de la fonction")
+            console.log("ID", props.saveTatoueurInfos[1][0][0]._id)
 
             const data = await fetch('http://192.168.1.15:3000/project-form', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: `tattooIdFromFront=${props.saveTatoueurInfos[0][0][0]._id}&token=${props.dataUser.token}&userProjectImgFromFront=${tempUrl}&userStyleFromFront=${styleValue}&userDisponibilityFromFront=${scheduleValue}&userGenderFromFront=${titleValue}&userLastNameFromFront=${lastName}&userFirstNameFromFront=${firstName}&userEmailFromFront=${email}&userPhoneNumberFromFront=${phone}&userAddressFromFront=${address}&userPostalCodeFromFront=${postalCode}&userCityFromFront=${city}&usertattooZoneFromFront=${tattooZone}&userWidthFromFront=${width}&userHeightFromFront=${height}&userDescriptionFromFront=${description}&userRequestFromFront=${request}`
+                body: `tattooIdFromFront=${props.saveTatoueurInfos[1][0][0]._id}&token=${props.dataUser.token}&userProjectImgFromFront=${tempUrl}&userStyleFromFront=${styleValue}&userDisponibilityFromFront=${scheduleValue}&userGenderFromFront=${titleValue}&userLastNameFromFront=${lastName}&userFirstNameFromFront=${firstName}&userEmailFromFront=${email}&userPhoneNumberFromFront=${phone}&userAddressFromFront=${address}&userPostalCodeFromFront=${postalCode}&userCityFromFront=${city}&usertattooZoneFromFront=${tattooZone}&userWidthFromFront=${width}&userHeightFromFront=${height}&userDescriptionFromFront=${description}&userRequestFromFront=${request}`
             })
 
             const body = await data.json()
-            console.log("c la", props.saveTatoueurInfos[0][0][0]._id)
+            // console.log("c la", props.saveTatoueurInfos)
             if (body.result == true) {
                 props.addForm(body.projectFormSave)
                 props.navigation.navigate('Mes demandes')
             }
-            console.log(tempUrl);
+            // console.log(tempUrl);
             setTempUrl("")
         }
     };
