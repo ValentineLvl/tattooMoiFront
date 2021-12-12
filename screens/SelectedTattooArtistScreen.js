@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { StyleSheet, View, Image, Text, ScrollView, Linking, TouchableOpacity, TextInput, Modal, Pressable } from 'react-native';
-import { Button, Overlay } from 'react-native-elements';
+import { Button } from 'react-native-elements';
 import { AntDesign, Feather, MaterialIcons } from '@expo/vector-icons';
 
 import HeaderComponent from './HeaderComponent';
