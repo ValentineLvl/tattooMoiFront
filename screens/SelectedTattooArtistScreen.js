@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import { StyleSheet, View, Image, Text, ScrollView, Linking, TouchableOpacity, TextInput } from 'react-native';
+import { StyleSheet, View, Image, Text, ScrollView, Linking, TouchableOpacity, TextInput, Modal, Pressable } from 'react-native';
 import { Button, Overlay } from 'react-native-elements';
 import { AntDesign, Feather, MaterialIcons } from '@expo/vector-icons';
 
@@ -13,9 +13,10 @@ import HeaderComponent from './HeaderComponent';
 function SelectedTattooArtistScreen(props) {
         //etats du coeur favoris
     const [tattooLiked, setTattooLiked] = useState(false);
-        //etats des overlay
+        //etats des modals
     const [overlayVisibleDevis, setOverlayVisibleDevis] = useState(false);
     const [overlayVisibleRDV, setOverlayVisibleRDV] = useState(false);
+    const [overlayVisibleCoeur, setOverlayVisibleCoeur] = useState(false);
         //etats de connexion
     const [signInEmail, setSignInEmail] = useState('');
     const [signInPassword, setSignInPassword] = useState('');
@@ -41,7 +42,7 @@ function SelectedTattooArtistScreen(props) {
             setUserExists(true);
 
             if (!userExists) {
-                return (props.navigation.navigate('Formulaire'))
+                return (setOverlayVisibleCoeur(false))
             }
 
         } else {
@@ -62,6 +63,17 @@ function SelectedTattooArtistScreen(props) {
       }
       //console.log('tattooLiked 2', tattooLiked);
 
+      var handlePressAddFavorite = async (tattooId) => {
+        setTattooLiked(!tattooLiked)
+
+        const response = await fetch('http://192.168.0.38:3000/favorites', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: `IdFromFront=${tattooId}&token=${props.dataUser.token}`
+        })
+        console.log('recupérer dataUser.token', props.dataUser.token);  
+    };
+
       const handlePressDevis = () => {
         setOverlayVisibleDevis(!overlayVisibleDevis);
       };
@@ -80,25 +92,92 @@ function SelectedTattooArtistScreen(props) {
                         source={{ uri: info.profilePicture }}
                         style={styles.imgTatoueur}
                     />
+                    
                     <Text key={3} style={{ fontSize: 20, fontWeight: 'bold', color: '#454543', marginTop: 10 }}>{info.firstName}</Text>
                     {info.tattooShopAddress.map((address) => {
                         return (
                             <Text style={{ fontSize: 14, marginBottom: 10, fontWeight: 'bold', color: '#454543' }}>{address.tattooShop}</Text>
                         )
                     })}
-                    <TouchableOpacity onPress={() => setTattooLiked(!tattooLiked)}>
-                                <Text style={{ left: '20%', top: '-160%'}}>
-                            <AntDesign
+                    {(props.dataUser == null) ?
+                        <TouchableOpacity onPress={() => setOverlayVisibleCoeur(true)} style={{ marginTop:-60,marginLeft:180}}>
+                            <Text >
+                                <AntDesign
+                                name="heart"
+                                size={30}
+                                style={colorHeart}
+                                />
+                            </Text>
+                        </TouchableOpacity>
+                        : <TouchableOpacity onPress={() => handlePressAddFavorite(info._id)} style={{ marginTop:-60,marginLeft:180}}>
+                            <Text >
+                                <AntDesign
                                     name="heart"
                                     size={30}
                                     style={colorHeart}
                                 />
-                                </Text>
+                            </Text>
                         </TouchableOpacity>
+                    }
+
+                    <Modal
+                        animationType="slide"
+                        transparent={true}
+                        visible={overlayVisibleCoeur}
+                        onRequestClose={() => {
+                        setOverlayVisibleCoeur(!overlayVisibleCoeur);
+                        }}
+                    >
+                    <View style={styles.centeredView}>
+                    <View style={styles.modalView}>
+                    <Text style={styles.textOverlay}>Mettre en favoris</Text>
+                    <View style={styles.continuer}>
+                        <Button
+                        title="Continuer sans s'inscrire"
+                        titleStyle={{fontSize:14}}
+                        buttonStyle={styles.greenButton}
+                        type="solid"
+                        onPress={() => setOverlayVisibleCoeur(false)}
+                    />
+                    </View>
+                        <TextInput
+                    style={styles.input}
+                    placeholder="Adresse email"
+                    onChangeText={setSignInEmail}
+                    value={signInEmail}
+                />
+                <TextInput
+                    style={styles.input}
+                    placeholder="Mot de passe"
+                    onChangeText={setSignInPassword}
+                    value={signInPassword}
+                    secureTextEntry
+                />
+                {tabErrorsSignin}
+                <Button
+                    title="Se connecter"
+                    titleStyle={{fontSize:14}}
+                    buttonStyle={styles.greenButton}
+                    type="solid"
+                    onPress={() => handleSubmitSignin()}
+                />
+                <View style={styles.inscription}>
+                    <Button
+                        title="S'inscrire"
+                        titleStyle={{fontSize:14}}
+                        buttonStyle={styles.greenButton}
+                        type="solid"
+                        onPress={() => {setOverlayVisibleCoeur(false), props.navigation.navigate('Inscription')}}
+                    />
+                    </View>
+                        </View>
+                </View>
+                    </Modal> 
+                        
                     <View style={{ alignItems: 'center' }}>
                         {info.tattooShopAddress.map((address) => {
                             return (
-                                <Text key={30} style={{ fontSize: 18, color: '#454543' }}>{address.address} {address.postalCode} {address.city}</Text>
+                                <Text key={30} style={{ fontSize: 18, color: '#454543', marginTop:20}}>{address.address} {address.postalCode} {address.city}</Text>
                             )
                         })}
                         <Text key={5} style={{ fontSize: 18, paddingTop: 5, color: '#454543' }}>Temps d'attente: <Text style={{ fontWeight: 'bold' }}>{info.schedule}</Text></Text>
@@ -119,7 +198,7 @@ function SelectedTattooArtistScreen(props) {
                 </View>
 
                 <View key={7} style={styles.ig}>
-                    <AntDesign name="instagram" size={30} color="#454543" style={{ marginRight: 5 }} />
+                    <AntDesign name="instagram" size={30} color="#454543" style={{ marginRight: 5, marginTop: 6 }} />
                     <Text style={{
                         fontSize: 20,
                         fontWeight: 'bold',
@@ -150,7 +229,7 @@ function SelectedTattooArtistScreen(props) {
                 <View key={10} style={{ width: '90%', flexDirection: 'row', justifyContent: 'flex-start', marginTop: 20 }}>
                     <AntDesign
                         onPress={() => Linking.openURL(`http://${info.website}`)}
-                        name="earth" size={20} color="#454543" style={{ marginRight: 10 }} />
+                        name="earth" size={20} color="#454543" style={{ marginRight: 10, marginTop: 10 }} />
                     <Text
                         onPress={() => Linking.openURL(`http://${info.website}`)}
                         style={{ marginTop: 3, fontSize: 16 }}>{info.website}</Text>
@@ -159,7 +238,7 @@ function SelectedTattooArtistScreen(props) {
                 <View key={11} style={{ width: '90%', flexDirection: 'row', justifyContent: 'flex-start', marginTop: 10 }}>
                     <Feather key={111}
                         onPress={() => Linking.openURL(`tel:${info.phoneNumber}`)}
-                        name="phone" size={20} color="#454543" style={{ marginRight: 10 }} />
+                        name="phone" size={20} color="#454543" style={{ marginRight: 10, marginTop: 8 }} />
                     <Text key={12}
                         onPress={() => Linking.openURL(`tel:${info.phoneNumber}`)}
                         style={{ marginTop: 3, fontSize: 16 }}>{info.phoneNumber}</Text>
@@ -168,7 +247,7 @@ function SelectedTattooArtistScreen(props) {
                 <View key={13} style={{ width: '90%', flexDirection: 'row', justifyContent: 'flex-start', marginTop: 10 }}>
                     <MaterialIcons key={14}
                         onPress={() => Linking.openURL(`mailto:${info.email}`)}
-                        name="alternate-email" size={20} color="#454543" style={{ marginRight: 10 }} />
+                        name="alternate-email" size={20} color="#454543" style={{ marginRight: 10, marginTop: 10 }} />
                     <Text key={15}
                         onPress={() => Linking.openURL(`mailto:${info.email}`)}
                         style={{ marginTop: 3, fontSize: 16 }}>{info.email}</Text>
@@ -176,7 +255,7 @@ function SelectedTattooArtistScreen(props) {
                 <View key={16} style={{ flexDirection: 'row' }}>
                     <AntDesign key={17}
                         name="facebook-square"
-                        onPress={() => Linking.openURL('fb://')}
+                        onPress={() => Linking.openURL('fb://page/')}
                         size={32}
                         color="#454543"
                         style={{ marginTop: 30, marginRight: 10 }} />
@@ -204,14 +283,26 @@ function SelectedTattooArtistScreen(props) {
                     onPress={() => props.navigation.navigate('Formulaire')}
                 /> 
                     }
-                    <Overlay isVisible={overlayVisibleDevis} overlayStyle={{backgroundColor:'#F1EFE5'}}>
-                        <Text style={styles.textOverlay}>Demander un devis</Text>
+                    <Modal
+                        animationType="slide"
+                        transparent={true}
+                        visible={overlayVisibleDevis}
+                        onRequestClose={() => {
+                        setOverlayVisibleDevis(!overlayVisibleDevis);
+                        }}
+                    >
+                    <View style={styles.centeredView}>
+                    <View style={styles.modalView}>
+                    <Text style={styles.textOverlay}>Prendre un RDV</Text>
+                    <View style={styles.continuer}>
                         <Button
                         title="Continuer sans s'inscrire"
+                        titleStyle={{fontSize:14}}
                         buttonStyle={styles.greenButton}
                         type="solid"
-                        onPress={() => {handlePressDevis(), props.navigation.navigate('Formulaire')}}
+                        onPress={() => {handlePressRDV(), props.navigation.navigate('Formulaire')}}
                     />
+                    </View>
                         <TextInput
                     style={styles.input}
                     placeholder="Adresse email"
@@ -228,11 +319,23 @@ function SelectedTattooArtistScreen(props) {
                 {tabErrorsSignin}
                 <Button
                     title="Se connecter"
+                    titleStyle={{fontSize:14}}
                     buttonStyle={styles.greenButton}
                     type="solid"
                     onPress={() => handleSubmitSignin()}
                 />
-                    </Overlay>
+                <View style={styles.inscription}>
+                    <Button
+                        title="S'inscrire"
+                        titleStyle={{fontSize:14}}
+                        buttonStyle={styles.greenButton}
+                        type="solid"
+                        onPress={() => {setOverlayVisibleDevis(false), props.navigation.navigate('Inscription')}}
+                    />
+                    </View>
+                        </View>
+                </View>
+                    </Modal> 
                     {(props.dataUser == null) ? 
                     <Button 
                         title="Demande RDV"
@@ -248,14 +351,26 @@ function SelectedTattooArtistScreen(props) {
                     onPress={() => props.navigation.navigate('Formulaire')}
                 /> 
                     }
-                    <Overlay isVisible={overlayVisibleRDV} overlayStyle={{backgroundColor:'#F1EFE5'}}>
+                    <Modal
+                        animationType="slide"
+                        transparent={true}
+                        visible={overlayVisibleRDV}
+                        onRequestClose={() => {
+                        setOverlayVisibleRDV(!overlayVisibleRDV);
+                        }}
+                    >
+                    <View style={styles.centeredView}>
+                    <View style={styles.modalView}>
                     <Text style={styles.textOverlay}>Prendre un RDV</Text>
+                    <View style={styles.continuer}>
                         <Button
                         title="Continuer sans s'inscrire"
+                        titleStyle={{fontSize:14}}
                         buttonStyle={styles.greenButton}
                         type="solid"
                         onPress={() => {handlePressRDV(), props.navigation.navigate('Formulaire')}}
                     />
+                    </View>
                         <TextInput
                     style={styles.input}
                     placeholder="Adresse email"
@@ -272,11 +387,24 @@ function SelectedTattooArtistScreen(props) {
                 {tabErrorsSignin}
                 <Button
                     title="Se connecter"
+                    titleStyle={{fontSize:14}}
                     buttonStyle={styles.greenButton}
                     type="solid"
                     onPress={() => handleSubmitSignin()}
                 />
-                    </Overlay>
+                <View style={styles.inscription}>
+                    <Button
+                        title="S'inscrire"
+                        titleStyle={{fontSize:14}}
+                        buttonStyle={styles.greenButton}
+                        type="solid"
+                        onPress={() => {setOverlayVisibleRDV(false), props.navigation.navigate('Inscription')}}
+                    />
+                    </View>
+                        </View>
+                </View>
+                    </Modal> 
+
                 </View>
             </ScrollView>
         )
@@ -315,7 +443,7 @@ const styles = StyleSheet.create({
     button: {
         backgroundColor: '#424D41',
         padding: 10,
-        width: 100
+        //width: 100,
     },
     btnGroup: {
         marginTop: 20,
@@ -354,7 +482,35 @@ const styles = StyleSheet.create({
         fontWeight:'bold',
         color:'#424D41',
         textAlign: 'center',
+        textDecorationLine:'underline',
+    },
+    continuer: {
         marginTop:10,
+        marginBottom:10,
+    },
+    inscription: {
+        marginTop:20,
+      },
+      centeredView: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        marginTop: 22
+      },
+      modalView: {
+        margin: 20,
+        backgroundColor: "#F1EFE5",
+        borderRadius: 2,
+        padding: 15,
+        alignItems: "center",
+        shadowColor: "#000",
+    shadowOffset: {
+      width: 100,
+      height: 20
+    },
+    shadowOpacity: 0.5,
+    shadowRadius: 4,
+    elevation: 15
     },
 });
 

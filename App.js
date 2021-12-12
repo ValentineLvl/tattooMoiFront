@@ -1,5 +1,6 @@
 import { LogBox } from 'react-native';
-LogBox.ignoreLogs(['Warning: ...']);
+//LogBox.ignoreLogs(['Warning: ...']);
+LogBox.ignoreAllLogs();
 
 import React from 'react';
 
@@ -89,7 +90,7 @@ function SearchStackNav() {
 function AccountStackNav() {
     return (
     <AccountStack.Navigator screenOptions={{ headerShown: false }} >
-    <AccountStack.Screen name="Mon compte" component={AccountScreen}/>
+    <AccountStack.Screen name="Account" component={AccountScreen}/>
     <AccountStack.Screen name="Mes infos" component={ClientInfoScreen}/>
     <AccountStack.Screen name="Mes favoris" component={FavorisScreen} />
     <AccountStack.Screen name="Mes demandes" component={AppointmentScreen} />
