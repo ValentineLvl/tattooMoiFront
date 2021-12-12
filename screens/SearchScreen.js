@@ -25,8 +25,6 @@ function SearchScreen(props) {
 
     const [styleArray, setStyleArray] = useState([]);
 
-    console.log(tattooshopName);
-
     //A l'initialisation de searchScreen, si le user était connecté on remet ses infos dans le store avec une route get
     useEffect(() => {
 
@@ -34,7 +32,7 @@ function SearchScreen(props) {
 
             if (data) {
                 const findUser = async () => {
-                    const reqFind = await fetch(`http://192.168.1.15:3000/client-data?token=${data}`)
+                    const reqFind = await fetch(`http://192.168.0.38:3000/client-data?token=${data}`)
                     const resultFind = await reqFind.json()
 
                     props.addDataUser(resultFind.client)
@@ -54,7 +52,7 @@ function SearchScreen(props) {
             :
             setSelected([...selected, tattooStyle]);
 
-        let rawResponse = await fetch(`http://192.168.1.15:3000/search-tattoo?styleList=${tattooStyle}`)
+        let rawResponse = await fetch(`http://192.168.0.38:3000/search-tattoo?styleList=${tattooStyle}`)
         let response = await rawResponse.json()
         setStyleArray(styleArray => [...styleArray, response.searchResult])
     }
@@ -65,7 +63,7 @@ function SearchScreen(props) {
 
     const onSearchInput = async (name) => {
 
-        let rawResponse = await fetch(`http://192.168.1.15:3000/search-tattoo?firstName=${name}`)
+        let rawResponse = await fetch(`http://192.168.0.38:3000/search-tattoo?firstName=${name}`)
         let response = await rawResponse.json()
 
         let nameResult = [response.searchTatoueur]
@@ -216,7 +214,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         padding: 10,
         marginBottom: 8,
-        width: 110,
+        width: 125,
     },
     textButton: {
         color: '#C2A77D',

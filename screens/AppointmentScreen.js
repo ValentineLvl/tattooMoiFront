@@ -4,18 +4,24 @@ import { Card, ListItem, Button, Icon } from 'react-native-elements'
 import { connect } from 'react-redux'
 import HeaderComponent from './HeaderComponent';
 import { FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function AppointmentScreen(props) {
 
     const [formsList, setFormsList] = useState([]);
     const [tattooInfo, setTattooInfo] = useState([[]]);
+   // const [userForms, setUserForms] = useState(false);
 
     useEffect(() => {
+
+        //AsyncStorage.getItem("dataUserForms", function (error, data) {
+
         console.log("App is loaded");
         // ASYNC STORAGE
         // console.log("formList", props.formList[0]._id)
+        // if (data) {
         const findProjectForm = async () => {
-            const dataProjectForm = await fetch(`http://192.168.1.15:3000/project-form?token=${props.dataUser.token}`)
+            const dataProjectForm = await fetch(`http://192.168.0.38:3000/project-form?token=${props.dataUser.token}`)
             const body = await dataProjectForm.json()
             console.log("C BON????", body.project)
             //console.log("body", body.user.formId)
@@ -25,13 +31,16 @@ function AppointmentScreen(props) {
            
 
         }
-        findProjectForm()
+        findProjectForm();
+//         setUserForms(true);
+//     }
+// });
     }, [])
 
 
     var deleteForm = async (_id) => {
 
-        const deleteReq = await fetch('http://192.168.1.15:3000/project-form', {
+        const deleteReq = await fetch('http://192.168.0.38:3000/project-form', {
             method: 'DELETE',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: `formId=${_id}&token=${props.dataUser.token}`,

@@ -35,7 +35,7 @@ var handlePressDeleteFavorite = async (_id) => {
     useEffect(() => {
         console.log("Favoris is loaded");
         const findFavorites = async () => {
-            const dataFavorites = await fetch(`http://192.168.1.15:3000/favorites?token=${props.dataUser.token}`)
+            const dataFavorites = await fetch(`http://192.168.0.38:3000/favorites?token=${props.dataUser.token}`)
             const body = await dataFavorites.json();
             //console.log("récupérer le favoris body", body.user.tattooId)
             //props.saveForm(body.user.formId)
@@ -48,8 +48,8 @@ var handlePressDeleteFavorite = async (_id) => {
     const favoritesResults = favoritesList.map((favorites, i) => {
 
                 return (
-                    <TouchableOpacity key={i} onPress={() => {props.selectedArtistInfos([favorites]), props.navigation.navigate('TattooArtist')} }>
-                        <Card key={i} containerStyle={styles.cards}>
+                    <TouchableOpacity key={favorites._id} onPress={() => {props.selectedArtistInfos([favorites]), props.navigation.navigate('TattooArtist')} }>
+                        <Card containerStyle={styles.cards}>
                             <Card.Image source={{ uri: favorites.galleryPhoto[0] }}>
                             <TouchableOpacity onPress={() => {handlePressDeleteFavorite(favorites._id)} }>
                                 <Text style={{ left: '87%',top: '5%'}}>
@@ -67,18 +67,18 @@ var handlePressDeleteFavorite = async (_id) => {
                                     <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#454543' }}>{favorites.firstName}</Text>
                                     {favorites.tattooShopAddress.map((name) => {
                                         return (
-                                            <Text style={{ marginBottom: 10, fontWeight: 'bold', paddingTop: 5, color: '#454543' }}>
+                                            <Text key={name._id} style={{ marginBottom: 10, fontWeight: 'bold', paddingTop: 5, color: '#454543' }}>
                                                 {name.tattooShop}
                                             </Text>
                                         )
                                     })}
-                                    <Text style={{ fontStyle: 'italic', color: 'rgba(69, 69, 67, 0.8)' }}>{favorites.styleList.join(' ')}</Text>
+                                    <Text style={{ fontStyle: 'italic', color: 'rgba(69, 69, 67, 0.8)' }}>{favorites.styleList.join(', ')}</Text>
                                 </View>
                                 <View>
                                     <Text style={{ color: '#454543' }}>Attente: {favorites.schedule}</Text>
                                     {favorites.tattooShopAddress.map((address) => {
                                         return (
-                                            <Text style={{ paddingTop: 5, color: '#454543' }}>{address.city}</Text>
+                                            <Text key={address._id} style={{ paddingTop: 5, color: '#454543' }}>{address.city}</Text>
                                         )
                                     })}
                                 </View>

@@ -11,6 +11,7 @@ function AccountScreen(props) {
 
     const handleLogOut = async () => {
         props.disconnectUser(null);
+        //props.deconnectForms(formList);
         props.navigation.navigate('Search');
         AsyncStorage.removeItem("dataUserToken");
     } 
@@ -65,7 +66,7 @@ function AccountScreen(props) {
                         onPress={() => props.navigation.navigate('Mes infos')}
 
                     />
-                
+               
                 </SafeAreaView>
                 <View style={styles.deconnexion}>
                     <Button
@@ -123,13 +124,16 @@ const styles = StyleSheet.create({
 });
 
 function mapStateToProps(state) {
-    return { dataUser: state.dataUser }
+    return { dataUser: state.dataUser, formList: state.formList}
 }
 
 function mapDispatchToProps(dispatch) {
     return {
         disconnectUser: function (dataUser) {
             dispatch({ type: 'disconnectUser', dataUser: dataUser })
+        },
+        deconnectForms: function (formList) {
+            dispatch({ type: 'deconnectForms', formList: formList })
         }
     }
 }
