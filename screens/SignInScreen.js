@@ -17,7 +17,7 @@ function SignInScreen(props) {
 
     var handleSubmitSignin = async () => {
 
-        const data = await fetch('http://192.168.1.15:3000/sign-in', {
+        const data = await fetch('http://192.168.0.38:3000/sign-in', {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: `userEmailFromFront=${signInEmail}&userPasswordFromFront=${signInPassword}`
@@ -53,14 +53,14 @@ function SignInScreen(props) {
                     style={{ width: 200, height: 80 }} />
             </View>
             <ScrollView style={styles.scroll}>
-
-                <Button
-                    title="Continuer sans s'inscrire"
-                    buttonStyle={styles.greenButton}
-                    type="solid"
-                //onPress={() => props.navigation.push('Formulaire')}
-                />
-
+                <View style={{marginBottom:60}}>
+                    <Button
+                        title="Continuer sans s'inscrire"
+                        buttonStyle={styles.greenButton}
+                        type="solid"
+                        onPress={() => props.navigation.pop()}
+                    />
+                </View>
                 <TextInput
                     style={styles.input}
                     placeholder="Adresse email"
@@ -81,7 +81,7 @@ function SignInScreen(props) {
                     type="solid"
                     onPress={() => handleSubmitSignin()}
                 />
-
+{/* 
                 <Button
                     title=" Se connecter avec Google"
                     buttonStyle={styles.beigeButton}
@@ -91,7 +91,7 @@ function SignInScreen(props) {
                         size={30}
                         color='#F1EFE5'
                     />}
-                //onPress={() => props.navigation.navigate('Connexion')}
+                onPress={() => props.navigation.navigate('Connexion')}
                 />
                 <Button
                     title=" Se connecter avec Facebook"
@@ -102,15 +102,16 @@ function SignInScreen(props) {
                         size={30}
                         color='#F1EFE5'
                     />}
-                //onPress={() => props.navigation.navigate('Connexion')}
-                />
-                <Button
-                    title="S'inscrire"
-                    buttonStyle={styles.greenButton}
-                    type="solid"
-                    onPress={() => props.navigation.navigate('Inscription')}
-                />
-
+                onPress={() => props.navigation.navigate('Connexion')}
+                /> */}
+                <View style={styles.inscription}>
+                    <Button
+                        title="S'inscrire"
+                        buttonStyle={styles.greenButton}
+                        type="solid"
+                        onPress={() => props.navigation.navigate('Inscription')}
+                    />
+                </View>
             </ScrollView>
         </View>
     )
@@ -130,7 +131,7 @@ const styles = StyleSheet.create({
     },
     scroll: {
         flex: 3,
-        marginTop: 20,
+        marginTop: 30,
     },
     greenButton: {
         backgroundColor: '#424D41',
@@ -153,6 +154,9 @@ const styles = StyleSheet.create({
         width: 300,
         borderRadius: 2,
     },
+    inscription: {
+        marginTop:90,
+      },
 });
 
 function mapDispatchToProps(dispatch) {

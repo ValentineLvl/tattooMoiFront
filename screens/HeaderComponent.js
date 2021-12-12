@@ -16,6 +16,16 @@ function HeaderComponent(props) {
         </View>
         )
     }
+    else if ( props.dataTattoo !== null) {
+      return (
+          <View style = {styles.header}>
+          <Image 
+          source = {require('../assets/tattoo-moi_1.png')}
+          style={{ width: 200, height: 80, marginRight: 50  }} />
+          <Text style = {styles.titre}>Salut {props.dataTattoo.firstName} !</Text>
+      </View>
+      )
+  }
 else if (props.dataUser == null) {
 return (
         <View style = {styles.header}>
@@ -50,7 +60,7 @@ titre :{
 });
 
 function mapStateToProps(state){
-    return {dataUser:state.dataUser}
+    return {dataUser:state.dataUser, dataTattoo:state.dataTattoo}
   }
 
   export default connect (

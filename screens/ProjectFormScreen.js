@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, Button, ScrollView, SafeAreaView, TextInput, Image, TouchableOpacity } from 'react-native';
-import { Input } from 'react-native-elements'
+import { Overlay } from 'react-native-elements'
 import { Ionicons, FontAwesome, MaterialIcons } from '@expo/vector-icons';
 import { Dropdown } from 'react-native-element-dropdown';
 import * as ImagePicker from 'expo-image-picker';
@@ -57,8 +57,11 @@ function ProjectFormScreen(props) {
     const [tempUrl, setTempUrl] = useState("");
     const [request, setRequest] = useState("");
 
+    //Etat de l'overlay
+    const [visible, setVisible] = useState(false);
 
     let openImagePickerAsync = async () => {
+        setVisible(!visible)
         let permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
 
         if (permissionResult.granted === false) {
@@ -74,7 +77,7 @@ function ProjectFormScreen(props) {
             type: 'image/jpeg',
             name: 'avatar.jpg',
         });
-        var rawResponse = await fetch('http://192.168.1.15:3000/upload', {
+        var rawResponse = await fetch('http://192.168.0.38:3000/upload', {
             method: 'POST',
             body: data
         });
@@ -82,6 +85,8 @@ function ProjectFormScreen(props) {
         //   props.onSnap(response.url);
         setTempUrl(response.url);
         //console.log("response", response)
+        if (response) {
+        setVisible(false)}
     }
 
     async function handleClickAddForm() {
@@ -89,7 +94,7 @@ function ProjectFormScreen(props) {
             console.log("activation de la fonction")
             console.log("ID", props.saveTatoueurInfos[1][0][0]._id)
 
-            const data = await fetch('http://192.168.1.15:3000/project-form', {
+            const data = await fetch('http://192.168.0.38:3000/project-form', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: `tattooIdFromFront=${props.saveTatoueurInfos[1][0][0]._id}&token=${props.dataUser.token}&userProjectImgFromFront=${tempUrl}&userStyleFromFront=${styleValue}&userDisponibilityFromFront=${scheduleValue}&userGenderFromFront=${titleValue}&userLastNameFromFront=${lastName}&userFirstNameFromFront=${firstName}&userEmailFromFront=${email}&userPhoneNumberFromFront=${phone}&userAddressFromFront=${address}&userPostalCodeFromFront=${postalCode}&userCityFromFront=${city}&usertattooZoneFromFront=${tattooZone}&userWidthFromFront=${width}&userHeightFromFront=${height}&userDescriptionFromFront=${description}&userRequestFromFront=${request}`
@@ -289,6 +294,10 @@ function ProjectFormScreen(props) {
                                 Télécharger une image </Text>
                         </TouchableOpacity>
                     </View>
+
+                    <Overlay isVisible={visible} overlayStyle={{backgroundColor:'#F1EFE5'}}>
+                        <Text>Chargement...</Text>
+                    </Overlay>
 
                     <View style={{ flex: 1, alignSelf: 'center', marginTop: 20 }} >
                         <Button
