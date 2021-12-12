@@ -17,11 +17,11 @@ function AppointmentScreen(props) {
         const findProjectForm = async () => {
             const dataProjectForm = await fetch(`http://192.168.1.15:3000/project-form?token=${props.dataUser.token}`)
             const body = await dataProjectForm.json()
-            console.log("C BON????", body.project)
+            console.log("C BON????", body.project[0].tattooShopAddress[0].address)
             //console.log("body", body.user.formId)
             props.saveForm(body.user.formId)
             setFormsList(body.user.formId)
-            setTattooInfo(body.project)
+            setTattooInfo(body.project.tattooShopAddress)
            
 
         }
@@ -66,8 +66,8 @@ function AppointmentScreen(props) {
                         <View  style={styles.cardDesc}  >
                         <Text style={{ marginBottom: 10, fontWeight: 'bold', paddingTop: 5, color: '#454543' }}> Projet : {form.request}</Text>
                         {tattooInfo.map((tattoo, i) => ( <>
-                          <Text style={{  fontWeight: 'bold', paddingTop: 5, color: '#454543' }}> tatoueur: {tattoo.lastName} </Text> 
-                        <Text style={{ marginBottom: 10, fontWeight: 'bold',  color: '#454543' }}> Adresse : {tattoo.tattooShopAddress[0].address}, {tattoo.tattooShopAddress[0].postalCode}, {tattoo.tattooShopAddress[0].city} </Text> 
+                          <Text style={{  fontWeight: 'bold', paddingTop: 5, color: '#454543' }}> tatoueur: {tattoo.address} </Text> 
+                        <Text style={{ marginBottom: 10, fontWeight: 'bold',  color: '#454543' }}> Adresse : {tattoo.address}, {tattoo.address}, {tattoo.address} </Text> 
                         </>))}
         
     
