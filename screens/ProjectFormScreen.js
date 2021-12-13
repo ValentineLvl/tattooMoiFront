@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, Button, ScrollView, SafeAreaView, TextInput, Image, TouchableOpacity } from 'react-native';
+import { Keyboard, StyleSheet, Text, View, Button, ScrollView, SafeAreaView, TextInput, Image, TouchableOpacity } from 'react-native';
 import { Overlay } from 'react-native-elements'
 import { Ionicons, FontAwesome, MaterialIcons } from '@expo/vector-icons';
 import { Dropdown } from 'react-native-element-dropdown';
@@ -77,7 +77,7 @@ function ProjectFormScreen(props) {
             type: 'image/jpeg',
             name: 'avatar.jpg',
         });
-        var rawResponse = await fetch('http://172.17.1.32:3000/upload', {
+        var rawResponse = await fetch('http://192.168.1.15:3000/upload', {
             method: 'POST',
             body: data
         });
@@ -92,9 +92,9 @@ function ProjectFormScreen(props) {
     async function handleClickAddForm() {
         {
             console.log("activation de la fonction")
-            console.log("ID", props.selectedArtistInfos[0]._id)
+            console.log("ID", props.dataUser.firstName)
 
-            const data = await fetch('http://172.17.1.32:3000/project-form', {
+            const data = await fetch('http://192.168.1.15:3000/project-form', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: `tattooIdFromFront=${props.selectedArtistInfos[0]._id}&token=${props.dataUser.token}&userProjectImgFromFront=${tempUrl}&userStyleFromFront=${styleValue}&userDisponibilityFromFront=${scheduleValue}&userGenderFromFront=${titleValue}&userLastNameFromFront=${lastName}&userFirstNameFromFront=${firstName}&userEmailFromFront=${email}&userPhoneNumberFromFront=${phone}&userAddressFromFront=${address}&userPostalCodeFromFront=${postalCode}&userCityFromFront=${city}&usertattooZoneFromFront=${tattooZone}&userWidthFromFront=${width}&userHeightFromFront=${height}&userDescriptionFromFront=${description}&userRequestFromFront=${request}`
@@ -195,6 +195,54 @@ function ProjectFormScreen(props) {
                         </View>
                     </>
                         : null}
+                        
+                        <TextInput
+                         style={styles.hiddenInput}
+                         autoFocus={true}
+                         multiline
+                         onFocus={Keyboard.dismiss}
+                        
+                         value={lastName}
+
+                    />
+                    <View style={styles.smallForm} >
+                            <Dropdown
+                                style={styles.dropdown}
+                                placeholderStyle={styles.placeholderStyle}
+                                selectedTextStyle={styles.selectedTextStyle}
+                                inputSearchStyle={styles.inputSearchStyle}
+                                data={title}
+                                containerStyle={{ backgroundColor: '#F1EFE5', marginTop: -30 }}
+                                activeColor={'#C2A77D'}
+                                maxHeight={100}
+                                labelField="label"
+                                valueField="value"
+                                placeholder='Civilité'
+                                value={titleValue}
+                                onFocus={() => setIsFocus(true)}
+                                onBlur={() => setIsFocus(false)}
+                                onChange={item => {
+                                    setTitleValue(item.value);
+                                    setIsFocus(false);
+                                }}
+                            />
+
+                            <TextInput
+                                style={styles.smallInput}
+                                onChangeText={setLastName}
+                                value={lastName}
+                                placeholder="Nom"
+                            />
+                        </View>
+
+                        <TextInput
+                            style={styles.input}
+                            onChangeText={setFirstName}
+                            value={firstName}
+                            placeholder="Prénom"
+
+                        />
+
 
                     <TextInput
                         style={styles.input}
@@ -392,6 +440,10 @@ const styles = StyleSheet.create({
         fontSize: 16,
 
     },
+    hiddenInput: {
+        width: 0,
+        height: 0,
+      },
     
 });
 

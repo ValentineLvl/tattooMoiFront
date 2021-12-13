@@ -29,34 +29,36 @@ function FormTatoueurScreen(props) {
     <View style={styles.container}>
     <HeaderComponent navigation={props.navigation}/>
     <ScrollView style={{ width: '90%', flex: 2 }} >
+    {props.formList.map((form, i) =>(
     <Card  containerStyle={styles.cardDesc}>
-    <Text style={styles.titlePage}>Projet de Betul</Text>
+    <Text style={styles.titlePage}>Demande: {form.request} </Text>
+    <Text style={styles.titre}>Par : {form.gender} {form.firstName} {form.lastName}</Text>
         <View style={{ flexDirection: "row"}}>
         <View style={{marginRight:40}}>
         <Text style={styles.titre}>Zone à tatouer:</Text>
-            <Text style={styles.Info}>cou</Text>
+            <Text style={styles.Info}>{form.tattooZone}</Text>
         </View>
         <View>
         <Text style={styles.titre}>Style:</Text>
-            <Text style={styles.Info}>New School</Text>
+            <Text style={styles.Info}>{form.style}</Text>
         </View>
         </View>
         <View style={{ flexDirection: "row"}}>
         <View style={{marginRight:93}}> 
         <Text style={styles.titre}>Hauteur:</Text>
-            <Text style={styles.Info}>70 cm</Text>
+            <Text style={styles.Info}>{form.heigth} cm</Text>
         </View>
         <View>
         <Text style={styles.titre}>Longueur:</Text>
-            <Text style={styles.Info}>40 cm</Text>
+            <Text style={styles.Info}>{form.width} cm</Text>
         </View>
         </View>
         <Text style={styles.titre}>Description du projet:</Text>
-            <Text style={styles.Info}>Salut toi</Text>
+            <Text style={styles.Info}>{form.description}</Text>
         <Text style={styles.titre}>Disponibilité:</Text>
-            <Text style={styles.Info}>En soirée</Text>
+            <Text style={styles.Info}>{form.disponibility}</Text>
         <Text style={styles.titre}>Idée du projet:</Text>
-            <Text style={styles.Info}>Image</Text>
+        <Card.Image source={{ uri: form.projectImg }} />
         
         <View style={{flexDirection: "row", alignSelf: "center"}}>
         <TouchableOpacity style={{marginRight: 20}} onPress={() => Confirm()}>
@@ -151,6 +153,7 @@ function FormTatoueurScreen(props) {
             
         </Modal>
  </Card>
+    ))}
  </ScrollView>
 </View>
 )
@@ -265,8 +268,10 @@ text: {
 
 
 function mapStateToProps(state){
-    return {dataUser:state.dataUser}
+    return {dataUser:state.dataUser, formList: state.formList}
   }
+
+  
 
   export default connect (
     mapStateToProps,

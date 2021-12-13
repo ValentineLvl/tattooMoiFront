@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import { StyleSheet, Text, View, ScrollView, SafeAreaView, TextInput, Image, TouchableOpacity } from 'react-native';
 import { Button } from 'react-native-elements';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -10,42 +10,67 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 function AppointmentTatoueurScreen(props) {
+
+    const [form, setForm]= useState([])
+
+    useEffect(() => {
+        console.log("Appoint loaded");
+        const findFormTattoo = async () => {
+            const dataForm = await fetch(`http://192.168.1.15:3000/appointment-tattoo?id=${props.dataTattoo._id}`)
+            const body = await dataForm.json();
+            
+            props.saveForm(body.form)
+            setForm(body.form)
+
+        }
+        findFormTattoo()
+    }, [])
+
+  
+
+    var appointment = form.map((form, i) => {
+        console.log("image", form.projectImg)
+        return (
+            <Button
+            titleStyle={styles.titleStyle}
+            buttonStyle={styles.buttonStyle}
+            
+            type="outline"
+            icon={<>
+                <MaterialCommunityIcons
+                    name="calendar-blank-outline"
+                    size={20}
+                    color="#424D41"
+                />
+                <View style={styles.titleStyle}>
+                <Text> Rendez-vous {form.firstName} {form.lastName} </Text>
+                </View>
+                <MaterialCommunityIcons
+                iconRight
+                    name="arrow-right-circle-outline"
+                    size={20}
+                    color="#424D41"
+                    alignSelf= 'right'
+                    alignItem='right'
+                />
+                </>
+            }
+            
+            onPress={() => props.navigation.navigate('Mes forms')}
+
+          
+            />)})
+
+
+    // console.log(props.dataTattoo._id)
     if (props.dataTattoo !== null) {
         return (
             <View style={styles.container}>
                 <HeaderComponent navigation={props.navigation} />
 
                 <SafeAreaView style={styles.safeArea} >
-                   
-                    <Button
-                        titleStyle={styles.titleStyle}
-                        buttonStyle={styles.buttonStyle}
-                        
-                        type="outline"
-                        icon={<>
-                            <MaterialCommunityIcons
-                                name="calendar-blank-outline"
-                                size={20}
-                                color="#424D41"
-                            />
-                            <View style={styles.titleStyle}>
-                            <Text> Rendez-vous John Doe </Text>
-                            </View>
-                            <MaterialCommunityIcons
-                            iconRight
-                                name="arrow-right-circle-outline"
-                                size={20}
-                                color="#424D41"
-                                alignSelf= 'right'
-                                alignItem='right'
-                            />
-                            </>
-                        }
-                        title="  Rendez-vous John Doe"
-                        onPress={() => props.navigation.navigate('Mes forms')}
-
-                      
-                        />
+                   {appointment}
+                  
                     <Button
                         titleStyle={styles.titleStyle}
                         buttonStyle={styles.buttonStyle}
@@ -105,7 +130,7 @@ const styles = StyleSheet.create({
     titleStyle: {
         color: '#424D41',
         fontSize:14,
-        marginRight:120, 
+        marginRight:100, 
         marginLeft: 5
     },
     buttonStyle: {
@@ -118,8 +143,23 @@ const styles = StyleSheet.create({
     
 });
 
-// function mapStateToProps(state) {
-//     return { dataUser: state.dataUser, formList: state.formList}
-// }
+function mapStateToProps(state) {
+    return { dataTattoo: state.dataTattoo}
+}
 
-export default AppointmentTatoueurScreen
+function mapDispatchToProps(dispatch) {
+    return {
+        
+        saveForm: function (dataSaveForm) {
+            dispatch({
+                type: 'saveForm',
+                dataSaveForm: dataSaveForm
+            })
+        }
+    }
+}
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(AppointmentTatoueurScreen)
+

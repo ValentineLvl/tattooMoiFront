@@ -25,12 +25,12 @@ function SearchResultScreen(props) {
   const [userExists, setUserExists] = useState(false);
   //erreur envoyé par le back
   const [listErrorsSignin, setErrorsSignin] = useState([]);
-  const [tattooLiked, setTattooLiked] = useState(false);
+  // const [tattooLiked, setTattooLiked] = useState(false);
 
   // console.log('STATE FROM STORE:', props.saveTatoueurInfos)
 
   var handleSubmitSignin = async () => {
-    const data = await fetch("http://172.17.1.32:3000/sign-in", {
+    const data = await fetch("http://192.168.1.15:3000/sign-in", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: `userEmailFromFront=${signInEmail}&userPasswordFromFront=${signInPassword}`,
@@ -61,7 +61,7 @@ function SearchResultScreen(props) {
 
   var handlePressAddFavorite = async (tattooId) => {
     console.log("tattoliked", tattooLiked)
-    const response = await fetch("http://172.17.1.32:3000/favorites", {
+    const response = await fetch("http://192.168.1.15:3000/favorites", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: `IdFromFront=${tattooId}&token=${props.dataUser.token}`,
