@@ -12,17 +12,10 @@ function FavorisScreen(props) {
     const [favoritesList, setFavoritesList] = useState([]);
     const [tattooLiked, setTattooLiked] = useState(false);
 
-    var colorHeart;
-    if(!tattooLiked){
-         colorHeart = {color: '#BF5F5F'}
-      } else {
-         colorHeart = {color: '#454543'}
-      }
-
 var handlePressDeleteFavorite = async (_id) => {
     setTattooLiked(tattooLiked)
 
-    const deleteReq = await fetch('http://172.17.1.128:3000/delete-favorites', {
+    const deleteReq = await fetch('http://192.168.0.38:3000/delete-favorites', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: `tattooIdFromFront=${_id}&token=${props.dataUser.token}`
@@ -35,7 +28,7 @@ var handlePressDeleteFavorite = async (_id) => {
     useEffect(() => {
         console.log("Favoris is loaded");
         const findFavorites = async () => {
-            const dataFavorites = await fetch(`http://172.17.1.128:3000/favorites?token=${props.dataUser.token}`)
+            const dataFavorites = await fetch(`http://192.168.0.38:3000/favorites?token=${props.dataUser.token}`)
             const body = await dataFavorites.json();
             //console.log("récupérer le favoris body", body.user.tattooId)
             //props.saveForm(body.user.formId)
@@ -56,7 +49,7 @@ var handlePressDeleteFavorite = async (_id) => {
                             <AntDesign
                                     name="heart"
                                     size={30}
-                                    style={colorHeart}
+                                    style={{color: '#BF5F5F'}}
 
                                 />
                                 </Text>
