@@ -21,7 +21,7 @@ function SearchScreen(props) {
     const [userToken, setUserToken] = useState(false);
     const [dropdownValue, setDropdownValue] = useState(null);
     const [selected, setSelected] = useState([]);
-    const [tattooshopName, setTattooshopName] = useState('');
+    const [tatoueurName, setTatoueurName] = useState('');
 
     const [styleArray, setStyleArray] = useState([]);
 
@@ -68,7 +68,7 @@ function SearchScreen(props) {
     //         if (tatoueur !== null) {
     //             setStyleArray(styleArray => [...styleArray, tatoueur])
     //             props.saveTatoueurInfos([nameResult])
-    //         }
+    //         }})
     //         // else {
     //         //     Alert.alert(
     //         //         "Sorry...",
@@ -89,23 +89,21 @@ function SearchScreen(props) {
         let rawResponse = await fetch('http://192.168.1.101:3000/search-tattoo', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ styleList: selected })
+            body: JSON.stringify({ styleList: selected, firstName: tatoueurName })
         });
 
         let response = await rawResponse.json()
 
         setStyleArray(response.searchResult)
 
+        setTatoueurName(response.searchTatoueur)
+
         props.saveTatoueurInfos(response.searchResult)
+        props.saveTatoueurInfos([response.searchTatoueur])
 
         props.navigation.navigate('Resultat')
 
     }
-
-    // const onSearchNamePress = () => {
-    //     onSearchInput(tattooshopName)
-
-    // }
 
     const tattooStyleBtn = tattooStyles.map((tattooStyle, i) => (
 
@@ -125,8 +123,8 @@ function SearchScreen(props) {
             <HeaderComponent navigation={props.navigation} />
 
             <TextInput
-                onChangeText={(value) => setTattooshopName(value)}
-                value={tattooshopName}
+                onChangeText={(value) => setTatoueurName(value)}
+                value={tatoueurName}
                 style={styles.input}
                 placeholder="Tatoueur, TattooShop"
             />

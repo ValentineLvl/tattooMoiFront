@@ -5,7 +5,6 @@ import { Card, Button } from 'react-native-elements';
 import { AntDesign, FontAwesome } from '@expo/vector-icons';
 import { TouchableOpacity } from 'react-native';
 import HeaderComponent from './HeaderComponent';
-import TattooCardComponent from './TattooCardComponent';
 
 function SearchResultScreen(props) {
 
