@@ -32,7 +32,7 @@ function SearchScreen(props) {
 
             if (data) {
                 const findUser = async () => {
-                    const reqFind = await fetch(`http://192.168.1.15:3000/client-data?token=${data}`)
+                    const reqFind = await fetch(`http://172.17.1.128:3000/client-data?token=${data}`)
                     const resultFind = await reqFind.json()
 
                     props.addDataUser(resultFind.client)
@@ -52,7 +52,7 @@ function SearchScreen(props) {
             :
             setSelected([...selected, tattooStyle]);
 
-        let rawResponse = await fetch(`http://192.168.1.15:3000/search-tattoo?styleList=${tattooStyle}`)
+        let rawResponse = await fetch(`http://172.17.1.128:3000/search-tattoo?styleList=${tattooStyle}`)
         let response = await rawResponse.json()
         setStyleArray(styleArray => [...styleArray, response.searchResult])
     }
@@ -63,7 +63,7 @@ function SearchScreen(props) {
 
     const onSearchInput = async (name) => {
 
-        let rawResponse = await fetch(`http://192.168.1.15:3000/search-tattoo?firstName=${name}`)
+        let rawResponse = await fetch(`http://172.17.1.128:3000/search-tattoo?firstName=${name}`)
         let response = await rawResponse.json()
 
         let nameResult = [response.searchTatoueur]
