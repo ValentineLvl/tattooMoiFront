@@ -27,7 +27,7 @@ function SelectedTattooArtistScreen(props) {
 
     var handleSubmitSignin = async () => {
 
-        const data = await fetch('hhttp://192.168.1.15:3000/sign-in', {
+        const data = await fetch('http://172.17.1.32:3000/sign-in', {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: `userEmailFromFront=${signInEmail}&userPasswordFromFront=${signInPassword}`
@@ -66,7 +66,7 @@ function SelectedTattooArtistScreen(props) {
       var handlePressAddFavorite = async (tattooId) => {
         setTattooLiked(!tattooLiked)
 
-        const response = await fetch('http://192.168.1.15:3000/favorites', {
+        const response = await fetch('http://172.17.1.32:3000/favorites', {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: `IdFromFront=${tattooId}&token=${props.dataUser.token}`

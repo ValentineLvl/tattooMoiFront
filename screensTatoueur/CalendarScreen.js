@@ -16,7 +16,7 @@ function CalendarScreen(props) {
 
             if (data) {
                 const findUser = async () => {
-                    const reqFind = await fetch(`http://192.168.1.15:3000/tattoo-data?token=${data}`)
+                    const reqFind = await fetch(`http://172.17.1.32:3000/tattoo-data?token=${data}`)
                     const resultFind = await reqFind.json()
 
                     props.addDataTattoo(resultFind.tatoueur)
