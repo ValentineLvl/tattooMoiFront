@@ -21,6 +21,7 @@ import SelectedTattooArtistScreen from './screens/SelectedTattooArtistScreen';
 import SignUpTatoueurScreen from './screensTatoueur/SignUpTatoueurScreen';
 import AccountTatoueurScreen from './screensTatoueur/AccountTatoueurScreen';
 import AppointmentTatoueurScreen from './screensTatoueur/AppointmentTatoueurScreen';
+import FormTatoueurScreen from './screensTatoueur/FormTatoueurScreen';
 import CalendarScreen from './screensTatoueur/CalendarScreen';
 
 
@@ -121,11 +122,22 @@ function TabBottomTattoo() {
             )}
         >
             <TabTattoo.Screen name="Calendrier" component={CalendarScreen} />
-            <TabTattoo.Screen name="Mes demandes" component={AppointmentTatoueurScreen} />
+            <TabTattoo.Screen name="Mes demandes" component={AppointmentStackNav} />
             <TabTattoo.Screen name="Mon espace" component={AccountTatoueurScreen} />
         </TabTattoo.Navigator>
     )
 }
+
+function AppointmentStackNav() {
+    return (
+    <AccountStack.Navigator screenOptions={{ headerShown: false }} >
+    <AccountStack.Screen name="Mes demandes" component={AppointmentTatoueurScreen}/>
+    <AccountStack.Screen name="Mes forms" component={FormTatoueurScreen}/>
+   
+    </AccountStack.Navigator>
+    );
+}
+
 
 export default function App() {
     return (
