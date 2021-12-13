@@ -82,19 +82,23 @@ function SelectedTattooArtistScreen(props) {
         setOverlayVisibleRDV(!overlayVisibleRDV);
     };
 
-    const selectedArtistInfos = props.selectedArtistInfos.map((info, i) => {
 
-        return (
+return (
+    <View style={styles.container}>
 
-            <ScrollView key={info._id} contentContainerStyle={{ alignItems: 'center' }}>
+        <View style={styles.header}>
+            <HeaderComponent navigation={props.navigation} />
+        </View>
+
+        <ScrollView contentContainerStyle={{ alignItems: 'center' }}>
                 <View key={1} style={{ alignItems: 'center' }}>
                     <Image key={2}
-                        source={{ uri: info.profilePicture }}
+                        source={{ uri: props.selectedArtistInfos.profilePicture }}
                         style={styles.imgTatoueur}
                     />
 
-                    <Text key={3} style={{ fontSize: 20, fontWeight: 'bold', color: '#454543', marginTop: 10 }}>{info.firstName}</Text>
-                    {info.tattooShopAddress.map((address) => {
+                    <Text key={3} style={{ fontSize: 20, fontWeight: 'bold', color: '#454543', marginTop: 10 }}>{props.selectedArtistInfos.firstName}</Text>
+                    {props.selectedArtistInfos.tattooShopAddress.map((address) => {
                         return (
                             <Text style={{ fontSize: 14, marginBottom: 10, fontWeight: 'bold', color: '#454543' }}>{address.tattooShop}</Text>
                         )
@@ -109,7 +113,7 @@ function SelectedTattooArtistScreen(props) {
                                 />
                             </Text>
                         </TouchableOpacity>
-                        : <TouchableOpacity onPress={() => handlePressAddFavorite(info._id)} style={{ marginTop: -60, marginLeft: 180 }}>
+                        : <TouchableOpacity onPress={() => handlePressAddFavorite(props.selectedArtistInfos._id)} style={{ marginTop: -60, marginLeft: 180 }}>
                             <Text >
                                 <AntDesign
                                     name="heart"
@@ -175,19 +179,19 @@ function SelectedTattooArtistScreen(props) {
                     </Modal>
 
                     <View style={{ alignItems: 'center' }}>
-                        {info.tattooShopAddress.map((address) => {
+                        {props.selectedArtistInfos.tattooShopAddress.map((address) => {
                             return (
                                 <Text key={30} style={{ fontSize: 18, color: '#454543', marginTop: 20 }}>{address.address} {address.postalCode} {address.city}</Text>
                             )
                         })}
-                        <Text key={5} style={{ fontSize: 18, paddingTop: 5, color: '#454543' }}>Temps d'attente: <Text style={{ fontWeight: 'bold' }}>{info.schedule}</Text></Text>
+                        <Text key={5} style={{ fontSize: 18, paddingTop: 5, color: '#454543' }}>Temps d'attente: <Text style={{ fontWeight: 'bold' }}>{props.selectedArtistInfos.schedule}</Text></Text>
                     </View>
                 </View>
 
                 <View key={6} style={styles.btnGroup}>
-                    {info.styleList.map((style) => {
+                    {props.selectedArtistInfos.styleList.map((style) => {
                         return (
-                            <Button key={i}
+                            <Button
                                 title={`#${style}`}
                                 type="solid"
                                 buttonStyle={styles.button}
@@ -208,7 +212,7 @@ function SelectedTattooArtistScreen(props) {
                     }}>Instagram</Text>
                 </View>
                 <View key={8} style={{ width: '90%', margin: 10, flexDirection: 'row', justifyContent: 'space-evenly', flexWrap: 'wrap' }}>
-                    {info.galleryPhoto.map((photo) => {
+                    {props.selectedArtistInfos.galleryPhoto.map((photo) => {
                         return (
                             <Image
                                 source={{ uri: photo }}
@@ -220,7 +224,7 @@ function SelectedTattooArtistScreen(props) {
 
                 <Button key={9}
                     title="En voir plus"
-                    onPress={() => Linking.openURL(`instagram://user?username=${info.instagram}`)}
+                    onPress={() => Linking.openURL(`instagram://user?username=${props.selectedArtistInfos.instagram}`)}
                     buttonStyle={{ backgroundColor: '#F1EFE5', padding: 2, borderBottomWidth: 1, borderBottomColor: '#454543', marginBottom: 15 }}
                     titleStyle={{ color: '#454543' }}
                     type="solid"
@@ -228,29 +232,29 @@ function SelectedTattooArtistScreen(props) {
 
                 <View key={10} style={{ width: '90%', flexDirection: 'row', justifyContent: 'flex-start', marginTop: 20 }}>
                     <AntDesign
-                        onPress={() => Linking.openURL(`http://${info.website}`)}
+                        onPress={() => Linking.openURL(`http://${props.selectedArtistInfos.website}`)}
                         name="earth" size={20} color="#454543" style={{ marginRight: 10, marginTop: 10 }} />
                     <Text
-                        onPress={() => Linking.openURL(`http://${info.website}`)}
-                        style={{ marginTop: 3, fontSize: 16 }}>{info.website}</Text>
+                        onPress={() => Linking.openURL(`http://${props.selectedArtistInfos.website}`)}
+                        style={{ marginTop: 3, fontSize: 16 }}>{props.selectedArtistInfos.website}</Text>
                 </View>
 
                 <View key={11} style={{ width: '90%', flexDirection: 'row', justifyContent: 'flex-start', marginTop: 10 }}>
                     <Feather key={111}
-                        onPress={() => Linking.openURL(`tel:${info.phoneNumber}`)}
+                        onPress={() => Linking.openURL(`tel:${props.selectedArtistInfos.phoneNumber}`)}
                         name="phone" size={20} color="#454543" style={{ marginRight: 10, marginTop: 8 }} />
                     <Text key={12}
-                        onPress={() => Linking.openURL(`tel:${info.phoneNumber}`)}
-                        style={{ marginTop: 3, fontSize: 16 }}>{info.phoneNumber}</Text>
+                        onPress={() => Linking.openURL(`tel:${props.selectedArtistInfos.phoneNumber}`)}
+                        style={{ marginTop: 3, fontSize: 16 }}>{props.selectedArtistInfos.phoneNumber}</Text>
                 </View>
 
                 <View key={13} style={{ width: '90%', flexDirection: 'row', justifyContent: 'flex-start', marginTop: 10 }}>
                     <MaterialIcons key={14}
-                        onPress={() => Linking.openURL(`mailto:${info.email}`)}
+                        onPress={() => Linking.openURL(`mailto:${props.selectedArtistInfos.email}`)}
                         name="alternate-email" size={20} color="#454543" style={{ marginRight: 10, marginTop: 10 }} />
                     <Text key={15}
-                        onPress={() => Linking.openURL(`mailto:${info.email}`)}
-                        style={{ marginTop: 3, fontSize: 16 }}>{info.email}</Text>
+                        onPress={() => Linking.openURL(`mailto:${props.selectedArtistInfos.email}`)}
+                        style={{ marginTop: 3, fontSize: 16 }}>{props.selectedArtistInfos.email}</Text>
                 </View>
                 <View key={16} style={{ flexDirection: 'row' }}>
                     <AntDesign key={17}
@@ -261,7 +265,7 @@ function SelectedTattooArtistScreen(props) {
                         style={{ marginTop: 30, marginRight: 10 }} />
                     <AntDesign key={18}
                         name="instagram"
-                        onPress={() => Linking.openURL(`instagram://user?username=${info.instagram}`)}
+                        onPress={() => Linking.openURL(`instagram://user?username=${props.selectedArtistInfos.instagram}`)}
                         size={32}
                         color="#454543"
                         style={{ marginTop: 30 }} />
@@ -407,21 +411,9 @@ function SelectedTattooArtistScreen(props) {
 
                 </View>
             </ScrollView>
-        )
 
-    })
-
-    return (
-        <View style={styles.container}>
-
-            <View style={styles.header}>
-                <HeaderComponent navigation={props.navigation} />
-            </View>
-
-            {selectedArtistInfos}
-
-        </View>
-    )
+    </View>
+)
 }
 
 const styles = StyleSheet.create({

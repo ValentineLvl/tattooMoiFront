@@ -52,52 +52,60 @@ function SearchScreen(props) {
             :
             setSelected([...selected, tattooStyle]);
 
-        let rawResponse = await fetch(`http://192.168.1.101:3000/search-tattoo?styleList=${tattooStyle}`)
+        // console.log('SELECTED', selected);
+    }
+
+    // const onSearchInput = async (name, lastname) => {
+
+    //     let rawResponse = await fetch(`http://192.168.1.101:3000/search-tattoo?firstName=${name}&lastName${lastname}`)
+    //     let response = await rawResponse.json()
+
+    //     let nameResult = [response.searchTatoueur]
+
+
+    //     nameResult.map((tatoueur) => {
+    //         console.log('TATOUEUR', tatoueur);
+    //         if (tatoueur !== null) {
+    //             setStyleArray(styleArray => [...styleArray, tatoueur])
+    //             props.saveTatoueurInfos([nameResult])
+    //         }
+    //         // else {
+    //         //     Alert.alert(
+    //         //         "Sorry...",
+    //         //         "Tatoueur non trouvé",
+    //         //         [
+    //         //             { text: "OK", onPress: () => props.navigation.goBack() }
+    //         //         ]
+    //         //     );
+    //         // }
+    //     })
+
+    // }
+
+
+
+    const onSearchStylePress = async () => {
+
+        let rawResponse = await fetch('http://192.168.1.101:3000/search-tattoo', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ styleList: selected })
+        });
+
         let response = await rawResponse.json()
-        setStyleArray(styleArray => [...styleArray, response.searchResult])
-    }
 
-    useEffect(() => {
-        console.log('STYLEARRAY', styleArray)  // Permet just ed'afficher le tableau en temps réel
-    }, [styleArray])
+        setStyleArray(response.searchResult)
 
-    const onSearchInput = async (name, lastname) => {
+        props.saveTatoueurInfos(response.searchResult)
 
-        let rawResponse = await fetch(`http://192.168.1.101:3000/search-tattoo?firstName=${name}&lastName${lastname}`)
-        let response = await rawResponse.json()   
-
-        let nameResult = [response.searchTatoueur]
-
-
-        nameResult.map((tatoueur) => {
-            console.log('TATOUEUR', tatoueur);
-            if (tatoueur !== null) {
-                setStyleArray(styleArray => [...styleArray, tatoueur])
-                props.saveTatoueurInfos([nameResult])
-            }
-            // else {
-            //     Alert.alert(
-            //         "Sorry...",
-            //         "Tatoueur non trouvé",
-            //         [
-            //             { text: "OK", onPress: () => props.navigation.goBack() }
-            //         ]
-            //     );
-            // }
-        })
-
-    }
-
-    const onSearchStylePress = () => {
         props.navigation.navigate('Resultat')
-        props.saveTatoueurInfos(styleArray)
 
     }
 
-    const onSearchNamePress = () => {
-        onSearchInput(tattooshopName)
+    // const onSearchNamePress = () => {
+    //     onSearchInput(tattooshopName)
 
-    }
+    // }
 
     const tattooStyleBtn = tattooStyles.map((tattooStyle, i) => (
 
@@ -155,7 +163,7 @@ function SearchScreen(props) {
                     title="Rechercher"
                     type="solid"
                     buttonStyle={{ backgroundColor: '#424D41', paddingLeft: 30, paddingRight: 30, paddingTop: 10, paddingBottom: 10 }}
-                    onPress={() => { onSearchStylePress(), onSearchNamePress() }}
+                    onPress={() => onSearchStylePress() }
                 />
             </View>
             <Button
@@ -272,7 +280,7 @@ function mapStateToProps(state) {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        saveTatoueurInfos: (infos) => dispatch({ type: 'saveTatoueurInfos', infos }),
+        saveTatoueurInfos: (infos) => dispatch({ type: 'saveTatoueurInfos', infos: infos }),
         addDataUser: (dataUser) => dispatch({ type: 'addDataUser', dataUser: dataUser })
     }
 }

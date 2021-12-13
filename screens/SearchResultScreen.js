@@ -9,8 +9,6 @@ import TattooCardComponent from './TattooCardComponent';
 
 function SearchResultScreen(props) {
 
-    const [tattooList, setTattooList] = useState([props.saveTatoueurInfos]);
-
     var handlePressAddFavorite = async (tattooId) => {
 
         const response = await fetch('http://192.168.1.101:3000/favorites', {
@@ -18,7 +16,7 @@ function SearchResultScreen(props) {
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: `IdFromFront=${tattooId}&token=${props.dataUser.token}`
         })
-        console.log('recupérer dataUser.token', props.dataUser.token);
+        // console.log('recupérer dataUser.token', props.dataUser.token);
     }
 
     // var handlePressDeleteFavorite = async () => {
@@ -27,15 +25,40 @@ function SearchResultScreen(props) {
     // })
     // }
 
-    const searchResults = tattooList.map((tatoueur, i) => {
+    const searchResults = props.saveTatoueurInfos.map((tatoueur, i) => {
+
+        const [tattooLiked, setTattooLiked] = useState(false);
 
         return (
-            <TouchableOpacity onPress={() => { props.selectedArtistInfos([props.saveTatoueurInfos[0][0][0]]), props.navigation.navigate('TattooArtist') }}>
 
-                <TattooCardComponent key={i} firstname={tatoueur.firstName}/>
+            <TouchableOpacity onPress={() => { props.selectedArtistInfos(tatoueur), props.navigation.navigate('TattooArtist') }}>
+                <Card containerStyle={styles.cards}>
+                    <Card.Image source={{ uri: tatoueur.galleryPhoto[0] }}>
+                        <TouchableOpacity onPress={() => { handlePressAddFavorite(tatoueur._id), setTattooLiked(!tattooLiked) }}>
+                            <AntDesign
+                                name="heart"
+                                size={30}
+                                style={{ color: tattooLiked ? '#BF5F5F' : '#454543', left: '87%', top: '5%' }}
 
+                            />
+                        </TouchableOpacity >
+                    </Card.Image>
+                    <View style={styles.cardDesc}>
+                        <View>
+                            <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#454543' }}>{tatoueur.firstName}</Text>
+                            <Text style={{ marginBottom: 10, fontWeight: 'bold', paddingTop: 5, color: '#454543' }}>
+                                {tatoueur.tattooShopAddress[0].tattooShop}
+                            </Text>
+                            <Text style={{ fontStyle: 'italic', color: 'rgba(69, 69, 67, 0.8)' }}>{tatoueur.styleList.join(' ')}</Text>
+                        </View>
+                        <View>
+                            <Text style={{ color: '#454543' }}>Attente: {tatoueur.schedule}</Text>
+                            <Text style={{ paddingTop: 5, color: '#454543' }}>{tatoueur.tattooShopAddress[0].city}</Text>
+                        </View>
+                    </View>
+                </Card>
             </TouchableOpacity>
-        );
+        )
     })
 
     return (
@@ -60,12 +83,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
-    // main: {
-    //     flex: 3,
-    //     flexDirection: 'row',
-    //     alignItems: 'center',
-    //     justifyContent: 'space-evenly',
-    // },
     main: {
         flex: 1,
         flexDirection: 'column',
