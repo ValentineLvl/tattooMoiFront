@@ -11,27 +11,50 @@ function AppointmentScreen(props) {
     const [formsList, setFormsList] = useState([]);
     const [tattooInfo, setTattooInfo] = useState([]);
    // const [userForms, setUserForms] = useState(false);
+   const [address, setAddress]= useState([]);
+   const [formId, setFormId]= useState([]);
 
     useEffect(() => {
 
         //AsyncStorage.getItem("dataUserForms", function (error, data) {
+            const findProjectFormId = async () => {
+                const dataProjectForm = await fetch(`http://172.17.1.32:3000/project-form-id?token=${props.dataUser.token}`)
+                const body = await dataProjectForm.json()
+                // console.log("C BON????", body.user.formId)
+                //console.log("body", body.user.formId)
+                
+                // props.saveForm(body.user.formId)
+                setFormId(body.user.formId)
+             
+               
+    
+            } 
+            console.log("JE SUIS LA", formId)
+            findProjectFormId();
+
 
         console.log("App is loaded");
         // ASYNC STORAGE
         // console.log("formList", props.formList[0]._id)
         // if (data) {
+              
         const findProjectForm = async () => {
-            const dataProjectForm = await fetch(`http://172.17.1.128:3000/project-form?token=${props.dataUser.token}`)
+            const dataProjectForm = await fetch(`http://172.17.1.32:3000/project-form?token=${props.dataUser.token}&tattooIdFromFront=${formId}`)
             const body = await dataProjectForm.json()
-            console.log("C BON????", body.project.tattooShopAddress[0].address)
+            // console.log("C BON????", body.user.formId[0].tattooProjectId)
             //console.log("body", body.user.formId)
+            
             props.saveForm(body.user.formId)
             setFormsList(body.user.formId)
-            setTattooInfo(body.project)
-           
+            // setTattooInfo(body.project)
+            // setAddress(body.address)
+        //    console.log( "BOOOUHHH",formslist)
 
         }
+        
         findProjectForm();
+
+       
 //         setUserForms(true);
 //     }
 // });
@@ -40,7 +63,7 @@ function AppointmentScreen(props) {
 
     var deleteForm = async (_id) => {
 
-        const deleteReq = await fetch('http://172.17.1.128:3000/project-form', {
+        const deleteReq = await fetch('http://172.17.1.32:3000/project-form', {
             method: 'DELETE',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: `formId=${_id}&token=${props.dataUser.token}`,
@@ -54,7 +77,7 @@ function AppointmentScreen(props) {
 
 
     var projectForm = props.formList.map((form, i) => {
-        //console.log("image", form.projectImg)
+        console.log("image", form.tattooProjectId[0].tattooShopAddress[0].address)
         return (
 
             <Card key={i} containerStyle={styles.cards}>
@@ -74,10 +97,10 @@ function AppointmentScreen(props) {
                         </Card.Image>
                         <View  style={styles.cardDesc}  >
                         <Text style={{ marginBottom: 10, fontWeight: 'bold', paddingTop: 5, color: '#454543' }}> Projet : {form.request}</Text>
-                        {tattooInfo.map((tattoo, i) => ( <>
-                          <Text style={{  fontWeight: 'bold', paddingTop: 5, color: '#454543' }}> tatoueur: {tattoo.lastName} </Text> 
-                        <Text style={{ marginBottom: 10, fontWeight: 'bold',  color: '#454543' }}> Adresse : {tattoo.tattooShop[0].address}, {tattoo.address}, {tattoo.address} </Text> 
-                        </>))}
+                        
+                          <Text style={{  fontWeight: 'bold', paddingTop: 5, color: '#454543' }}> tatoueur: {form.tattooProjectId[0].lastName} </Text> 
+                          <Text style={{ marginBottom: 10, fontWeight: 'bold',  color: '#454543' }}> Adresse : {form.tattooProjectId[0].tattooShopAddress[0].address}, {form.tattooProjectId[0].tattooShopAddress[0].postalCode}, {form.tattooProjectId[0].tattooShopAddress[0].city}  </Text> 
+                     
         
     
                         
