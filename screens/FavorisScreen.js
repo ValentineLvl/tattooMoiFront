@@ -22,7 +22,7 @@ function FavorisScreen(props) {
 var handlePressDeleteFavorite = async (_id) => {
     setTattooLiked(tattooLiked)
 
-    const deleteReq = await fetch('http://192.168.1.15:3000/delete-favorites', {
+    const deleteReq = await fetch('http://192.168.1.101:3000/delete-favorites', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: `tattooIdFromFront=${_id}&token=${props.dataUser.token}`
@@ -35,7 +35,7 @@ var handlePressDeleteFavorite = async (_id) => {
     useEffect(() => {
         console.log("Favoris is loaded");
         const findFavorites = async () => {
-            const dataFavorites = await fetch(`http://192.168.1.15:3000/favorites?token=${props.dataUser.token}`)
+            const dataFavorites = await fetch(`http://192.168.1.101:3000/favorites?token=${props.dataUser.token}`)
             const body = await dataFavorites.json();
             //console.log("récupérer le favoris body", body.user.tattooId)
             //props.saveForm(body.user.formId)
