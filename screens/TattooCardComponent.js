@@ -1,39 +1,24 @@
-import React, { useState } from 'react';
-import { connect } from 'react-redux';
-import { StyleSheet, View, Image, Text, ScrollView } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { Card, Button } from 'react-native-elements';
 import { AntDesign, FontAwesome } from '@expo/vector-icons';
-import { TouchableOpacity } from 'react-native';
-import HeaderComponent from './HeaderComponent';
+import { connect } from 'react-redux';
 
-function SearchResultScreen(props) {
 
-    var handlePressAddFavorite = async (tattooId) => {
+function TattooCardComponent(props) {
 
-        const response = await fetch('http://192.168.1.101:3000/favorites', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: `IdFromFront=${tattooId}&token=${props.dataUser.token}`
-        })
-        // console.log('recupérer dataUser.token', props.dataUser.token);
-    }
+    const [tattooLiked, setTattooLiked] = useState(false);
 
-    // var handlePressDeleteFavorite = async () => {
-    // const response = await fetch(`http://192.168.0.38:3000/favorites/${name}`, {
-    //   method: 'DELETE'
-    // })
-    // }
+    console.log('REDUCER', props.saveTatoueurInfos);
 
     const searchResults = props.saveTatoueurInfos.map((tatoueur, i) => {
 
-        const [tattooLiked, setTattooLiked] = useState(false);
-
         return (
-
-            <TouchableOpacity onPress={() => { props.selectedArtistInfos(tatoueur), props.navigation.navigate('TattooArtist') }}>
+            
+            <TouchableOpacity onPress={() => { props.selectedArtistInfos(props.saveTatoueurInfos), props.navigation.navigate('TattooArtist') }}>
                 <Card containerStyle={styles.cards}>
                     <Card.Image source={{ uri: tatoueur.galleryPhoto[0] }}>
-                        <TouchableOpacity onPress={() => { handlePressAddFavorite(tatoueur._id), setTattooLiked(!tattooLiked) }}>
+                        <TouchableOpacity onPress={() => { setTattooLiked(!tattooLiked) }}>
                             <AntDesign
                                 name="heart"
                                 size={30}
@@ -59,19 +44,6 @@ function SearchResultScreen(props) {
             </TouchableOpacity>
         )
     })
-
-    return (
-
-        <View style={styles.container}>
-            <HeaderComponent navigation={props.navigation} />
-
-            <ScrollView style={{ width: '90%', flex: 2 }}>
-
-                {searchResults}
-
-            </ScrollView>
-        </View>
-    )
 }
 
 const styles = StyleSheet.create({
@@ -82,6 +54,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
+    // main: {
+    //     flex: 3,
+    //     flexDirection: 'row',
+    //     alignItems: 'center',
+    //     justifyContent: 'space-evenly',
+    // },
     main: {
         flex: 1,
         flexDirection: 'column',
@@ -141,4 +119,4 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SearchResultScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(TattooCardComponent)
