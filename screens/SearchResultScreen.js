@@ -13,9 +13,10 @@ import { Card, Button } from "react-native-elements";
 import { AntDesign, FontAwesome } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native";
 import HeaderComponent from "./HeaderComponent";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 function SearchResultScreen(props) {
-  const [tattooLiked, setTattooLiked] = useState(false);
   const [overlayVisibleCoeur, setOverlayVisibleCoeur] = useState(false);
 
   const [signInEmail, setSignInEmail] = useState("");
@@ -56,15 +57,8 @@ function SearchResultScreen(props) {
     );
   });
 
-  var colorHeart;
-  if (tattooLiked) {
-    colorHeart = { color: "#BF5F5F" };
-  } else {
-    colorHeart = { color: "#454543" };
-  }
 
   var handlePressAddFavorite = async (tattooId) => {
-    setTattooLiked(!tattooLiked);
 
     const response = await fetch("http://172.17.1.128:3000/favorites", {
       method: "POST",
@@ -78,6 +72,9 @@ function SearchResultScreen(props) {
   const searchResults = props.saveTatoueurInfos.map((style) => {
     return style.map((tmp) => {
       return tmp.map((info) => {
+
+        const [tattooLiked, setTattooLiked] = useState(false);
+
         return (
           <TouchableOpacity
             key={info._id}
@@ -103,10 +100,10 @@ function SearchResultScreen(props) {
                 ) : (
                   <>
                     <TouchableOpacity
-                      onPress={() => handlePressAddFavorite(info._id)}
+                      onPress={() => {handlePressAddFavorite(info._id), setTattooLiked(!tattooLiked);}}
                     >
                       <Text style={{ left: "87%", top: "5%" }}>
-                        <AntDesign name="heart" size={30} style={colorHeart} />
+                        <AntDesign name="heart" size={30} style={{color: tattooLiked ? '#BF5F5F' : '#454543'}} />
                       </Text>
                     </TouchableOpacity>
                   </>
