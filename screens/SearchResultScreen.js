@@ -5,14 +5,15 @@ import { Card, Button } from 'react-native-elements';
 import { AntDesign, FontAwesome } from '@expo/vector-icons';
 import { TouchableOpacity } from 'react-native';
 import HeaderComponent from './HeaderComponent';
+import TattooCardComponent from './TattooCardComponent';
 
 function SearchResultScreen(props) {
 
-    // console.log('STATE FROM STORE:', props.saveTatoueurInfos)
+    const [tattooList, setTattooList] = useState([props.saveTatoueurInfos]);
 
     var handlePressAddFavorite = async (tattooId) => {
 
-        const response = await fetch('http://192.168.1.15:3000/favorites', {
+        const response = await fetch('http://192.168.1.101:3000/favorites', {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: `IdFromFront=${tattooId}&token=${props.dataUser.token}`
@@ -26,59 +27,16 @@ function SearchResultScreen(props) {
     // })
     // }
 
-    const searchResults = props.saveTatoueurInfos.map((style) => {
+    const searchResults = tattooList.map((tatoueur, i) => {
 
         return (
+            <TouchableOpacity onPress={() => { props.selectedArtistInfos([props.saveTatoueurInfos[0][0][0]]), props.navigation.navigate('TattooArtist') }}>
 
-            style.map((tmp, i) => {
+                <TattooCardComponent key={i} firstname={tatoueur.firstName}/>
 
-                return (
-                    tmp.map((info, i) => {
-
-                        const [tattooLiked, setTattooLiked] = useState(false);
-
-                        return (
-                            <TouchableOpacity onPress={() => { props.selectedArtistInfos([info]), props.navigation.navigate('TattooArtist') }}>
-                                <Card containerStyle={styles.cards}>
-                                    <Card.Image source={{ uri: info.galleryPhoto[0] }}>
-                                        <TouchableOpacity onPress={() => { handlePressAddFavorite(info._id), setTattooLiked(!tattooLiked) }}>
-                                            <AntDesign
-                                                name="heart"
-                                                size={30}
-                                                style={{ color: tattooLiked ? '#BF5F5F' : '#454543', left: '87%', top: '5%' }}
-
-                                            />
-                                        </TouchableOpacity >
-                                    </Card.Image>
-                                    <View style={styles.cardDesc}>
-                                        <View>
-                                            <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#454543' }}>{info.firstName}</Text>
-                                            {info.tattooShopAddress.map((name) => {
-                                                return (
-                                                    <Text style={{ marginBottom: 10, fontWeight: 'bold', paddingTop: 5, color: '#454543' }}>
-                                                        {name.tattooShop}
-                                                    </Text>
-                                                )
-                                            })}
-                                            <Text style={{ fontStyle: 'italic', color: 'rgba(69, 69, 67, 0.8)' }}>{info.styleList.join(' ')}</Text>
-                                        </View>
-                                        <View>
-                                            <Text style={{ color: '#454543' }}>Attente: {info.schedule}</Text>
-                                            {info.tattooShopAddress.map((address) => {
-                                                return (
-                                                    <Text style={{ paddingTop: 5, color: '#454543' }}>{address.city}</Text>
-                                                )
-                                            })}
-                                        </View>
-                                    </View>
-                                </Card>
-                            </TouchableOpacity>
-                        );
-                    })
-                )
-            }))
-    });
-
+            </TouchableOpacity>
+        );
+    })
 
     return (
 
