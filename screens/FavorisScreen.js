@@ -8,9 +8,9 @@ import HeaderComponent from './HeaderComponent';
 
 
 function FavorisScreen(props) {
-    
-const [favoritesList, setFavoritesList] = useState([]);
-const [tattooLiked, setTattooLiked] = useState(false);
+
+    const [favoritesList, setFavoritesList] = useState([]);
+    const [tattooLiked, setTattooLiked] = useState(false);
 
     var colorHeart;
     if(!tattooLiked){
