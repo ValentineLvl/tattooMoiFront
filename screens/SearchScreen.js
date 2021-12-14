@@ -97,10 +97,10 @@ function SearchScreen(props) {
         let response = await rawResponse.json()
 
         setStyleArray(response.searchResult)
-        setTatoueurName(response.searchTatoueur)
 
-        props.saveTatoueurInfos(response.searchResult, [response.searchTatoueur])
-       // props.saveTatoueurInfos([response.searchTatoueur])
+        props.saveTatoueurInfos(response.searchResult)
+
+        setTatoueurName('');
 
         props.navigation.navigate('Resultat')
 

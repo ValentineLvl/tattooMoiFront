@@ -12,7 +12,9 @@ export default function (infos = [], action) {
         // infosCopy.push(action.infos)
         // console.log('INFOSCOPY', infosCopy);
         return action.infos;
-    } else {
+    } else if (action.type == 'saveTatoueurName') {
+        return action.infos;
+    }else {
         return infos;
     }
 }
