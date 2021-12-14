@@ -9,6 +9,8 @@ import HeaderComponent from './HeaderComponent';
 import { StyleSheet, View, TextInput, Text, TouchableOpacity, Alert } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
 
+import * as Location from 'expo-location';
+
 const data = [
     { label: 'Noir', value: 'black&grey' },
     { label: 'Couleur', value: 'color' },
@@ -24,10 +26,19 @@ function SearchScreen(props) {
     //const [tattooshopName, setTattooshopName] = useState('');
     const [tatoueurName, setTatoueurName] = useState('');
 
-    const [styleArray, setStyleArray] = useState([]);
+    // const [location, setLocation] = useState(null);
+    const [displayCurrentAddress, setDisplayCurrentAddress] = useState('');
+    const [errorMsg, setErrorMsg] = useState(null);
+
+    // const [styleArray, setStyleArray] = useState([]);
 
     //A l'initialisation de searchScreen, si le user était connecté on remet ses infos dans le store avec une route get
     useEffect(() => {
+
+        CheckIfLocationEnabled();
+        // GetCurrentLocation();
+
+        setDisplayCurrentAddress('Me géolocaliser')
 
         AsyncStorage.getItem("dataUserToken", function (error, data) {
 
@@ -44,6 +55,50 @@ function SearchScreen(props) {
         });
 
     }, []);
+
+    const CheckIfLocationEnabled = async () => {
+        let { status } = await Location.requestForegroundPermissionsAsync();
+        if (status !== 'granted') {
+            setErrorMsg('Permission to access location was denied');
+            return;
+        }
+    }
+
+    let alertTxt = "Un petit instant..."
+
+    const GetCurrentLocation = async () => {
+
+        setDisplayCurrentAddress(
+            Alert.alert(
+                alertTxt,
+                '',
+                null,
+            )
+        )
+
+        let { coords } = await Location.getCurrentPositionAsync();
+        if (coords) {
+            const { latitude, longitude } = coords;
+            let response = await Location.reverseGeocodeAsync({
+                latitude,
+                longitude
+            })
+
+            setDisplayCurrentAddress(
+                Alert.alert(
+                    alertTxt = "C'est good !",
+                    '',
+                    null,
+                )
+            )
+
+            response.map((item) => {
+                let userAddress = `${item.street}, ${item.postalCode} ${item.city}`;
+
+                setDisplayCurrentAddress(userAddress);
+            })
+        }
+    };
 
     const handlePress = async (tattooStyle) => {
         selected.includes(tattooStyle)
@@ -63,7 +118,7 @@ function SearchScreen(props) {
 
         let response = await rawResponse.json()
 
-        setStyleArray(response.searchResult)
+        // setStyleArray(response.searchResult)
 
         props.saveTatoueurInfos(response.searchResult)
 
@@ -78,7 +133,7 @@ function SearchScreen(props) {
                 ]
             );
         }
-        
+
         setTatoueurName('');
 
         props.navigation.navigate('Resultat')
@@ -108,10 +163,28 @@ function SearchScreen(props) {
                 style={styles.input}
                 placeholder="Tatoueur, TattooShop"
             />
-            <TextInput
+
+            {/* <TextInput
                 style={styles.inputLocalisation}
                 placeholder="Localisation"
-            />
+            /> */}
+
+            <TouchableOpacity
+                onPress={() => GetCurrentLocation()}
+                style={{
+                    width: '80%',
+                    backgroundColor: '#F1EFE5',
+                    borderColor: 'black',
+                    borderWidth: 0.5,
+                    padding: 10,
+                    marginBottom: 8,
+                    width: '80%'
+                }}
+            >
+                <Text style={{ color: '#BEBDB9' }}>
+                    {displayCurrentAddress}
+                </Text>
+            </TouchableOpacity>
 
             <View style={styles.btnGroup}>
 
