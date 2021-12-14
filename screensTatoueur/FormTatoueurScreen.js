@@ -10,19 +10,71 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 function FormTatoueurScreen(props) {
+ 
     const [comment, setComment] = useState("")
     const [price, setPrice] = useState("")
     const [date, setDate] = useState("")
     const [overlayVisibleConfirm, setOverlayVisibleConfirm] = useState(false);
     const [overlayVisibleRefuse, setOverlayVisibleRefuse] = useState(false);
+    const [status, setStatus] = useState("")
+console.log(props.formList[0].confirmationFormSchema[0]._id)
+console.log("STATUS", status)
 
     const Confirm = () => {
         setOverlayVisibleConfirm(!overlayVisibleConfirm);
+        setStatus("Accepté")
       };
     
     const Refuse = () => {
         setOverlayVisibleRefuse(!overlayVisibleRefuse);
+        setStatus("refusé")
       };
+
+      async function handleClickSendConfirm() {
+        {
+            console.log("activation de la fonction")
+            console.log("STATUS", status)
+            console.log("ID", props.formList[0]._id)
+            // console.log("ID", props.dataUser.firstName)
+
+            const dataConfirm = await fetch('http://192.168.1.15:3000/send-confirm', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: `confirmId=${props.formList[0].confirmationFormSchema[0]._id}&statusFromFront=${status}&formId=${props.formList[0]._id}&dateFromFront=${date}&priceFromFront=${price}&commentFromFront=${comment}`
+            })
+            const body = await dataConfirm.json()
+            // console.log("c la", props.saveTatoueurInfos)
+            // if (body.result == true) {
+                
+                setOverlayVisibleConfirm(!overlayVisibleConfirm)
+            // }
+            // console.log(tempUrl);
+          
+        }
+    };
+
+    async function handleClickSendRefuse() {
+        {
+            console.log("activation de la refus")
+            console.log("STATUS", status)
+            console.log("ID", props.formList[0]._id)
+            // console.log("ID", props.dataUser.firstName)
+
+            const dataRefuse = await fetch('http://192.168.1.15:3000/send-confirm', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: `confirmId=${props.formList[0].confirmationFormSchema[0]._id}&statusFromFront=${status}&formId=${props.formList[0]._id}`
+            })
+            const body = await dataRefuse.json()
+            // console.log("c la", props.saveTatoueurInfos)
+            // if (body.result == true) {
+               
+                setOverlayVisibleRefuse(!overlayVisibleRefuse)
+            // }
+            // console.log(tempUrl);
+          
+        }
+    }
 
     return (
         
@@ -59,7 +111,7 @@ function FormTatoueurScreen(props) {
             <Text style={styles.Info}>{form.disponibility}</Text>
         <Text style={styles.titre}>Idée du projet:</Text>
         <Card.Image source={{ uri: form.projectImg }} />
-        
+        {(status == "")?<>
         <View style={{flexDirection: "row", alignSelf: "center"}}>
         <TouchableOpacity style={{marginRight: 20}} onPress={() => Confirm()}>
                         <Text >
@@ -80,20 +132,36 @@ function FormTatoueurScreen(props) {
                                 />
                                 </Text>
                                 </TouchableOpacity>
-        </View>
+        </View> 
+        </>
+        : (status == "Accepté")?<Text style={{textAlign :"center", color:"#008000"}}> {status} </Text>:<Text style={{textAlign :"center", color:"#FF0000"}}> {status} </Text>
+ } 
         <Modal
                         animationType="slide"
                         transparent={true}
                         visible={overlayVisibleConfirm}
                         onRequestClose={() => {
+                        console.log(status)
                         setOverlayVisibleConfirm(!overlayVisibleConfirm);
                         }}
+                        
                     >
                          <View style={styles.centeredView}>
                     <View style={styles.modalView}>
                     <Text style={styles.textOverlay}>Proposition de rendez-vous</Text>
                     <View style={styles.continuer}>
       
+
+                    {/* <TextInput
+                                style={styles.hiddenInput}
+                                autoFocus={true}
+                                multiline
+                                onFocus={Keyboard.dismiss}
+                                onChangeText={this._onHiddenTextChangeText}
+                                value={this.state.hiddenInput}
+                            /> */}
+       
+
         <TextInput
                                 style={styles.input}
                                 onChangeText={setDate}
@@ -119,7 +187,7 @@ function FormTatoueurScreen(props) {
                     titleStyle={{fontSize:14}}
                     buttonStyle={styles.greenButton}
                     type="solid"
-                    onPress={() => Confirm()}
+                    onPress={() => handleClickSendConfirm()}
                 />
                               </View>
                         </View>
@@ -140,11 +208,11 @@ function FormTatoueurScreen(props) {
                     <View style={styles.continuer}>
                     <Text style={styles.text}> Veuillez cliquer sur le bouton ci-dessous pour confirmer le refus</Text>
                     <Button
-                    title="Confirmer le refus"
+                    title="Envoyer le refus"
                     titleStyle={{fontSize:14}}
                     buttonStyle={styles.greenButton}
                     type="solid"
-                    onPress={() => Confirm()}
+                    onPress={() => handleClickSendRefuse()}
                 />
                    
                     </View>
@@ -262,7 +330,11 @@ text: {
     fontWeight:'bold',
     color:'#424D41',
     textAlign: 'center',
- }
+ },
+ hiddenInput: {
+    width: 0,
+    height: 0,
+  },
 
 });
 

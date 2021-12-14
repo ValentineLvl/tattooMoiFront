@@ -26,7 +26,7 @@ function AppointmentTatoueurScreen(props) {
         findFormTattoo()
     }, [])
 
-  
+    // console.log("FORM", form[0].confirmationFormSchema[0].status)
 
     var appointment = form.map((form, i) => {
         console.log("image", form.projectImg)
@@ -43,7 +43,7 @@ function AppointmentTatoueurScreen(props) {
                     color="#424D41"
                 />
                 <View style={styles.titleStyle}>
-                <Text> Rendez-vous {form.firstName} {form.lastName} </Text>
+                <Text> Rendez-vous {form.firstName} {form.lastName} ({form.confirmationFormSchema[0].status}) </Text>
                 </View>
                 <MaterialCommunityIcons
                 iconRight
@@ -118,8 +118,7 @@ const styles = StyleSheet.create({
         flex: 1,
         paddingTop: 50,
         backgroundColor: '#F1EFE5',
-        //   alignItems: 'center',
-        //   justifyContent: 'center',
+        
     },
     safeArea:{
         marginLeft:30,
@@ -130,7 +129,7 @@ const styles = StyleSheet.create({
     titleStyle: {
         color: '#424D41',
         fontSize:14,
-        marginRight:100, 
+        marginRight:50, 
         marginLeft: 5
     },
     buttonStyle: {
