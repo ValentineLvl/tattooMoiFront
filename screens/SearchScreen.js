@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 
 import HeaderComponent from './HeaderComponent';
 
-import { StyleSheet, View, Image, TextInput, Text, TouchableOpacity, Alert } from 'react-native';
+import { StyleSheet, View, TextInput, Text, TouchableOpacity, Alert } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
 
 const data = [
@@ -21,6 +21,7 @@ function SearchScreen(props) {
     const [userToken, setUserToken] = useState(false);
     const [dropdownValue, setDropdownValue] = useState(null);
     const [selected, setSelected] = useState([]);
+    //const [tattooshopName, setTattooshopName] = useState('');
     const [tatoueurName, setTatoueurName] = useState('');
 
     const [styleArray, setStyleArray] = useState([]);
@@ -44,45 +45,13 @@ function SearchScreen(props) {
 
     }, []);
 
-
     const handlePress = async (tattooStyle) => {
         selected.includes(tattooStyle)
             ?
             setSelected(selected.filter(s => s !== tattooStyle))
             :
             setSelected([...selected, tattooStyle]);
-
-        // console.log('SELECTED', selected);
     }
-
-    // const onSearchInput = async (name, lastname) => {
-
-    //     let rawResponse = await fetch(`http://192.168.1.101:3000/search-tattoo?firstName=${name}&lastName${lastname}`)
-    //     let response = await rawResponse.json()
-
-    //     let nameResult = [response.searchTatoueur]
-
-
-    //     nameResult.map((tatoueur) => {
-    //         console.log('TATOUEUR', tatoueur);
-    //         if (tatoueur !== null) {
-    //             setStyleArray(styleArray => [...styleArray, tatoueur])
-    //             props.saveTatoueurInfos([nameResult])
-    //         }})
-    //         // else {
-    //         //     Alert.alert(
-    //         //         "Sorry...",
-    //         //         "Tatoueur non trouvé",
-    //         //         [
-    //         //             { text: "OK", onPress: () => props.navigation.goBack() }
-    //         //         ]
-    //         //     );
-    //         // }
-    //     })
-
-    // }
-
-
 
     const onSearchStylePress = async () => {
 
@@ -96,10 +65,21 @@ function SearchScreen(props) {
 
         setStyleArray(response.searchResult)
 
-        setTatoueurName(response.searchTatoueur)
-
         props.saveTatoueurInfos(response.searchResult)
-        props.saveTatoueurInfos([response.searchTatoueur])
+
+        console.log('SEARCHRESULT', response.searchResult)
+
+        if (response.searchResult.length === 0) {
+            Alert.alert(
+                "Sorry...",
+                "Tatoueur non trouvé",
+                [
+                    { text: "OK", onPress: () => props.navigation.goBack() }
+                ]
+            );
+        }
+        
+        setTatoueurName('');
 
         props.navigation.navigate('Resultat')
 
@@ -161,7 +141,7 @@ function SearchScreen(props) {
                     title="Rechercher"
                     type="solid"
                     buttonStyle={{ backgroundColor: '#424D41', paddingLeft: 30, paddingRight: 30, paddingTop: 10, paddingBottom: 10 }}
-                    onPress={() => onSearchStylePress() }
+                    onPress={() => onSearchStylePress()}
                 />
             </View>
             <Button
