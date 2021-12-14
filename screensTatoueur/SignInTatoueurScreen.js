@@ -27,7 +27,6 @@ function SignInTatoueurScreen(props) {
     
         if(body.result == true){
           props.addDataTattoo(body.user)
-          console.log('user connected', body.user)
           AsyncStorage.setItem("dataTattooToken", body.token);
         setUserExists(true);
           

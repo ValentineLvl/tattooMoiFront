@@ -23,7 +23,7 @@ function AppointmentScreen(props) {
         const findProjectForm = async () => {
             const dataProjectForm = await fetch(`http://192.168.0.38:3000/project-form?token=${props.dataUser.token}`)
             const body = await dataProjectForm.json()
-            console.log("C BON????", body.project.tattooShopAddress[0].address)
+           //("C BON????", body.project.tattooShopAddress[0].address)
             //console.log("body", body.user.formId)
             props.saveForm(body.user.formId)
             setFormsList(body.user.formId)

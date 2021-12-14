@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 
 import HeaderComponent from './HeaderComponent';
 
-import { StyleSheet, View, TextInput, Text, TouchableOpacity, Alert } from 'react-native';
+import { StyleSheet, View, TextInput, Text, TouchableOpacity, Alert, SafeAreaView, ScrollView } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
 
 const data = [
@@ -106,7 +106,7 @@ function SearchScreen(props) {
 
     }
 
-    console.log('STYLEARRAY', styleArray)
+    //console.log('STYLEARRAY', styleArray)
 
     const tattooStyleBtn = tattooStyles.map((tattooStyle, i) => (
 
@@ -124,7 +124,8 @@ function SearchScreen(props) {
     return (
         <View style={styles.container}>
             <HeaderComponent navigation={props.navigation} />
-
+            <View style={styles.form}>
+            
             <TextInput
                 onChangeText={(value) => setTatoueurName(value)}
                 value={tatoueurName}
@@ -135,6 +136,8 @@ function SearchScreen(props) {
                 style={styles.inputLocalisation}
                 placeholder="Localisation"
             />
+            
+            
 
             <View style={styles.btnGroup}>
 
@@ -147,9 +150,9 @@ function SearchScreen(props) {
                 placeholderStyle={styles.placeholderStyle}
                 selectedTextStyle={styles.selectedTextStyle}
                 data={data}
-                containerStyle={{ backgroundColor: '#F1EFE5' }}
+                containerStyle={{ backgroundColor: '#F1EFE5', marginBottom: 40 }}
                 activeColor={'#C2A77D'}
-                maxHeight={110}
+                maxHeight={126}
                 labelField="label"
                 valueField="value"
                 placeholder="Couleur"
@@ -158,7 +161,7 @@ function SearchScreen(props) {
                     setDropdownValue(item.value);
                 }}
             />
-
+    
             <View style={styles.main}>
                 <Button
                     title="Rechercher"
@@ -167,6 +170,7 @@ function SearchScreen(props) {
                     onPress={() =>  onSearchStylePress()}
                 />
             </View>
+            
             <Button
                 title="Vous êtes pro ? Cliquez ici"
                 buttonStyle={{ backgroundColor: '#F1EFE5', padding: 1, paddingRight: 5, paddingLeft: 5, borderRadius: 5 }}
@@ -174,6 +178,7 @@ function SearchScreen(props) {
                 type="solid"
                 onPress={() => props.navigation.navigate('Connexion Tatoueur')}
             />
+            </View>
         </View>
     )
 }
@@ -203,19 +208,21 @@ const styles = StyleSheet.create({
     },
     input: {
         height: 40,
-        width: '80%',
+        width: 350,
         margin: 12,
         marginTop: 30,
         borderWidth: 0.5,
         padding: 10,
+        alignSelf: 'center',
     },
     inputLocalisation: {
         height: 40,
-        width: '80%',
+        width: 350,
         margin: 12,
         marginBottom: 30,
         borderWidth: 0.5,
         padding: 10,
+        alignSelf: 'center',
     },
     button: {
         backgroundColor: '#F1EFE5',
@@ -254,7 +261,7 @@ const styles = StyleSheet.create({
         flexWrap: 'wrap'
     },
     dropdown: {
-        width: '80%',
+        width: 300,
         margin: 16,
         marginTop: 60,
         height: 50,
@@ -262,7 +269,12 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         borderColor: '#454543',
         borderWidth: 0.5,
-        backgroundColor: '#F1EFE5'
+        backgroundColor: '#F1EFE5',
+        alignSelf: 'center',
+    },
+    form: {
+        flex: 3,
+        marginTop: 20,
     },
     placeholderStyle: {
         fontSize: 15,

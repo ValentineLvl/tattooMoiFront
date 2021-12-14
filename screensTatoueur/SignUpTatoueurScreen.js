@@ -99,11 +99,11 @@ var handleSubmitSignup = async () => {
     body: `genderFromFront=${gender}&lastNameFromFront=${signUpLastName}&firstNameFromFront=${signUpFirstName}&emailFromFront=${signUpEmail}&passwordFromFront=${signUpPassword}&passwordConfirmationFromFront=${signUpPasswordConfirmation}&phoneFromFront=${signUpPhoneNumber}&siretFromFront=${signUpSiret}&scheduleFromFront=${schedule}&styleFromFront=${style}&colorFromFront=${color}&websiteFromFront=${website}&facebookFromFront=${facebook}&instagramFromFront=${instagram}&profilePictureFromFront=${profilePic}&tattooShopFromFront=${tattooShop}&addressFromFront=${signUpAddress}&postalCodeFromFront=${signUpPostalCode}&cityFromFront=${signUpCity}`})
 
   const body = await data.json()
-  console.log(body);
+  //console.log(body);
     setProfilePic('')
   if(body.result == true){
    props.addDataTattoo(body.saveTattoo);
-   console.log('user created', body.saveTattoo);
+  // console.log('user created', body.saveTattoo);
    AsyncStorage.setItem("dataTattooToken", body.token);
     setUserExists(true);
     

@@ -104,7 +104,7 @@ function SelectedTattooArtistScreen(props) {
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: `IdFromFront=${tattooId}&token=${props.dataUser.token}`,
     });
-    console.log("recupérer dataUser.token", props.dataUser.token);
+    //console.log("recupérer dataUser.token", props.dataUser.token);
   };
 
   const handlePressDevis = () => {

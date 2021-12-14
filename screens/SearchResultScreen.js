@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { StyleSheet, View, Image, Text, ScrollView, Modal, TextInput } from "react-native";
 import { Card, Button } from "react-native-elements";
@@ -18,7 +18,27 @@ function SearchResultScreen(props) {
   //erreur envoyé par le back
   const [listErrorsSignin, setErrorsSignin] = useState([]);
 
-  //console.log('STATE FROM STORE:', props.saveTatoueurInfos)
+  const [tattooInFavorites, setTattooInFavorites] = useState([]);
+  const [tattooLiked, setTattooLiked] = useState([]);
+ // const [tattooInFavorites, setTattooInFavorites] = useState(false);
+
+
+ // récupère les tatoueur en favoris dans la base de donnée pour avoir les coeurs rouge au chargement de la page
+  useEffect(() => {
+    console.log("Favoris is loaded");
+    const findFavorites = async () => {
+      const dataFavorites = await fetch(
+        `http://192.168.0.38:3000/favorites?token=${props.dataUser.token}`
+      );
+      const body = await dataFavorites.json();
+      console.log("récupérer le favoris body", body.user.tattooId)
+      //props.saveForm(body.user.formId)
+      setTattooLiked(body.user.tattooId.map((el) => 
+      el._id
+      ));
+    };
+    findFavorites();
+  }, []);
 
   var handleSubmitSignin = async () => {
     const data = await fetch("http://192.168.0.38:3000/sign-in", {
@@ -49,26 +69,54 @@ function SearchResultScreen(props) {
     );
   });
 
-  var handlePressAddFavorite = async (tattooId) => {
+  var colorHeart;
+  if (tattooLiked) {
+    colorHeart = { color: "#BF5F5F" };
+  } else {
+    colorHeart = { color: "#454543" };
+  }
+
+  var changeFavorites = (tattooId) => {
+    console.log('TATTOO ID', tattooId);
+    if(tattooLiked.includes(tattooId)){
+      console.log('tattoocIn Favorites = true');
+      handlePressDeleteFavorite(tattooId);
+    } else {
+      handlePressAddFavorite(tattooId);
+    }
+  }
+
+  var handlePressAddFavorite = async (id) => {
+    setTattooLiked([...tattooLiked, id]);
+
     const response = await fetch("http://192.168.0.38:3000/favorites", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: `IdFromFront=${tattooId}&token=${props.dataUser.token}`,
+      body: `IdFromFront=${id}&token=${props.dataUser.token}`,
     });
-    //console.log("recupérer dataUser.token", props.dataUser.token);
+
+    const addLike = await response.json();
+   console.log("AJOUT LIKE HANDLE PRESS", addLike.tattoo);
   };
 
-  // var handlePressDeleteFavorite = async () => {
-  // const response = await fetch(`http://192.168.0.38:3000/favorites/${name}`, {
-  //   method: 'DELETE'
-  // })
-  // }
+  var handlePressDeleteFavorite = async (id) => {
+    setTattooLiked(tattooLiked.filter(e => e !== id));
+
+    const response = await fetch("http://192.168.0.38:3000/delete-favorites", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: `tattooIdFromFront=${id}&token=${props.dataUser.token}`,
+    });
+    const deleteLike = await response.json();
+  //  console.log("HANDLE PRESS DELETE FAVORIS", deleteLike.tattooId);
+    //setFavoritesList(newFavorite.newFavorite.tattooId);
+  };
 
   const searchResults = props.saveTatoueurInfos.map((tatoueur, i) => {
-    const [tattooLiked, setTattooLiked] = useState(false);
 
     return (
       <TouchableOpacity
+      key={i}
         onPress={() => {
           props.selectedArtistInfos(tatoueur),
             props.navigation.navigate("TattooArtist");
@@ -87,7 +135,7 @@ function SearchResultScreen(props) {
                     <AntDesign
                       name="heart"
                       size={30}
-                      style={{ color: tattooLiked ? "#BF5F5F" : "#454543" }}
+                      style={{color: "#454543"}}
                     />
                   </Text>
                 </TouchableOpacity>
@@ -96,19 +144,18 @@ function SearchResultScreen(props) {
               <>
                 <TouchableOpacity
                   onPress={() => {
-                    handlePressAddFavorite(tatoueur._id),
-                      setTattooLiked(!tattooLiked);
+                    changeFavorites(tatoueur._id)
+            
                   }}
-                >
+                > 
+                <Text style={{left: "87%",
+                      top: "5%"}}>
                   <AntDesign
                     name="heart"
                     size={30}
-                    style={{
-                      color: tattooLiked ? "#BF5F5F" : "#454543",
-                      left: "87%",
-                      top: "5%",
-                    }}
+                    style={{ color: tattooLiked.includes(tatoueur._id) ? "#BF5F5F" : "#454543" }}
                   />
+                  </Text>
                 </TouchableOpacity>
               </>
             )}
@@ -155,7 +202,7 @@ function SearchResultScreen(props) {
     <View style={styles.container}>
       <HeaderComponent navigation={props.navigation} />
 
-      <ScrollView style={{ width: "90%", flex: 2 }}>
+      <ScrollView style={{ width: "90%", flex: 2, marginBottom:20}}>
        
         {searchResults}
 

@@ -71,7 +71,6 @@ var handleSubmitSignup = async () => {
 
   if(body.result == true){
    props.addDataUser(body.saveClient);
-   //console.log('user created', body.saveClient);
    AsyncStorage.setItem("dataUserToken", body.token);
     setUserExists(true);
     
