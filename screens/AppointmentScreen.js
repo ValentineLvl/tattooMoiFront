@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { SafeAreaView, StyleSheet, Text, View, Image, ScrollView, SafeAreaViewBase, TouchableOpacity } from 'react-native';
+import { TextInput, SafeAreaView, StyleSheet, Text, View, Image, ScrollView, SafeAreaViewBase, TouchableOpacity } from 'react-native';
 import { Card, ListItem, Button, Icon } from 'react-native-elements'
 import { connect } from 'react-redux'
 import HeaderComponent from './HeaderComponent';
@@ -13,6 +13,7 @@ function AppointmentScreen(props) {
    // const [userForms, setUserForms] = useState(false);
    const [address, setAddress]= useState([]);
    const [formId, setFormId]= useState([]);
+   
 
     useEffect(() => {
 
@@ -43,6 +44,7 @@ function AppointmentScreen(props) {
             
             props.saveForm(body.user.formId)
             setFormsList(body.user.formId)
+            
             // setTattooInfo(body.project)
             // setAddress(body.address)
         //    console.log( "BOOOUHHH",formslist)
@@ -74,7 +76,12 @@ function AppointmentScreen(props) {
 
 
     var projectForm = props.formList.map((form, i) => {
-        console.log("image", form.tattooProjectId[0].tattooShopAddress[0].address)
+        console.log("image", form.confirmationFormSchema[0].status)
+       {(form.confirmationFormSchema[0].status  == "Accepté") ?<> 
+        <Text style={styles.text} >Date proposée:  {form.confirmationFormSchema[0].date} </Text>
+        <Text style={styles.text} >Prix estimé:  {form.confirmationFormSchema[0].price} euros</Text>
+        <Text style={styles.text} >Commentaire du tatoueur:  {form.confirmationFormSchema[0].comment} </Text> </>: null}
+
         return (
 
             <Card key={i} containerStyle={styles.cards}>
@@ -95,25 +102,24 @@ function AppointmentScreen(props) {
                         <View  style={styles.cardDesc}  >
                         <Text style={{ marginBottom: 10, fontWeight: 'bold', paddingTop: 5, color: '#454543' }}> Projet : {form.request}</Text>
                         
-                          <Text style={{  fontWeight: 'bold', paddingTop: 5, color: '#454543' }}> tatoueur: {form.tattooProjectId[0].lastName} </Text> 
+                          <Text style={{  fontWeight: 'bold', paddingTop: 5, color: '#454543' }}> Tatoueur: {form.tattooProjectId[0].lastName} </Text> 
                           <Text style={{ marginBottom: 10, fontWeight: 'bold',  color: '#454543' }}> Adresse : {form.tattooProjectId[0].tattooShopAddress[0].address}, {form.tattooProjectId[0].tattooShopAddress[0].postalCode}, {form.tattooProjectId[0].tattooShopAddress[0].city}  </Text> 
-                     
-        
-    
-                        
                         <Text style={styles.text} >Style: {form.style}</Text>
                         <Text style={styles.text} >Zone à tatouer: {form.tattooZone}</Text>
                         <Text style={styles.text}>Taille:  {form.heigth} cm x {form.width} cm</Text>
                         <Text style={styles.text} >Description:  {form.description} </Text>
                         <Text style={styles.text} >Disponibilité:  {form.disponibility} </Text>
-                        {/* <Button
-                            title="Delete"
-                            type="solid"
-                            padding="30"
-                            color='#424D41'
-
-                            onPress={() => deleteForm(form._id)}
-                        /> */}
+                        
+                        <Text style={{ marginBottom: 10, fontWeight: 'bold', paddingTop: 5, color: '#454543' }} >Statut de la demande:  {form.confirmationFormSchema[0].status} </Text>
+                        <Text>{(form.confirmationFormSchema[0].status  == "Accepté") ?<> 
+                       <View>
+                       <Text style={{fontWeight: 'bold', color: '#454543' }} >Proposition du tatoueur: </Text>
+                        <Text style={styles.text} >Date proposée:  {form.confirmationFormSchema[0].date} </Text>
+                        <Text style={styles.text} >Prix estimé:  {form.confirmationFormSchema[0].price} euros</Text>
+                        <Text style={styles.text} >Commentaire:  {form.confirmationFormSchema[0].comment} </Text>  
+                        </View> </>
+                        : null} </Text>
+                        
                         </View>
                     </View>
 

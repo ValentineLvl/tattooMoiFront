@@ -56,6 +56,7 @@ function ProjectFormScreen(props) {
     const [scheduleValue, setScheduleValue] = useState(null);
     const [tempUrl, setTempUrl] = useState("");
     const [request, setRequest] = useState("");
+    const [status, setStatus] = useState("En attente")
 
     //Etat de l'overlay
     const [visible, setVisible] = useState(false);
@@ -97,7 +98,7 @@ function ProjectFormScreen(props) {
             const data = await fetch('http://192.168.1.15:3000/project-form', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: `tattooIdFromFront=${props.selectedArtistInfos[0]._id}&token=${props.dataUser.token}&userProjectImgFromFront=${tempUrl}&userStyleFromFront=${styleValue}&userDisponibilityFromFront=${scheduleValue}&userGenderFromFront=${titleValue}&userLastNameFromFront=${lastName}&userFirstNameFromFront=${firstName}&userEmailFromFront=${email}&userPhoneNumberFromFront=${phone}&userAddressFromFront=${address}&userPostalCodeFromFront=${postalCode}&userCityFromFront=${city}&usertattooZoneFromFront=${tattooZone}&userWidthFromFront=${width}&userHeightFromFront=${height}&userDescriptionFromFront=${description}&userRequestFromFront=${request}`
+                body: `statusFromFront=${status}&tattooIdFromFront=${props.selectedArtistInfos[0]._id}&token=${props.dataUser.token}&userProjectImgFromFront=${tempUrl}&userStyleFromFront=${styleValue}&userDisponibilityFromFront=${scheduleValue}&userGenderFromFront=${titleValue}&userLastNameFromFront=${lastName}&userFirstNameFromFront=${firstName}&userEmailFromFront=${email}&userPhoneNumberFromFront=${phone}&userAddressFromFront=${address}&userPostalCodeFromFront=${postalCode}&userCityFromFront=${city}&usertattooZoneFromFront=${tattooZone}&userWidthFromFront=${width}&userHeightFromFront=${height}&userDescriptionFromFront=${description}&userRequestFromFront=${request}`
             })
 
             const body = await data.json()
@@ -110,7 +111,6 @@ function ProjectFormScreen(props) {
             setTempUrl("")
         }
     };
-
 
     return (
         <View style={styles.container}>

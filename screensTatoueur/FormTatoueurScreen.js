@@ -16,9 +16,24 @@ function FormTatoueurScreen(props) {
     const [date, setDate] = useState("")
     const [overlayVisibleConfirm, setOverlayVisibleConfirm] = useState(false);
     const [overlayVisibleRefuse, setOverlayVisibleRefuse] = useState(false);
-    const [status, setStatus] = useState("")
-console.log(props.formList[0].confirmationFormSchema[0]._id)
-console.log("STATUS", status)
+    const [status, setStatus] = useState(props.formId.confirmationFormSchema[0].status)
+console.log(props.formId.confirmationFormSchema[0].status)
+
+
+// useEffect(() => {
+//     console.log("Form loaded");
+//     const findFormTattoo = async () => {
+//         const dataForm = await fetch(`http://192.168.1.15:3000/form-tattoo?id=${props.dataTattoo._id}&formId=${props.formId}`)
+//         const body = await dataForm.json();
+        
+//         props.saveForm(body.form)
+//         setForm(body.form)
+
+//     }
+//     console.log("formList", props.formList)
+//     findFormTattoo()
+// }, [])
+
 
     const Confirm = () => {
         setOverlayVisibleConfirm(!overlayVisibleConfirm);
@@ -33,19 +48,18 @@ console.log("STATUS", status)
       async function handleClickSendConfirm() {
         {
             console.log("activation de la fonction")
-            console.log("STATUS", status)
-            console.log("ID", props.formList[0]._id)
+            // console.log("STATUS", status)
+            console.log("ID", props.formId.confirmationFormSchema[0]._id)
             // console.log("ID", props.dataUser.firstName)
 
             const dataConfirm = await fetch('http://192.168.1.15:3000/send-confirm', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: `confirmId=${props.formList[0].confirmationFormSchema[0]._id}&statusFromFront=${status}&formId=${props.formList[0]._id}&dateFromFront=${date}&priceFromFront=${price}&commentFromFront=${comment}`
+                body: `confirmId=${props.formId.confirmationFormSchema[0]._id}&statusFromFront=${status}&formId=${props.formId._id}&dateFromFront=${date}&priceFromFront=${price}&commentFromFront=${comment}`
             })
             const body = await dataConfirm.json()
-            // console.log("c la", props.saveTatoueurInfos)
-            // if (body.result == true) {
-                
+            console.log("c la", body.formSaved)
+                // saveFormId(body.formSaved)
                 setOverlayVisibleConfirm(!overlayVisibleConfirm)
             // }
             // console.log(tempUrl);
@@ -56,7 +70,7 @@ console.log("STATUS", status)
     async function handleClickSendRefuse() {
         {
             console.log("activation de la refus")
-            console.log("STATUS", status)
+            // console.log("STATUS", status)
             console.log("ID", props.formList[0]._id)
             // console.log("ID", props.dataUser.firstName)
 
@@ -81,37 +95,38 @@ console.log("STATUS", status)
     <View style={styles.container}>
     <HeaderComponent navigation={props.navigation}/>
     <ScrollView style={{ width: '90%', flex: 2 }} >
-    {props.formList.map((form, i) =>(
+    
+    
     <Card  containerStyle={styles.cardDesc}>
-    <Text style={styles.titlePage}>Demande: {form.request} </Text>
-    <Text style={styles.titre}>Par : {form.gender} {form.firstName} {form.lastName}</Text>
+    <Text style={styles.titlePage}>Demande: {props.formId.request} </Text>
+    <Text style={styles.titre}>Par : {props.formId.gender} {props.formId.firstName} {props.formId.lastName}</Text>
         <View style={{ flexDirection: "row"}}>
         <View style={{marginRight:40}}>
         <Text style={styles.titre}>Zone à tatouer:</Text>
-            <Text style={styles.Info}>{form.tattooZone}</Text>
+            <Text style={styles.Info}>{props.formId.tattooZone}</Text>
         </View>
         <View>
         <Text style={styles.titre}>Style:</Text>
-            <Text style={styles.Info}>{form.style}</Text>
+            <Text style={styles.Info}>{props.formId.style}</Text>
         </View>
         </View>
         <View style={{ flexDirection: "row"}}>
         <View style={{marginRight:93}}> 
         <Text style={styles.titre}>Hauteur:</Text>
-            <Text style={styles.Info}>{form.heigth} cm</Text>
+            <Text style={styles.Info}>{props.formId.heigth} cm</Text>
         </View>
         <View>
         <Text style={styles.titre}>Longueur:</Text>
-            <Text style={styles.Info}>{form.width} cm</Text>
+            <Text style={styles.Info}>{props.formId.width} cm</Text>
         </View>
         </View>
         <Text style={styles.titre}>Description du projet:</Text>
-            <Text style={styles.Info}>{form.description}</Text>
+            <Text style={styles.Info}>{props.formId.description}</Text>
         <Text style={styles.titre}>Disponibilité:</Text>
-            <Text style={styles.Info}>{form.disponibility}</Text>
+            <Text style={styles.Info}>{props.formId.disponibility}</Text>
         <Text style={styles.titre}>Idée du projet:</Text>
-        <Card.Image source={{ uri: form.projectImg }} />
-        {(status == "")?<>
+        <Card.Image source={{ uri: props.formId.projectImg }} />
+        {(status == "En attente")?<>
         <View style={{flexDirection: "row", alignSelf: "center"}}>
         <TouchableOpacity style={{marginRight: 20}} onPress={() => Confirm()}>
                         <Text >
@@ -150,17 +165,7 @@ console.log("STATUS", status)
                     <View style={styles.modalView}>
                     <Text style={styles.textOverlay}>Proposition de rendez-vous</Text>
                     <View style={styles.continuer}>
-      
-
-                    {/* <TextInput
-                                style={styles.hiddenInput}
-                                autoFocus={true}
-                                multiline
-                                onFocus={Keyboard.dismiss}
-                                onChangeText={this._onHiddenTextChangeText}
-                                value={this.state.hiddenInput}
-                            /> */}
-       
+           
 
         <TextInput
                                 style={styles.input}
@@ -221,7 +226,7 @@ console.log("STATUS", status)
             
         </Modal>
  </Card>
-    ))}
+    
  </ScrollView>
 </View>
 )
@@ -340,8 +345,10 @@ text: {
 
 
 function mapStateToProps(state){
-    return {dataUser:state.dataUser, formList: state.formList}
+    return {dataUser:state.dataUser, formList: state.formList, formId : state.formId}
   }
+
+
 
   
 

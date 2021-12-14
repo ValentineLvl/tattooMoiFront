@@ -23,13 +23,14 @@ function AppointmentTatoueurScreen(props) {
             setForm(body.form)
 
         }
+        console.log("formList", props.formList)
         findFormTattoo()
     }, [])
 
     // console.log("FORM", form[0].confirmationFormSchema[0].status)
 
     var appointment = form.map((form, i) => {
-        console.log("image", form.projectImg)
+        console.log("image", form._id)
         return (
             <Button
             titleStyle={styles.titleStyle}
@@ -56,7 +57,7 @@ function AppointmentTatoueurScreen(props) {
                 </>
             }
             
-            onPress={() => props.navigation.navigate('Mes forms')}
+            onPress={() =>{ props.saveFormId(form), props.navigation.navigate('Mes forms')}}
 
           
             />)})
@@ -154,8 +155,14 @@ function mapDispatchToProps(dispatch) {
                 type: 'saveForm',
                 dataSaveForm: dataSaveForm
             })
-        }
+        },
+        saveFormId : function (formId) {
+            dispatch({
+                type: 'saveFormId',
+                formId
+            })
     }
+}
 }
 export default connect(
     mapStateToProps,
