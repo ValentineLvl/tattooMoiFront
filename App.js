@@ -22,6 +22,7 @@ import SignUpTatoueurScreen from './screensTatoueur/SignUpTatoueurScreen';
 import AccountTatoueurScreen from './screensTatoueur/AccountTatoueurScreen';
 import AppointmentTatoueurScreen from './screensTatoueur/AppointmentTatoueurScreen';
 import CalendarScreen from './screensTatoueur/CalendarScreen';
+import TattooInfosScreen from './screensTatoueur/TattooInfosScreen';
 
 
 import { NavigationContainer } from '@react-navigation/native';
@@ -44,6 +45,7 @@ const store = createStore(combineReducers({ formList, dataUser, saveTatoueurInfo
 const Stack = createStackNavigator();
 const SearchStack = createStackNavigator();
 const AccountStack = createStackNavigator();
+const AccountTattooStack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 const TabTattoo = createBottomTabNavigator();
 
@@ -122,9 +124,20 @@ function TabBottomTattoo() {
         >
             <TabTattoo.Screen name="Calendrier" component={CalendarScreen} />
             <TabTattoo.Screen name="Mes demandes" component={AppointmentTatoueurScreen} />
-            <TabTattoo.Screen name="Mon espace" component={AccountTatoueurScreen} />
+            <TabTattoo.Screen name="Mon espace" component={AccountTattooStackNav} />
         </TabTattoo.Navigator>
     )
+}
+
+function AccountTattooStackNav() {
+    return (
+    <AccountTattooStack.Navigator screenOptions={{ headerShown: false }} >
+    <AccountTattooStack.Screen name="AccountTattoo" component={AccountTatoueurScreen}/>
+    <AccountTattooStack.Screen name="Infos" component={TattooInfosScreen}/>
+    <AccountTattooStack.Screen name="Calendar" component={CalendarScreen} />
+    <AccountTattooStack.Screen name="Demandes" component={AppointmentTatoueurScreen} />
+    </AccountTattooStack.Navigator>
+    );
 }
 
 export default function App() {

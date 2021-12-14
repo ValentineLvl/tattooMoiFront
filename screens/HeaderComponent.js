@@ -5,7 +5,6 @@ import {connect} from 'react-redux';
 
 
 function HeaderComponent(props) {
-   //console.log('(store de props data user)', props.dataUser); 
   if (props.dataUser !== null) {
         return (
             <View style = {styles.header}>

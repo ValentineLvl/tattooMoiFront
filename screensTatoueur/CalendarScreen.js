@@ -3,7 +3,8 @@ import { StyleSheet, View, Text, TextInput, ScrollView, TouchableOpacity } from 
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { connect } from 'react-redux';
-import {Agenda} from 'react-native-calendars';
+import {LocaleConfig, Agenda} from 'react-native-calendars';
+
 import HeaderComponent from '../screens/HeaderComponent';
 
 function CalendarScreen(props) {
@@ -29,10 +30,12 @@ function CalendarScreen(props) {
 
     }, []);
 
+
     return (
         
             <View style={styles.container}>
                 <HeaderComponent  />
+
 
 
             </View>    
@@ -45,18 +48,6 @@ const styles = StyleSheet.create({
         flex: 1,
         paddingTop: 50,
         backgroundColor: '#F1EFE5',
-        //   alignItems: 'center',
-        //   justifyContent: 'center',
-    },
-    titleStyle: {
-        color: '#424D41',
-        fontSize:14
-    },
-    buttonStyle: {
-        borderColor: '#424D41', 
-        marginBottom:20,
-        justifyContent: 'flex-start',
-        borderWidth: 1
     },
     
 });

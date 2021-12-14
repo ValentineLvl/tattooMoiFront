@@ -22,35 +22,7 @@ function AccountTatoueurScreen(props) {
             
                 <SafeAreaView style={styles.safeArea}>
                    
-                   <Button
-                       titleStyle={styles.titleStyle}
-                       buttonStyle={styles.buttonStyle}
-                       type="outline"
-                       icon={
-                           <MaterialCommunityIcons
-                               name="calendar-blank-outline"
-                               size={20}
-                               color="#424D41"
-                           />
-                       }
-                       title="  Mes rendez-vous / devis"
-                       onPress={() => props.navigation.navigate('Mes demandes')}
-                   />
-                   <Button
-                       titleStyle={styles.titleStyle}
-                       buttonStyle={styles.buttonStyle}
-                       type="outline"
-                       icon={
-                           <MaterialCommunityIcons
-                               name="heart-circle"
-                               size={20}
-                               color="#424D41"
-                           />
-                       }
-                       title="  Mes favoris"
-                       onPress={() => props.navigation.navigate('Mes favoris')}
-                   />
-                   <Button
+                <Button
                        titleStyle={styles.titleStyle}
                        buttonStyle={styles.buttonStyle}
                        type="outline"
@@ -62,9 +34,39 @@ function AccountTatoueurScreen(props) {
                            />
                        }
                        title="  Mes informations personnelles"
-                       onPress={() => props.navigation.navigate('Mes infos')}
+                       onPress={() => props.navigation.navigate('Infos')}
 
                    />
+                   
+                   <Button
+                       titleStyle={styles.titleStyle}
+                       buttonStyle={styles.buttonStyle}
+                       type="outline"
+                       icon={
+                           <MaterialCommunityIcons
+                               name="calendar-multiselect"
+                               size={20}
+                               color="#424D41"
+                           />
+                       }
+                       title="  Mes rendez-vous"
+                       onPress={() => props.navigation.navigate('Calendrier')}
+                   />
+                   <Button
+                       titleStyle={styles.titleStyle}
+                       buttonStyle={styles.buttonStyle}
+                       type="outline"
+                       icon={
+                        <MaterialCommunityIcons
+                        name="calendar-blank-outline"
+                        size={20}
+                        color="#424D41"
+                    />
+                       }
+                       title="  Mes demandes"
+                       onPress={() => props.navigation.navigate('Mes demandes')}
+                   />
+                   
               
                </SafeAreaView>
 
@@ -86,8 +88,6 @@ const styles = StyleSheet.create({
         flex: 1,
         paddingTop: 50,
         backgroundColor: '#F1EFE5',
-        //   alignItems: 'center',
-        //   justifyContent: 'center',
     },
     safeArea:{
         marginLeft:30,

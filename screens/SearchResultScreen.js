@@ -24,14 +24,14 @@ function SearchResultScreen(props) {
 
  // récupère les tatoueur en favoris dans la base de donnée pour avoir les coeurs rouge au chargement de la page
   useEffect(() => {
+
     console.log("Favoris is loaded");
+
     const findFavorites = async () => {
       const dataFavorites = await fetch(
         `http://192.168.0.38:3000/favorites?token=${props.dataUser.token}`
       );
       const body = await dataFavorites.json();
-      console.log("récupérer le favoris body", body.user.tattooId)
-      //props.saveForm(body.user.formId)
       setTattooLiked(body.user.tattooId.map((el) => 
       el._id
       ));
@@ -50,7 +50,7 @@ function SearchResultScreen(props) {
 
     if (body.result == true) {
       props.addDataUser(body.user);
-      //console.log('user connected', body)
+
       AsyncStorage.setItem("dataUserToken", body.token);
       setUserExists(true);
 
@@ -69,9 +69,7 @@ function SearchResultScreen(props) {
   });
 
   var changeFavorites = (tattooId) => {
-    console.log('TATTOO ID', tattooId);
     if(tattooLiked.includes(tattooId)){
-      console.log('tattoocIn Favorites = true');
       handlePressDeleteFavorite(tattooId);
     } else {
       handlePressAddFavorite(tattooId);
@@ -87,8 +85,6 @@ function SearchResultScreen(props) {
       body: `IdFromFront=${id}&token=${props.dataUser.token}`,
     });
 
-    const addLike = await response.json();
-  // console.log("AJOUT LIKE HANDLE PRESS", addLike.tattoo);
   };
 
   var handlePressDeleteFavorite = async (id) => {
@@ -99,8 +95,7 @@ function SearchResultScreen(props) {
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: `tattooIdFromFront=${id}&token=${props.dataUser.token}`,
     });
-    const deleteLike = await response.json();
-  //  console.log("HANDLE PRESS DELETE FAVORIS", deleteLike.tattooId);
+   
   };
 
   const searchResults = props.saveTatoueurInfos.map((tatoueur, i) => {

@@ -27,7 +27,6 @@ function SignInScreen(props) {
 
         if (body.result == true) {
             props.addDataUser(body.user)
-            //console.log('user connected', body)
             AsyncStorage.setItem("dataUserToken", body.token);
             setUserExists(true);
 

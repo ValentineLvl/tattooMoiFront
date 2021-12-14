@@ -17,8 +17,6 @@ function FavorisScreen(props) {
         `http://192.168.0.38:3000/favorites?token=${props.dataUser.token}`
       );
       const body = await dataFavorites.json();
-      //console.log("récupérer le favoris body", body.user.tattooId)
-      //props.saveForm(body.user.formId)
       setFavoritesList(body.user.tattooId);
     };
     findFavorites();
@@ -33,7 +31,6 @@ function FavorisScreen(props) {
       body: `tattooIdFromFront=${id}&token=${props.dataUser.token}`,
     });
     const newFavorite = await deleteReq.json();
-    console.log("HANDLE PRESS DELETE FAVORIS", newFavorite.newFavorite.tattooId);
     setFavoritesList(newFavorite.newFavorite.tattooId);
   };
 

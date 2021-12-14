@@ -106,8 +106,6 @@ function SearchScreen(props) {
 
     }
 
-    //console.log('STYLEARRAY', styleArray)
-
     const tattooStyleBtn = tattooStyles.map((tattooStyle, i) => (
 
         <TouchableOpacity

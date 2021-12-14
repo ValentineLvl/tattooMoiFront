@@ -43,18 +43,13 @@ function SelectedTattooArtistScreen(props) {
         `http://192.168.0.38:3000/favorites?token=${props.dataUser.token}`
       );
       const body = await dataFavorites.json();
-console.log('BODY USER DU USE EFFECT', body.user.tattooId);
-console.log('props DU USE EFFECT',props.selectedArtistInfos._id);
 
     if(body.user.tattooId.find(el => el._id == props.selectedArtistInfos._id)) {
-
       setTattooLiked(true);
     }
 
-    console.log('ETAT DE TATTOO LIKED', tattooLiked);
-
     };
-    //console.log('ETAT DE TATTOO LIKED', tattooLiked);
+
     findFavorites();
   }, []);
 
@@ -69,7 +64,6 @@ console.log('props DU USE EFFECT',props.selectedArtistInfos._id);
 
     if (body.result == true) {
       props.addDataUser(body.user);
-      //console.log('user connected', body)
       AsyncStorage.setItem("dataUserToken", body.token);
       setUserExists(true);
 
@@ -89,9 +83,7 @@ console.log('props DU USE EFFECT',props.selectedArtistInfos._id);
 
   
   var changeFavorites = (tattooId) => {
-    console.log('TATTOO ID', tattooId);
     if(tattooLiked){
-      console.log('tattoocIn Favorites = true');
       handlePressDeleteFavorite(tattooId);
     } else {
       handlePressAddFavorite(tattooId);
@@ -120,7 +112,6 @@ console.log('props DU USE EFFECT',props.selectedArtistInfos._id);
       body: `tattooIdFromFront=${id}&token=${props.dataUser.token}`,
     });
     const deleteLike = await response.json();
-  //  console.log("HANDLE PRESS DELETE FAVORIS", deleteLike.tattooId);
   };
 
 
@@ -440,7 +431,7 @@ console.log('props DU USE EFFECT',props.selectedArtistInfos._id);
           <AntDesign
            
             name="facebook-square"
-            onPress={() => Linking.openURL("fb://page/")}
+            onPress={() => Linking.openURL(`https://www.facebook.com/${props.selectedArtistInfos.facebook}`)}
             size={32}
             color="#454543"
             style={{ marginTop: 30, marginRight: 10 }}
