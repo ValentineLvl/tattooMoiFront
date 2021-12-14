@@ -24,13 +24,13 @@ function FavorisScreen(props) {
     findFavorites();
   }, []);
 
-  var handlePressDeleteFavorite = async (_id) => {
+  var handlePressDeleteFavorite = async (id) => {
     setTattooLiked(tattooLiked);
 
     const deleteReq = await fetch("http://192.168.0.38:3000/delete-favorites", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: `tattooIdFromFront=${_id}&token=${props.dataUser.token}`,
+      body: `tattooIdFromFront=${id}&token=${props.dataUser.token}`,
     });
     const newFavorite = await deleteReq.json();
     console.log("HANDLE PRESS DELETE FAVORIS", newFavorite.newFavorite.tattooId);

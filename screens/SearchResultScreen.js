@@ -18,7 +18,6 @@ function SearchResultScreen(props) {
   //erreur envoyé par le back
   const [listErrorsSignin, setErrorsSignin] = useState([]);
 
-  const [tattooInFavorites, setTattooInFavorites] = useState([]);
   const [tattooLiked, setTattooLiked] = useState([]);
  // const [tattooInFavorites, setTattooInFavorites] = useState(false);
 
@@ -69,13 +68,6 @@ function SearchResultScreen(props) {
     );
   });
 
-  var colorHeart;
-  if (tattooLiked) {
-    colorHeart = { color: "#BF5F5F" };
-  } else {
-    colorHeart = { color: "#454543" };
-  }
-
   var changeFavorites = (tattooId) => {
     console.log('TATTOO ID', tattooId);
     if(tattooLiked.includes(tattooId)){
@@ -96,7 +88,7 @@ function SearchResultScreen(props) {
     });
 
     const addLike = await response.json();
-   console.log("AJOUT LIKE HANDLE PRESS", addLike.tattoo);
+  // console.log("AJOUT LIKE HANDLE PRESS", addLike.tattoo);
   };
 
   var handlePressDeleteFavorite = async (id) => {
@@ -109,7 +101,6 @@ function SearchResultScreen(props) {
     });
     const deleteLike = await response.json();
   //  console.log("HANDLE PRESS DELETE FAVORIS", deleteLike.tattooId);
-    //setFavoritesList(newFavorite.newFavorite.tattooId);
   };
 
   const searchResults = props.saveTatoueurInfos.map((tatoueur, i) => {

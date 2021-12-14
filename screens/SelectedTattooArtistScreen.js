@@ -23,8 +23,6 @@ function SelectedTattooArtistScreen(props) {
 
   //etats du coeur favoris
   const [tattooLiked, setTattooLiked] = useState(false);
-  const [tattooInFavorites, setTattooInFavorites] = useState(false);
-  const [favoritesList, setFavoritesList] = useState([]);
   //etats des modals
   const [overlayVisibleDevis, setOverlayVisibleDevis] = useState(false);
   const [overlayVisibleRDV, setOverlayVisibleRDV] = useState(false);
@@ -37,6 +35,7 @@ function SelectedTattooArtistScreen(props) {
   //erreur envoyé par le back
   const [listErrorsSignin, setErrorsSignin] = useState([]);
 
+  // récupère les tatoueur en favoris dans la base de donnée pour avoir les coeurs rouge au chargement de la page
   useEffect(() => {
     console.log("Favoris is loaded");
     const findFavorites = async () => {
@@ -44,11 +43,18 @@ function SelectedTattooArtistScreen(props) {
         `http://192.168.0.38:3000/favorites?token=${props.dataUser.token}`
       );
       const body = await dataFavorites.json();
-      //console.log("récupérer le favoris body", body.user.tattooId)
-      //props.saveForm(body.user.formId)
-      setFavoritesList(body.user.tattooId);
-      setTattooInFavorites(true);
+console.log('BODY USER DU USE EFFECT', body.user.tattooId);
+console.log('props DU USE EFFECT',props.selectedArtistInfos._id);
+
+    if(body.user.tattooId.find(el => el._id == props.selectedArtistInfos._id)) {
+
+      setTattooLiked(true);
+    }
+
+    console.log('ETAT DE TATTOO LIKED', tattooLiked);
+
     };
+    //console.log('ETAT DE TATTOO LIKED', tattooLiked);
     findFavorites();
   }, []);
 
@@ -81,31 +87,42 @@ function SelectedTattooArtistScreen(props) {
     );
   });
 
-  var colorHeart;
-  if (tattooLiked) {
-    colorHeart = { color: "#BF5F5F" };
-  } else {
-    colorHeart = { color: "#454543" };
+  
+  var changeFavorites = (tattooId) => {
+    console.log('TATTOO ID', tattooId);
+    if(tattooLiked){
+      console.log('tattoocIn Favorites = true');
+      handlePressDeleteFavorite(tattooId);
+    } else {
+      handlePressAddFavorite(tattooId);
+    }
   }
 
-  if (tattooInFavorites) {
-    colorHeart = { color: "#BF5F5F" };
-  } else {
-    colorHeart = { color: "#454543" };
-  }
-
-  //console.log('tattooLiked 2', tattooLiked);
-
-  var handlePressAddFavorite = async (tattooId) => {
-    setTattooLiked(!tattooLiked);
+  var handlePressAddFavorite = async (id) => {
+    setTattooLiked(true);
 
     const response = await fetch("http://192.168.0.38:3000/favorites", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: `IdFromFront=${tattooId}&token=${props.dataUser.token}`,
+      body: `IdFromFront=${id}&token=${props.dataUser.token}`,
     });
-    //console.log("recupérer dataUser.token", props.dataUser.token);
+
+    const addLike = await response.json();
+   console.log("AJOUT LIKE HANDLE PRESS", addLike.tattoo);
   };
+
+  var handlePressDeleteFavorite = async (id) => {
+    setTattooLiked(false);
+
+    const response = await fetch("http://192.168.0.38:3000/delete-favorites", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: `tattooIdFromFront=${id}&token=${props.dataUser.token}`,
+    });
+    const deleteLike = await response.json();
+  //  console.log("HANDLE PRESS DELETE FAVORIS", deleteLike.tattooId);
+  };
+
 
   const handlePressDevis = () => {
     setOverlayVisibleDevis(!overlayVisibleDevis);
@@ -122,15 +139,15 @@ function SelectedTattooArtistScreen(props) {
       </View>
 
       <ScrollView contentContainerStyle={{ alignItems: "center" }}>
-        <View key={1} style={{ alignItems: "center" }}>
+        <View style={{ alignItems: "center" }}>
           <Image
-            key={2}
+            
             source={{ uri: props.selectedArtistInfos.profilePicture }}
             style={styles.imgTatoueur}
           />
 
           <Text
-            key={3}
+          
             style={{
               fontSize: 20,
               fontWeight: "bold",
@@ -140,9 +157,9 @@ function SelectedTattooArtistScreen(props) {
           >
             {props.selectedArtistInfos.firstName}
           </Text>
-          {props.selectedArtistInfos.tattooShopAddress.map((address) => {
+          {props.selectedArtistInfos.tattooShopAddress.map((address,i) => {
             return (
-              <Text
+              <Text key={i}
                 style={{
                   fontSize: 14,
                   marginBottom: 10,
@@ -160,18 +177,18 @@ function SelectedTattooArtistScreen(props) {
               style={{ marginTop: -60, marginLeft: 180 }}
             >
               <Text>
-                <AntDesign name="heart" size={30} style={colorHeart} />
+                <AntDesign name="heart" size={30} style={{color: "#454543"}} />
               </Text>
             </TouchableOpacity>
           ) : (
             <TouchableOpacity
               onPress={() =>
-                handlePressAddFavorite(props.selectedArtistInfos._id)
+                changeFavorites(props.selectedArtistInfos._id)
               }
               style={{ marginTop: -60, marginLeft: 180 }}
             >
               <Text>
-                <AntDesign name="heart" size={30} style={colorHeart} />
+                <AntDesign name="heart" size={30} style={{ color: tattooLiked ? "#BF5F5F" : "#454543" }} />
               </Text>
             </TouchableOpacity>
           )}
@@ -234,10 +251,10 @@ function SelectedTattooArtistScreen(props) {
           </Modal>
 
           <View style={{ alignItems: "center" }}>
-            {props.selectedArtistInfos.tattooShopAddress.map((address) => {
+            {props.selectedArtistInfos.tattooShopAddress.map((address, i) => {
               return (
-                <Text
-                  key={30}
+                <Text key={i}
+                 
                   style={{ fontSize: 18, color: "#454543", marginTop: 20 }}
                 >
                   {address.address} {address.postalCode} {address.city}
@@ -245,7 +262,7 @@ function SelectedTattooArtistScreen(props) {
               );
             })}
             <Text
-              key={5}
+            
               style={{ fontSize: 18, paddingTop: 5, color: "#454543" }}
             >
               Temps d'attente:{" "}
@@ -256,10 +273,11 @@ function SelectedTattooArtistScreen(props) {
           </View>
         </View>
 
-        <View key={6} style={styles.btnGroup}>
-          {props.selectedArtistInfos.styleList.map((style) => {
+        <View style={styles.btnGroup}>
+          {props.selectedArtistInfos.styleList.map((style, i) => {
             return (
               <Button
+              key={i}
                 title={`#${style}`}
                 type="solid"
                 buttonStyle={styles.button}
@@ -273,7 +291,7 @@ function SelectedTattooArtistScreen(props) {
           })}
         </View>
 
-        <View key={7} style={styles.ig}>
+        <View style={styles.ig}>
           <AntDesign
             name="instagram"
             size={30}
@@ -293,7 +311,7 @@ function SelectedTattooArtistScreen(props) {
           </Text>
         </View>
         <View
-          key={8}
+        
           style={{
             width: "90%",
             margin: 10,
@@ -302,9 +320,10 @@ function SelectedTattooArtistScreen(props) {
             flexWrap: "wrap",
           }}
         >
-          {props.selectedArtistInfos.galleryPhoto.map((photo) => {
+          {props.selectedArtistInfos.galleryPhoto.map((photo, i) => {
             return (
               <Image
+              key={i}
                 source={{ uri: photo }}
                 style={{ width: 80, height: 70, margin: 10 }}
               />
@@ -313,7 +332,6 @@ function SelectedTattooArtistScreen(props) {
         </View>
 
         <Button
-          key={9}
           title="En voir plus"
           onPress={() =>
             Linking.openURL(
@@ -332,7 +350,7 @@ function SelectedTattooArtistScreen(props) {
         />
 
         <View
-          key={10}
+        
           style={{
             width: "90%",
             flexDirection: "row",
@@ -360,7 +378,7 @@ function SelectedTattooArtistScreen(props) {
         </View>
 
         <View
-          key={11}
+         
           style={{
             width: "90%",
             flexDirection: "row",
@@ -369,7 +387,7 @@ function SelectedTattooArtistScreen(props) {
           }}
         >
           <Feather
-            key={111}
+            
             onPress={() =>
               Linking.openURL(`tel:${props.selectedArtistInfos.phoneNumber}`)
             }
@@ -379,7 +397,7 @@ function SelectedTattooArtistScreen(props) {
             style={{ marginRight: 10, marginTop: 8 }}
           />
           <Text
-            key={12}
+            
             onPress={() =>
               Linking.openURL(`tel:${props.selectedArtistInfos.phoneNumber}`)
             }
@@ -390,7 +408,7 @@ function SelectedTattooArtistScreen(props) {
         </View>
 
         <View
-          key={13}
+         
           style={{
             width: "90%",
             flexDirection: "row",
@@ -399,7 +417,7 @@ function SelectedTattooArtistScreen(props) {
           }}
         >
           <MaterialIcons
-            key={14}
+         
             onPress={() =>
               Linking.openURL(`mailto:${props.selectedArtistInfos.email}`)
             }
@@ -409,7 +427,7 @@ function SelectedTattooArtistScreen(props) {
             style={{ marginRight: 10, marginTop: 10 }}
           />
           <Text
-            key={15}
+         
             onPress={() =>
               Linking.openURL(`mailto:${props.selectedArtistInfos.email}`)
             }
@@ -418,9 +436,9 @@ function SelectedTattooArtistScreen(props) {
             {props.selectedArtistInfos.email}
           </Text>
         </View>
-        <View key={16} style={{ flexDirection: "row" }}>
+        <View style={{ flexDirection: "row" }}>
           <AntDesign
-            key={17}
+           
             name="facebook-square"
             onPress={() => Linking.openURL("fb://page/")}
             size={32}
@@ -428,7 +446,7 @@ function SelectedTattooArtistScreen(props) {
             style={{ marginTop: 30, marginRight: 10 }}
           />
           <AntDesign
-            key={18}
+           
             name="instagram"
             onPress={() =>
               Linking.openURL(
@@ -441,7 +459,7 @@ function SelectedTattooArtistScreen(props) {
           />
         </View>
 
-        <View key={19} style={{ flexDirection: "row", marginBottom: 40 }}>
+        <View style={{ flexDirection: "row", marginBottom: 40 }}>
           {props.dataUser == null ? (
             <>
               <Button
