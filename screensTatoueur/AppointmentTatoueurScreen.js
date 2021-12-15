@@ -33,6 +33,7 @@ function AppointmentTatoueurScreen(props) {
         console.log("image", form._id)
         return (
             <Button
+            key={i}
             titleStyle={styles.titleStyle}
             buttonStyle={styles.buttonStyle}
             

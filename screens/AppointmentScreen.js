@@ -21,7 +21,7 @@ function AppointmentScreen(props) {
   const [tattooInfo, setTattooInfo] = useState([]);
   // const [userForms, setUserForms] = useState(false);
   const [address, setAddress] = useState([]);
-  const [formId, setFormId] = useState([]);
+ const [formId, setFormId] = useState([]);
 
   useEffect(() => {
     console.log("App is loaded");
@@ -44,8 +44,6 @@ function AppointmentScreen(props) {
 
   }, []);
 
-//console.log("PROPS FORMLIST", props.formList[props.formList.length-1]);
-
   var deleteForm = async (id) => {
     const deleteReq = await fetch("https://tattoomoibackend.herokuapp.com/project-form", {
       method: "DELETE",
@@ -60,21 +58,21 @@ function AppointmentScreen(props) {
 
   var projectForm = props.formList.map((form, i) => {
     console.log("image", form.confirmationFormSchema[0].status);
-    {
-      form.confirmationFormSchema[0].status == "Accepté" ? (
-        <View style={{flexShrink: 1}}>
-          <Text style={styles.text}>
-            Date proposée: {form.confirmationFormSchema[0].date}{" "}
-          </Text>
-          <Text style={styles.text}>
-            Prix estimé: {form.confirmationFormSchema[0].price} euros
-          </Text>
-          <Text style={styles.commentText}>
-            Commentaire du tatoueur: {form.confirmationFormSchema[0].comment}{" "}
-          </Text>{" "}
-        </View>
-      ) : null;
-    }
+    // {
+    //   form.confirmationFormSchema[0].status == "Accepté" ? (
+    //     <View>
+    //       <Text style={styles.text}>
+    //         Date proposée: {form.confirmationFormSchema[0].date}{" "}
+    //       </Text>
+    //       <Text style={styles.text}>
+    //         Prix estimé: {form.confirmationFormSchema[0].price} euros
+    //       </Text>
+    //       <Text style={styles.text}>
+    //         Commentaire du tatoueur: {form.confirmationFormSchema[0].comment}{" "}
+    //       </Text>{" "}
+    //     </View>
+    //   ) : null;
+    // }
 
     return (
       <Card key={i} containerStyle={styles.cards}>
@@ -163,11 +161,13 @@ function AppointmentScreen(props) {
       </Card>
     );
   });
-
+  console.log('PROPS FORMIST',props.formList);
   return (
     <View style={styles.container}>
       <HeaderComponent navigation={props.navigation} />
-      {props.dataUser !== null ? (
+      
+      {
+      props.dataUser !== null && props.formList.length !== 0 ? (
       <ScrollView style={{ width: "90%", flex: 2 }}>{projectForm}</ScrollView>
       ) : (
       <View style={{flex:3, justifyContent:'center', padding:40}}>

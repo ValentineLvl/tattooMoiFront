@@ -132,6 +132,7 @@ function TabBottomTattoo() {
     )
 }
 
+
 function AppointmentStackNav() {
     return (
     <AppointmentStack.Navigator screenOptions={{ headerShown: false }} >
@@ -140,7 +141,6 @@ function AppointmentStackNav() {
     </AppointmentStack.Navigator>
     );
 }
-
 
 function AccountTattooStackNav() {
     return (

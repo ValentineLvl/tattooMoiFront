@@ -64,7 +64,7 @@ function AccountTatoueurScreen(props) {
                     />
                        }
                        title="  Mes demandes"
-                       onPress={() => props.navigation.navigate('DemandesClient')}
+                       onPress={() => props.navigation.navigate('Demandes')}
                    />
                    
               
