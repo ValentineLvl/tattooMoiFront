@@ -59,7 +59,7 @@ function FormTatoueurScreen(props) {
       console.log("ID", props.formId.confirmationFormSchema[0]._id);
       // console.log("ID", props.dataUser.firstName)
 
-      const dataConfirm = await fetch("http://172.17.1.128:3000/send-confirm", {
+      const dataConfirm = await fetch("https://tattoomoibackend.herokuapp.com/send-confirm", {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: `confirmId=${props.formId.confirmationFormSchema[0]._id}&statusFromFront=${status}&formId=${props.formId._id}&dateFromFront=${date}&priceFromFront=${price}&commentFromFront=${comment}`,
@@ -80,7 +80,7 @@ function FormTatoueurScreen(props) {
       console.log("ID", props.formList[0]._id);
       // console.log("ID", props.dataUser.firstName)
 
-      const dataRefuse = await fetch("http://172.17.1.128:3000/send-confirm", {
+      const dataRefuse = await fetch("https://tattoomoibackend.herokuapp.com/send-confirm", {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: `confirmId=${props.formList[0].confirmationFormSchema[0]._id}&statusFromFront=${status}&formId=${props.formList[0]._id}`,

@@ -16,7 +16,7 @@ function AppointmentTatoueurScreen(props) {
     useEffect(() => {
         console.log("Appoint loaded");
         const findFormTattoo = async () => {
-            const dataForm = await fetch(`http://172.17.1.128:3000/appointment-tattoo?id=${props.dataTattoo._id}`)
+            const dataForm = await fetch(`https://tattoomoibackend.herokuapp.com/appointment-tattoo?id=${props.dataTattoo._id}`)
             const body = await dataForm.json();
             
             props.saveForm(body.form)

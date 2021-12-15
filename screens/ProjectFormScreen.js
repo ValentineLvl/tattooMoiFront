@@ -78,7 +78,7 @@ function ProjectFormScreen(props) {
             type: 'image/jpeg',
             name: 'avatar.jpg',
         });
-        var rawResponse = await fetch('http://172.17.1.128:3000/upload', {
+        var rawResponse = await fetch('https://tattoomoibackend.herokuapp.com/upload', {
             method: 'POST',
             body: data
         });
@@ -95,7 +95,7 @@ function ProjectFormScreen(props) {
             console.log("activation de la fonction")
             console.log("ID", props.selectedArtistInfos._id)
 
-            const data = await fetch('http://172.17.1.128:3000/project-form', {
+            const data = await fetch('https://tattoomoibackend.herokuapp.com/project-form', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: `statusFromFront=${status}&tattooIdFromFront=${props.selectedArtistInfos._id}&token=${props.dataUser.token}&userProjectImgFromFront=${tempUrl}&userStyleFromFront=${styleValue}&userDisponibilityFromFront=${scheduleValue}&userGenderFromFront=${titleValue}&userLastNameFromFront=${lastName}&userFirstNameFromFront=${firstName}&userEmailFromFront=${email}&userPhoneNumberFromFront=${phone}&userAddressFromFront=${address}&userPostalCodeFromFront=${postalCode}&userCityFromFront=${city}&usertattooZoneFromFront=${tattooZone}&userWidthFromFront=${width}&userHeightFromFront=${height}&userDescriptionFromFront=${description}&userRequestFromFront=${request}`

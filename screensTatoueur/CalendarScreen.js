@@ -27,7 +27,7 @@ function CalendarScreen(props) {
       if (data) {
         const findUser = async () => {
           const reqFind = await fetch(
-            `http://172.17.1.128:3000/tattoo-data?token=${data}`
+            `https://tattoomoibackend.herokuapp.com/tattoo-data?token=${data}`
           );
           const resultFind = await reqFind.json();
 
@@ -43,7 +43,7 @@ function CalendarScreen(props) {
   useEffect(() => {
     console.log("Appoint loaded");
     const findFormTattoo = async () => {
-        const dataForm = await fetch(`http://172.17.1.128:3000/appointment-tattoo?id=${props.dataTattoo._id}`)
+        const dataForm = await fetch(`https://tattoomoibackend.herokuapp.com/appointment-tattoo?id=${props.dataTattoo._id}`)
         const body = await dataForm.json();
         
         props.saveForm(body.form)

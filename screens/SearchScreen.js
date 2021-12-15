@@ -33,7 +33,7 @@ function SearchScreen(props) {
 
             if (data) {
                 const findUser = async () => {
-                    const reqFind = await fetch(`http://172.17.1.128:3000/client-data?token=${data}`)
+                    const reqFind = await fetch(`https://tattoomoibackend.herokuapp.com/client-data?token=${data}`)
                     const resultFind = await reqFind.json()
 
                     props.addDataUser(resultFind.client)
@@ -61,7 +61,7 @@ function SearchScreen(props) {
 
     // const onSearchInput = async (name, lastname) => {
 
-    //     let rawResponse = await fetch(`http://192.168.1.101:3000/search-tattoo?firstName=${name}&lastName${lastname}`)
+    //     let rawResponse = await fetch(`https://tattoomoibackend.herokuapp.com/search-tattoo?firstName=${name}&lastName${lastname}`)
     //     let response = await rawResponse.json()
 
     //     let nameResult = [response.searchTatoueur]
@@ -88,7 +88,7 @@ function SearchScreen(props) {
 
     const onSearchStylePress = async () => {
 
-        let rawResponse = await fetch('http://172.17.1.128:3000/search-tattoo', {
+        let rawResponse = await fetch('https://tattoomoibackend.herokuapp.com/search-tattoo', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ styleList: selected, firstName: tatoueurName })
