@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button } from 'react-native-elements';
+import { Button, Overlay } from 'react-native-elements';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { connect } from 'react-redux';
@@ -7,7 +7,8 @@ import { connect } from 'react-redux';
 import HeaderComponent from './HeaderComponent';
 
 import { StyleSheet, View, TextInput, Text, TouchableOpacity, Alert } from 'react-native';
-import { Dropdown } from 'react-native-element-dropdown';
+// import { Dropdown } from 'react-native-element-dropdown';
+import LottieView from 'lottie-react-native';
 
 import * as Location from 'expo-location';
 
@@ -25,10 +26,12 @@ function SearchScreen(props) {
     const [selected, setSelected] = useState([]);
     //const [tattooshopName, setTattooshopName] = useState('');
     const [tatoueurName, setTatoueurName] = useState('');
+    const [tatoueurCity, setTatoueurCity] = useState('');
 
-    // const [location, setLocation] = useState(null);
     const [displayCurrentAddress, setDisplayCurrentAddress] = useState('');
     const [errorMsg, setErrorMsg] = useState(null);
+
+    const [visible, setVisible] = useState(false);
 
     // const [styleArray, setStyleArray] = useState([]);
 
@@ -38,7 +41,7 @@ function SearchScreen(props) {
         CheckIfLocationEnabled();
         // GetCurrentLocation();
 
-        setDisplayCurrentAddress('Me géolocaliser')
+        setDisplayCurrentAddress('Chercher autour de moi')
 
         AsyncStorage.getItem("dataUserToken", function (error, data) {
 
@@ -64,19 +67,16 @@ function SearchScreen(props) {
         }
     }
 
-    let alertTxt = "Un petit instant..."
 
+    // Position du l'utilisateur
     const GetCurrentLocation = async () => {
 
-        setDisplayCurrentAddress(
-            Alert.alert(
-                alertTxt,
-                '',
-                null,
-            )
-        )
+        setDisplayCurrentAddress('Chercher autour de moi', setVisible(true))
 
         let { coords } = await Location.getCurrentPositionAsync();
+
+        props.saveUserPosition({ latitude: coords.latitude, longitude: coords.longitude })
+
         if (coords) {
             const { latitude, longitude } = coords;
             let response = await Location.reverseGeocodeAsync({
@@ -84,21 +84,20 @@ function SearchScreen(props) {
                 longitude
             })
 
-            setDisplayCurrentAddress(
-                Alert.alert(
-                    alertTxt = "C'est good !",
-                    '',
-                    null,
-                )
-            )
+            setDisplayCurrentAddress(setVisible(false))
 
             response.map((item) => {
+
                 let userAddress = `${item.street}, ${item.postalCode} ${item.city}`;
 
                 setDisplayCurrentAddress(userAddress);
+
+                setTatoueurCity(item.city)
             })
         }
+        setSelected([])
     };
+
 
     const handlePress = async (tattooStyle) => {
         selected.includes(tattooStyle)
@@ -113,7 +112,7 @@ function SearchScreen(props) {
         let rawResponse = await fetch('http://192.168.1.101:3000/search-tattoo', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ styleList: selected, firstName: tatoueurName })
+            body: JSON.stringify({ styleList: selected, firstName: tatoueurName, city: tatoueurCity })
         });
 
         let response = await rawResponse.json()
@@ -122,7 +121,7 @@ function SearchScreen(props) {
 
         props.saveTatoueurInfos(response.searchResult)
 
-        console.log('SEARCHRESULT', response.searchResult)
+        // console.log('SEARCHRESULT', response.searchResult)
 
         if (response.searchResult.length === 0) {
             Alert.alert(
@@ -136,7 +135,13 @@ function SearchScreen(props) {
 
         setTatoueurName('');
 
-        props.navigation.navigate('Resultat')
+        if(tatoueurName.length === 0 && selected.length === 0 && tatoueurCity !== 0){
+            props.navigation.navigate('MapScreen')
+            setDisplayCurrentAddress('Chercher autour de moi')
+        } else {
+            props.navigation.navigate('Resultat')
+            setTatoueurCity('')
+        }
 
     }
 
@@ -163,28 +168,15 @@ function SearchScreen(props) {
                 style={styles.input}
                 placeholder="Tatoueur, TattooShop"
             />
-
-            {/* <TextInput
-                style={styles.inputLocalisation}
-                placeholder="Localisation"
-            /> */}
-
-            <TouchableOpacity
-                onPress={() => GetCurrentLocation()}
-                style={{
-                    width: '80%',
-                    backgroundColor: '#F1EFE5',
-                    borderColor: 'black',
-                    borderWidth: 0.5,
-                    padding: 10,
-                    marginBottom: 8,
-                    width: '80%'
-                }}
-            >
-                <Text style={{ color: '#BEBDB9' }}>
-                    {displayCurrentAddress}
-                </Text>
-            </TouchableOpacity>
+            <Overlay
+                isVisible={visible}
+                overlayStyle={{ backgroundColor: 'rgba(255, 255, 255, 0)', borderRadius: 100, width: 160, height: 160, justifyContent: 'center', alignItems: 'center' }}>
+                <LottieView
+                    style={{ width: 150 }}
+                    source={require('../assets/loading-square.json')} autoPlay loop
+                    imageAssetsFolder
+                />
+            </Overlay>
 
             <View style={styles.btnGroup}>
 
@@ -192,7 +184,7 @@ function SearchScreen(props) {
 
             </View>
 
-            <Dropdown
+            {/* <Dropdown
                 style={styles.dropdown}
                 placeholderStyle={styles.placeholderStyle}
                 selectedTextStyle={styles.selectedTextStyle}
@@ -207,7 +199,17 @@ function SearchScreen(props) {
                 onChange={item => {
                     setDropdownValue(item.value);
                 }}
-            />
+            /> */}
+
+            <View style={[styles.main, { marginTop: 20}]}>
+                <TouchableOpacity
+                    onPress={() => GetCurrentLocation()}
+                    style={[styles.button, { backgroundColor: '#F1EFE5', width: 'auto', paddingRight: 20, paddingLeft: 20 }]}>
+                    <Text style={{ color: '#424D41', fontSize: 15, textAlign: 'center' }}>
+                        {displayCurrentAddress}
+                    </Text>
+                </TouchableOpacity>
+            </View>
 
             <View style={styles.main}>
                 <Button
@@ -217,6 +219,7 @@ function SearchScreen(props) {
                     onPress={() => onSearchStylePress()}
                 />
             </View>
+
             <Button
                 title="Vous êtes pro ? Cliquez ici"
                 buttonStyle={{ backgroundColor: '#F1EFE5', padding: 1, paddingRight: 5, paddingLeft: 5, borderRadius: 5 }}
@@ -252,29 +255,31 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     input: {
-        height: 40,
+        height: 50,
         width: '80%',
-        margin: 12,
-        marginTop: 30,
+        marginTop: 60,
         borderWidth: 0.5,
         padding: 10,
+        textAlign: 'center',
+        borderRadius: 50,
+        fontSize: 17
     },
-    inputLocalisation: {
-        height: 40,
-        width: '80%',
-        margin: 12,
-        marginBottom: 30,
-        borderWidth: 0.5,
-        padding: 10,
-    },
+    // inputLocalisation: {
+    //     height: 40,
+    //     width: '100%',
+    //     margin: 12,
+    //     marginBottom: 30,
+    //     borderWidth: 0.5,
+    //     padding: 10,
+    // },
     button: {
         backgroundColor: '#F1EFE5',
         borderColor: '#454543',
         borderWidth: 0.5,
-        borderRadius: 10,
+        borderRadius: 100,
         padding: 10,
         marginBottom: 8,
-        width: 125,
+        width: 110
     },
     textButton: {
         color: '#C2A77D',
@@ -288,7 +293,9 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         padding: 8,
         width: 120,
-        color: '#F1EFE5', fontSize: 17, fontWeight: 'bold'
+        color: '#F1EFE5',
+        fontSize: 17,
+        fontWeight: 'bold'
     },
     selectedTextButton: {
         color: '#F1EFE5',
@@ -297,22 +304,12 @@ const styles = StyleSheet.create({
         textAlign: 'center'
     },
     btnGroup: {
-        marginTop: 20,
+        marginTop: 60,
         width: '100%',
         flexDirection: 'row',
         justifyContent: 'space-evenly',
+        alignItems: 'stretch',
         flexWrap: 'wrap'
-    },
-    dropdown: {
-        width: '80%',
-        margin: 16,
-        marginTop: 60,
-        height: 50,
-        borderStyle: 'solid',
-        borderRadius: 10,
-        borderColor: '#454543',
-        borderWidth: 0.5,
-        backgroundColor: '#F1EFE5'
     },
     placeholderStyle: {
         fontSize: 15,
@@ -332,7 +329,8 @@ function mapStateToProps(state) {
 const mapDispatchToProps = (dispatch) => {
     return {
         saveTatoueurInfos: (infos) => dispatch({ type: 'saveTatoueurInfos', infos: infos }),
-        addDataUser: (dataUser) => dispatch({ type: 'addDataUser', dataUser: dataUser })
+        addDataUser: (dataUser) => dispatch({ type: 'addDataUser', dataUser: dataUser }),
+        saveUserPosition: (position) => dispatch({ type: 'saveUserPosition', position })
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(SearchScreen)

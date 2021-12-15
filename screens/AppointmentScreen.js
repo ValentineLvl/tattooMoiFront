@@ -10,7 +10,7 @@ function AppointmentScreen(props) {
 
     const [formsList, setFormsList] = useState([]);
     const [tattooInfo, setTattooInfo] = useState([]);
-   // const [userForms, setUserForms] = useState(false);
+    // const [userForms, setUserForms] = useState(false);
 
     useEffect(() => {
 
@@ -28,13 +28,13 @@ function AppointmentScreen(props) {
             props.saveForm(body.user.formId)
             setFormsList(body.user.formId)
             setTattooInfo(body.project)
-           
+
 
         }
         findProjectForm();
-//         setUserForms(true);
-//     }
-// });
+        //         setUserForms(true);
+        //     }
+        // });
     }, [])
 
 
@@ -58,29 +58,29 @@ function AppointmentScreen(props) {
         return (
 
             <Card key={i} containerStyle={styles.cards}>
-                
-                
-                    <View  >
-                        <Card.Image source={{ uri: form.projectImg }} >
+
+
+                <View  >
+                    <Card.Image source={{ uri: form.projectImg }} >
                         <TouchableOpacity onPress={() => deleteForm(form._id)}>
-                        <Text style={{ left: '89%',top: '5%'}}>
-                        <MaterialCommunityIcons
+                            <Text style={{ left: '89%', top: '5%' }}>
+                                <MaterialCommunityIcons
                                     name="trash-can"
                                     size={30}
-                                    color="#F1EFE5"  
+                                    color="#F1EFE5"
                                 />
-                                </Text>
+                            </Text>
                         </TouchableOpacity>
-                        </Card.Image>
-                        <View  style={styles.cardDesc}  >
+                    </Card.Image>
+                    <View style={styles.cardDesc}  >
                         <Text style={{ marginBottom: 10, fontWeight: 'bold', paddingTop: 5, color: '#454543' }}> Projet : {form.request}</Text>
-                        {tattooInfo.map((tattoo, i) => ( <>
-                          <Text style={{  fontWeight: 'bold', paddingTop: 5, color: '#454543' }}> tatoueur: {tattoo.lastName} </Text> 
-                        <Text style={{ marginBottom: 10, fontWeight: 'bold',  color: '#454543' }}> Adresse : {tattoo.tattooShop[0].address}, {tattoo.address}, {tattoo.address} </Text> 
+                        {tattooInfo.map((tattoo, i) => (<>
+                            <Text style={{ fontWeight: 'bold', paddingTop: 5, color: '#454543' }}> tatoueur: {tattoo.lastName} </Text>
+                            <Text style={{ marginBottom: 10, fontWeight: 'bold', color: '#454543' }}> Adresse : {tattoo.tattooShop[0].address}, {tattoo.address}, {tattoo.address} </Text>
                         </>))}
-        
-    
-                        
+
+
+
                         <Text style={styles.text} >Style: {form.style}</Text>
                         <Text style={styles.text} >Zone à tatouer: {form.tattooZone}</Text>
                         <Text style={styles.text}>Taille:  {form.heigth} cm x {form.width} cm</Text>
@@ -94,11 +94,11 @@ function AppointmentScreen(props) {
 
                             onPress={() => deleteForm(form._id)}
                         /> */}
-                        </View>
                     </View>
+                </View>
 
 
-                
+
             </Card>
 
 
@@ -113,7 +113,7 @@ function AppointmentScreen(props) {
         <View style={styles.container}>
             <HeaderComponent navigation={props.navigation} />
             <ScrollView style={{ width: '90%', flex: 2 }} >
-                    {projectForm}
+                {projectForm}
             </ScrollView>
         </View>
     )
@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
         borderColor: '#454543'
     },
     text: {
-       color: '#454543',
+        color: '#454543',
     }
 
 });

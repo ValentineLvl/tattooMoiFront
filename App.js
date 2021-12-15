@@ -14,6 +14,7 @@ import SignUpScreen from './screens/SignUpScreen';
 import ProjectFormScreen from './screens/ProjectFormScreen';
 import ClientInfoScreen from './screens/ClientInfoScreen';
 import FavorisScreen from './screens/FavorisScreen';
+import MapScreen from './screens/MapScreen';
 
 //Screens tatoueur
 import SignInTatoueurScreen from './screensTatoueur/SignInTatoueurScreen';
@@ -37,9 +38,10 @@ import dataUser from './reducers/dataUser';
 import saveTatoueurInfos from './reducers/saveTatoueurInfos';
 import selectedArtistInfos from './reducers/selectedArtistInfos';
 import dataTattoo from './reducers/dataTattoo';
+import saveUserPosition from './reducers/userPosition';
 // import photoList from './reducers/photo';
 
-const store = createStore(combineReducers({ formList, dataUser, saveTatoueurInfos, selectedArtistInfos, dataTattoo }));
+const store = createStore(combineReducers({ formList, dataUser, saveTatoueurInfos, selectedArtistInfos, dataTattoo, saveUserPosition }));
 
 const Stack = createStackNavigator();
 const SearchStack = createStackNavigator();
@@ -82,6 +84,7 @@ function SearchStackNav() {
         <SearchStack.Screen name="Search" component={SearchScreen} />
         <SearchStack.Screen name="Resultat" component={SearchResultScreen} />
         <SearchStack.Screen name="TattooArtist" component={SelectedTattooArtistScreen} />
+        <SearchStack.Screen name="MapScreen" component={MapScreen} />
         <SearchStack.Screen name="Formulaire" component={ProjectFormScreen} />
         </SearchStack.Navigator>
     );

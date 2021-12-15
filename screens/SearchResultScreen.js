@@ -8,6 +8,8 @@ import HeaderComponent from './HeaderComponent';
 
 function SearchResultScreen(props) {
 
+    // const { street, city } = props.route.params
+
     var handlePressAddFavorite = async (tattooId) => {
 
         const response = await fetch('http://192.168.1.101:3000/favorites', {
@@ -64,6 +66,10 @@ function SearchResultScreen(props) {
 
         <View style={styles.container}>
             <HeaderComponent navigation={props.navigation} />
+
+            {/* <Text style={[styles.city, {marginTop: 25}]}>
+                Autour de {street}, {city}
+            </Text> */}
 
             <ScrollView style={{ width: '90%', flex: 2 }}>
 
@@ -128,7 +134,12 @@ const styles = StyleSheet.create({
         padding: 0,
         borderWidth: 0.1,
         borderColor: '#454543'
-    }
+    },
+    city: {
+        fontSize: 14,
+        fontWeight: 'bold',
+        color: '#454543',
+    },
 });
 
 function mapStateToProps(state) {
