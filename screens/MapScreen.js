@@ -10,32 +10,9 @@ import * as Location from 'expo-location';
 
 function MapScreen(props) {
 
-    var handlePressAddFavorite = async (tattooId) => {
-
-        const response = await fetch('http://192.168.1.101:3000/favorites', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: `IdFromFront=${tattooId}&token=${props.dataUser.token}`
-        })
-        // console.log('recupérer dataUser.token', props.dataUser.token);
-    }
-
-    // var handlePressDeleteFavorite = async () => {
-    // const response = await fetch(`http://192.168.0.38:3000/favorites/${name}`, {
-    //   method: 'DELETE'
-    // })
-    // }
-
-    // console.log('TATOUEURS INFOS',props.saveTatoueurInfos);
-
     const [coord, setCoord] = useState([]);
 
     useEffect(() => {
-        // let firstName;
-        // let tattooShop;
-        // let address;
-        // let postalCode;
-        // let city;
 
         let temp = [];
 
@@ -74,17 +51,17 @@ function MapScreen(props) {
 
     }, [])
 
-    const searchResults = coord.map((latLong) => {
+    const searchResults = coord.map((latLong, i) => {
         return (
             <Marker
+                key={i}
                 pinColor='blue'
                 coordinate={{ latitude: latLong.latitude, longitude: latLong.longitude }}
-                title={`${latLong.tattooShop} • ${latLong.firstName}`}
+                title={`${latLong.tattooShop}`}
                 description={`${latLong.address} ${latLong.postalCode} ${latLong.city}`}
             />
         )
     })
-
 
 
     return (
@@ -95,7 +72,7 @@ function MapScreen(props) {
                 region={{
                     latitude: props.saveUserPosition.latitude,
                     longitude: props.saveUserPosition.longitude,
-                    latitudeDelta: 0.2,
+                    latitudeDelta: 0.09,
                     longitudeDelta: 0.1,
                 }}
                 style={[styles.map, { marginTop: 15, borderRadius: 30 }]}
@@ -111,13 +88,13 @@ function MapScreen(props) {
             </MapView>
             <View style={{ flex: 1, width: '100%' }}>
                 <ScrollView>
-                    {props.saveTatoueurInfos.map((tatoueur, i) => {
-                        // const [tattooLiked, setTattooLiked] = useState(false);
-                        return (
 
-                            <TouchableOpacity 
+                    {props.saveTatoueurInfos.map((tatoueur, i) => {
+
+                        return (
+                            <TouchableOpacity
                                 onPress={() => { props.selectedArtistInfos(tatoueur), props.navigation.navigate('TattooArtist') }}
-                                style={{backgroundColor: '#F1EFE5'}}>
+                                style={{ backgroundColor: '#F1EFE5' }}>
                                 <Card containerStyle={styles.cards}>
                                     <View style={styles.cardDesc}>
                                         <View>
@@ -205,11 +182,11 @@ const styles = StyleSheet.create({
         color: '#454543',
     },
     map: {
-        flex: 1,
         marginBottom: 25,
+        marginTop: 15,
         width: '90%',
-        height: '70%',
-        // borderRadius: 70
+        height: '35%',
+        borderRadius: 70,
     }
 });
 

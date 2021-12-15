@@ -24,7 +24,7 @@ function SearchScreen(props) {
     const [userToken, setUserToken] = useState(false);
     const [dropdownValue, setDropdownValue] = useState(null);
     const [selected, setSelected] = useState([]);
-    //const [tattooshopName, setTattooshopName] = useState('');
+    const [tattooshopName, setTattooshopName] = useState('');
     const [tatoueurName, setTatoueurName] = useState('');
     const [tatoueurCity, setTatoueurCity] = useState('');
 
@@ -32,8 +32,6 @@ function SearchScreen(props) {
     const [errorMsg, setErrorMsg] = useState(null);
 
     const [visible, setVisible] = useState(false);
-
-    // const [styleArray, setStyleArray] = useState([]);
 
     //A l'initialisation de searchScreen, si le user était connecté on remet ses infos dans le store avec une route get
     useEffect(() => {
@@ -112,16 +110,12 @@ function SearchScreen(props) {
         let rawResponse = await fetch('http://192.168.1.101:3000/search-tattoo', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ styleList: selected, firstName: tatoueurName, city: tatoueurCity })
+            body: JSON.stringify({ styleList: selected, firstName: tatoueurName, city: tatoueurCity, tattooShop: tattooshopName })
         });
 
         let response = await rawResponse.json()
 
-        // setStyleArray(response.searchResult)
-
         props.saveTatoueurInfos(response.searchResult)
-
-        // console.log('SEARCHRESULT', response.searchResult)
 
         if (response.searchResult.length === 0) {
             Alert.alert(
@@ -134,8 +128,9 @@ function SearchScreen(props) {
         }
 
         setTatoueurName('');
+        setTattooshopName('')
 
-        if(tatoueurName.length === 0 && selected.length === 0 && tatoueurCity !== 0){
+        if(tatoueurName.length === 0 && tattooshopName.length === 0 && selected.length === 0 && tatoueurCity !== 0){
             props.navigation.navigate('MapScreen')
             setDisplayCurrentAddress('Chercher autour de moi')
         } else {
@@ -166,7 +161,13 @@ function SearchScreen(props) {
                 onChangeText={(value) => setTatoueurName(value)}
                 value={tatoueurName}
                 style={styles.input}
-                placeholder="Tatoueur, TattooShop"
+                placeholder="Tatoueur"
+            />
+            <TextInput
+                onChangeText={(value) => setTattooshopName(value)}
+                value={tattooshopName}
+                style={[styles.input, {marginTop: 10}]}
+                placeholder="TattooShop"
             />
             <Overlay
                 isVisible={visible}
