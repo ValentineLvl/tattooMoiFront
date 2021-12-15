@@ -11,7 +11,6 @@ function AccountScreen(props) {
 
     const handleLogOut = async () => {
         props.disconnectUser(null);
-        props.deconnectForms(formList);
         props.navigation.navigate('Search');
         AsyncStorage.removeItem("dataUserToken");
     } 

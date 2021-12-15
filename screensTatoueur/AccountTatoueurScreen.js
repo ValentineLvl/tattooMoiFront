@@ -12,7 +12,7 @@ function AccountTatoueurScreen(props) {
     const handleLogOut = async () => {
         props.disconnectTattoo(null);
         //props.deconnectForms(formList);
-        props.navigation.navigate('Search');
+        props.navigation.navigate('TabBottomClient', {screen:'Search'});
         AsyncStorage.removeItem("dataTattooToken");
     } 
 
@@ -64,7 +64,7 @@ function AccountTatoueurScreen(props) {
                     />
                        }
                        title="  Mes demandes"
-                       onPress={() => props.navigation.navigate('Mes demandes')}
+                       onPress={() => props.navigation.navigate('Demandes')}
                    />
                    
               
