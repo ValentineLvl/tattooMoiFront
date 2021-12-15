@@ -62,14 +62,14 @@ function AppointmentScreen(props) {
     console.log("image", form.confirmationFormSchema[0].status);
     {
       form.confirmationFormSchema[0].status == "Accepté" ? (
-        <View>
+        <View style={{flexShrink: 1}}>
           <Text style={styles.text}>
             Date proposée: {form.confirmationFormSchema[0].date}{" "}
           </Text>
           <Text style={styles.text}>
             Prix estimé: {form.confirmationFormSchema[0].price} euros
           </Text>
-          <Text style={styles.text}>
+          <Text style={styles.commentText}>
             Commentaire du tatoueur: {form.confirmationFormSchema[0].comment}{" "}
           </Text>{" "}
         </View>
@@ -100,14 +100,14 @@ function AppointmentScreen(props) {
               }}
             >
               {" "}
-              Projet : {form.request}
+              {form.type} : {form.request}
             </Text>
 
             <Text
               style={{ fontWeight: "bold", paddingTop: 5, color: "#454543" }}
             >
               {" "}
-              Tatoueur: {form.tattooProjectId[0].firstName}{" "}
+              Tatoueur: {form.tattooProjectId[0].firstName} { form.tattooProjectId[0].lastName}
             </Text>
             <Text
               style={{ marginBottom: 10, fontWeight: "bold", color: "#454543" }}
@@ -141,7 +141,7 @@ function AppointmentScreen(props) {
             <Text>
               {form.confirmationFormSchema[0].status == "Accepté" ? (
                 <>
-                  <View>
+                  <View style={{maxWidth:310}}>
                     <Text style={{ fontWeight: "bold", color: "#454543" }}>
                       Proposition du tatoueur:{" "}
                     </Text>
@@ -149,9 +149,9 @@ function AppointmentScreen(props) {
                       Date proposée: {form.confirmationFormSchema[0].date}{" "}
                     </Text>
                     <Text style={styles.text}>
-                      Prix estimé: {form.confirmationFormSchema[0].price} euros
+                      Prix estimé: {form.confirmationFormSchema[0].price} euro
                     </Text>
-                    <Text style={styles.text}>
+                    <Text style={styles.commentText}>
                       Commentaire: {form.confirmationFormSchema[0].comment}{" "}
                     </Text>
                   </View>{" "}
@@ -200,7 +200,17 @@ const styles = StyleSheet.create({
   },
   text: {
     color: "#454543",
+    flexWrap: 'wrap',
+    flexShrink: 1
   },
+  commentText: {
+    flex:1,
+    flexDirection :"row",
+    color: "#454543",
+    flexShrink: 1,
+    flexWrap: 'wrap',
+    
+  }
 });
 
 function mapStateToProps(state) {

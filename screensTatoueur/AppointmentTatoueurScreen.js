@@ -16,7 +16,7 @@ function AppointmentTatoueurScreen(props) {
     useEffect(() => {
         console.log("Appoint loaded");
         const findFormTattoo = async () => {
-            const dataForm = await fetch(`http://172.17.1.128:3000/appointment-tattoo?id=${props.dataTattoo._id}`)
+            const dataForm = await fetch(`https://tattoomoibackend.herokuapp.com/appointment-tattoo?id=${props.dataTattoo._id}`)
             const body = await dataForm.json();
             
             props.saveForm(body.form)
@@ -29,7 +29,7 @@ function AppointmentTatoueurScreen(props) {
 
     // console.log("FORM", form[0].confirmationFormSchema[0].status)
 
-    var appointment = form.map((form, i) => {
+    var appointment = props.formList.map((form, i) => {
         console.log("image", form._id)
         return (
             <Button
@@ -38,22 +38,22 @@ function AppointmentTatoueurScreen(props) {
             
             type="outline"
             icon={<>
+            {(form.type == "Devis")?
+            <MaterialCommunityIcons
+                                name="form-select"
+                                size={20}
+                                color="#424D41"
+                            /> :
                 <MaterialCommunityIcons
+                
                     name="calendar-blank-outline"
                     size={20}
                     color="#424D41"
-                />
+                /> }
                 <View style={styles.titleStyle}>
-                <Text> Rendez-vous {form.firstName} {form.lastName} ({form.confirmationFormSchema[0].status}) </Text>
+                <Text> {form.type} {form.firstName} {form.lastName} ({form.confirmationFormSchema[0].status}) </Text>
                 </View>
-                <MaterialCommunityIcons
-                iconRight
-                    name="arrow-right-circle-outline"
-                    size={20}
-                    color="#424D41"
-                    alignSelf= 'right'
-                    alignItem='right'
-                />
+               
                 </>
             }
             
@@ -68,44 +68,14 @@ function AppointmentTatoueurScreen(props) {
         return (
             <View style={styles.container}>
                 <HeaderComponent />
-
+<ScrollView>
                 <SafeAreaView style={styles.safeArea} >
                    {appointment}
                   
-                    <Button
-                        titleStyle={styles.titleStyle}
-                        buttonStyle={styles.buttonStyle}
-                        type="outline"
-                        icon={<>
-                            <MaterialCommunityIcons
-                                name="form-select"
-                                size={20}
-                                color="#424D41"
-                            />
-                             <View style={styles.titleStyle}>
-                             <Text> Devis Jane Test </Text>
-                            </View>
-                            <MaterialCommunityIcons
-                            padding = {10}
-                                name="arrow-right-circle-outline"
-                                size={20}
-                                color="#424D41"
-                                marginLeft={20}
-                            />
-                            </>
-                        }                   
-                   
-                //    icon={
-                //             <MaterialCommunityIcons
-                //                 name="arrow-right-circle-outline"
-                //                 size={20}
-                //                 color="#424D41"
-                //             />
-                //         }
-                        />
+                    
                
                 </SafeAreaView>
-     
+</ScrollView>
             </View>
         )
     } 
@@ -127,7 +97,7 @@ const styles = StyleSheet.create({
     titleStyle: {
         color: '#424D41',
         fontSize:14,
-        marginRight:50, 
+        marginRight:5, 
         marginLeft: 5
     },
     buttonStyle: {
@@ -141,7 +111,7 @@ const styles = StyleSheet.create({
 });
 
 function mapStateToProps(state) {
-    return { dataTattoo: state.dataTattoo}
+    return { dataTattoo: state.dataTattoo, formList: state.formList}
 }
 
 function mapDispatchToProps(dispatch) {

@@ -14,6 +14,12 @@ const title = [
     { label: 'NC', value: 'NC' },
 ];
 
+const type = [
+    { label: 'Devis', value: 'Devis' },
+    { label: 'Rendez-vous', value: 'Rendez-vous' },
+    
+];
+
 const style = [
     { label: 'Old School', value: 'Old School' },
     { label: 'New School', value: 'New School' },
@@ -36,6 +42,7 @@ const schedule = [
 
 
 function ProjectFormScreen(props) {
+    console.log("ID",)
 
     const [form, setForm] = useState({});
 
@@ -57,6 +64,7 @@ function ProjectFormScreen(props) {
     const [tempUrl, setTempUrl] = useState("");
     const [request, setRequest] = useState("");
     const [status, setStatus] = useState("En attente")
+    const [typeValue, setTypeValue] = useState(null);
 
     //Etat de l'overlay
     const [visible, setVisible] = useState(false);
@@ -93,12 +101,12 @@ function ProjectFormScreen(props) {
     async function handleClickAddForm() {
         {
             console.log("activation de la fonction")
-            console.log("ID", props.selectedArtistInfos._id)
+          
 
-            const data = await fetch('https://tattoomoibackend.herokuapp.com//project-form', {
+            const data = await fetch('https://tattoomoibackend.herokuapp.com/project-form', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: `statusFromFront=${status}&tattooIdFromFront=${props.selectedArtistInfos._id}&token=${props.dataUser.token}&userProjectImgFromFront=${tempUrl}&userStyleFromFront=${styleValue}&userDisponibilityFromFront=${scheduleValue}&userGenderFromFront=${titleValue}&userLastNameFromFront=${lastName}&userFirstNameFromFront=${firstName}&userEmailFromFront=${email}&userPhoneNumberFromFront=${phone}&userAddressFromFront=${address}&userPostalCodeFromFront=${postalCode}&userCityFromFront=${city}&usertattooZoneFromFront=${tattooZone}&userWidthFromFront=${width}&userHeightFromFront=${height}&userDescriptionFromFront=${description}&userRequestFromFront=${request}`
+                body: `userTypeFromFront=${typeValue}&statusFromFront=${status}&tattooIdFromFront=${props.selectedArtistInfos._id}&token=${props.dataUser.token}&userProjectImgFromFront=${tempUrl}&userStyleFromFront=${styleValue}&userDisponibilityFromFront=${scheduleValue}&userGenderFromFront=${titleValue}&userLastNameFromFront=${lastName}&userFirstNameFromFront=${firstName}&userEmailFromFront=${email}&userPhoneNumberFromFront=${phone}&userAddressFromFront=${address}&userPostalCodeFromFront=${postalCode}&userCityFromFront=${city}&usertattooZoneFromFront=${tattooZone}&userWidthFromFront=${width}&userHeightFromFront=${height}&userDescriptionFromFront=${description}&userRequestFromFront=${request}`
             })
 
             const body = await data.json()
@@ -118,6 +126,27 @@ function ProjectFormScreen(props) {
             <ScrollView style={styles.form}>
                 <SafeAreaView >
                     {(props.dataUser == null) ? <>
+
+                        <Dropdown
+                                style={styles.dropdownType}
+                                placeholderStyle={styles.placeholderStyle}
+                                selectedTextStyle={styles.selectedTextStyle}
+                                inputSearchStyle={styles.inputSearchStyle}
+                                data={type}
+                                containerStyle={{ backgroundColor: '#F1EFE5', marginTop: -30 }}
+                                activeColor={'#C2A77D'}
+                                maxHeight={100}
+                                labelField="label"
+                                valueField="value"
+                                placeholder='Type de demande'
+                                value={typeValue}
+                                onFocus={() => setIsFocus(true)}
+                                onBlur={() => setIsFocus(false)}
+                                onChange={item => {
+                                    setTypeValue(item.value);
+                                    setIsFocus(false);
+                                }}
+                            />
                         <View style={styles.smallForm} >
                             <Dropdown
                                 style={styles.dropdown}
@@ -205,7 +234,30 @@ function ProjectFormScreen(props) {
                          value={lastName}
 
                     />
+
+                    <Dropdown
+                                style={styles.dropdownType}
+                                placeholderStyle={styles.placeholderStyle}
+                                selectedTextStyle={styles.selectedTextStyle}
+                                inputSearchStyle={styles.inputSearchStyle}
+                                data={type}
+                                containerStyle={{ backgroundColor: '#F1EFE5', marginTop: -30 }}
+                                activeColor={'#C2A77D'}
+                                maxHeight={100}
+                                labelField="label"
+                                valueField="value"
+                                placeholder='Type de demande'
+                                value={typeValue}
+                                onFocus={() => setIsFocus(true)}
+                                onBlur={() => setIsFocus(false)}
+                                onChange={item => {
+                                    setTypeValue(item.value);
+                                    setIsFocus(false);
+                                }}
+                            />
+                            
                     <View style={styles.smallForm} >
+                   
                             <Dropdown
                                 style={styles.dropdown}
                                 placeholderStyle={styles.placeholderStyle}
@@ -409,6 +461,16 @@ const styles = StyleSheet.create({
         borderRadius: 2,
         width: 300
     },
+    dropdownType: {
+        height: 40,
+        margin: 5,
+        borderWidth: 1,
+        padding: 10,
+        width: 300,
+        borderRadius: 2,
+        paddingHorizontal: 8,
+        backgroundColor: '#F1EFE5',
+    },
     dropdown: {
         height: 40,
         margin: 5,
@@ -450,7 +512,7 @@ const styles = StyleSheet.create({
 
 
 function mapStateToProps(state) {
-    return { dataUser: state.dataUser,  selectedArtistInfos: state.selectedArtistInfos }
+    return { dataUser: state.dataUser,  selectedArtistInfos: state.selectedArtistInfos, formType : state.formType }
 }
 
 function mapDispatchToProps(dispatch) {

@@ -52,7 +52,7 @@ console.log(props.formId.confirmationFormSchema[0].status)
             console.log("ID", props.formId.confirmationFormSchema[0]._id)
             // console.log("ID", props.dataUser.firstName)
 
-            const dataConfirm = await fetch('http://172.17.1.128:3000/send-confirm', {
+            const dataConfirm = await fetch('https://tattoomoibackend.herokuapp.com/send-confirm', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: `confirmId=${props.formId.confirmationFormSchema[0]._id}&statusFromFront=${status}&formId=${props.formId._id}&dateFromFront=${date}&priceFromFront=${price}&commentFromFront=${comment}`
@@ -63,8 +63,20 @@ console.log(props.formId.confirmationFormSchema[0].status)
                 setOverlayVisibleConfirm(!overlayVisibleConfirm)
             // }
             // console.log(tempUrl);
-          
+
+            
+                const dataForm = await fetch(`https://tattoomoibackend.herokuapp.com/appointment-tattoo?id=${props.dataTattoo._id}`)
+                const body2 = await dataForm.json();
+                
+                props.saveForm(body2.form)
+                setForm(body2.form)
+    
+            
+            console.log("formList", props.formList)
+           
         }
+          
+        
     };
 
     async function handleClickSendRefuse() {
@@ -74,7 +86,7 @@ console.log(props.formId.confirmationFormSchema[0].status)
             console.log("ID", props.formList[0]._id)
             // console.log("ID", props.dataUser.firstName)
 
-            const dataRefuse = await fetch('http://172.17.1.128:3000/send-confirm', {
+            const dataRefuse = await fetch('https://tattoomoibackend.herokuapp.com/send-confirm', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: `confirmId=${props.formList[0].confirmationFormSchema[0]._id}&statusFromFront=${status}&formId=${props.formList[0]._id}`
@@ -163,16 +175,17 @@ console.log(props.formId.confirmationFormSchema[0].status)
                     >
                          <View style={styles.centeredView}>
                     <View style={styles.modalView}>
-                    <Text style={styles.textOverlay}>Proposition de rendez-vous</Text>
+                    <Text style={styles.textOverlay}>Proposition de {props.formId.type}</Text>
                     <View style={styles.continuer}>
            
-
+<Text>{(props.formId.type == "Rendez-vous")?<>
         <TextInput
                                 style={styles.input}
                                 onChangeText={setDate}
                                 value={date}
                                 placeholder="Date proposée"
-                            />
+                            /> </>: null}
+</Text>
         <TextInput
                                 style={styles.input}
                                 onChangeText={setPrice}
@@ -181,9 +194,12 @@ console.log(props.formId.confirmationFormSchema[0].status)
                             />
       
         <TextInput
-                                style={styles.input}
+                                style={styles.commentInput}
                                 onChangeText={setComment}
                                 value={comment}
+                                multiline
+                                numberOfLines={5}
+                                maxLength={300}
                                 placeholder="Commentaire"
                             />
 
@@ -209,7 +225,7 @@ console.log(props.formId.confirmationFormSchema[0].status)
                     >
                          <View style={styles.centeredView}>
                     <View style={styles.modalView}>
-                    <Text style={styles.textOverlay}>Refus de rendez-vous</Text>
+                    <Text style={styles.textOverlay}>Refus de {props.formId.type}</Text>
                     <View style={styles.continuer}>
                     <Text style={styles.text}> Veuillez cliquer sur le bouton ci-dessous pour confirmer le refus</Text>
                     <Button
@@ -340,19 +356,37 @@ text: {
     width: 0,
     height: 0,
   },
-
+  commentInput: {
+    textAlignVertical: 'top',
+    height: 90,
+    margin: 5,
+    borderWidth: 1,
+    padding: 10,
+    borderRadius: 2,
+    width: 300
+},
 });
 
 
 function mapStateToProps(state){
-    return {dataUser:state.dataUser, formList: state.formList, formId : state.formId}
+    return {dataTattoo:state.dataTattoo, formList: state.formList, formId : state.formId}
   }
 
+  function mapDispatchToProps(dispatch) {
+    return {
+  saveForm: function (dataSaveForm) {
+    dispatch({
+      type: "saveForm",
+      dataSaveForm: dataSaveForm,
+    });
+  },
 
+ }
+  }
 
   
 
   export default connect (
     mapStateToProps,
-    null
+    mapDispatchToProps
   ) (FormTatoueurScreen);

@@ -42,7 +42,7 @@ import dataTattoo from './reducers/dataTattoo';
 import formId from './reducers/formId';
 
 
-const store = createStore(combineReducers({ formId, formList, dataUser, saveTatoueurInfos, selectedArtistInfos, dataTattoo }));
+const store = createStore(combineReducers({formId, formList, dataUser, saveTatoueurInfos, selectedArtistInfos, dataTattoo }));
 
 const Stack = createStackNavigator();
 const SearchStack = createStackNavigator();
@@ -111,7 +111,7 @@ function TabBottomTattoo() {
                     let iconName;
                     if (route.name === 'Calendrier') {
                         iconName = 'calendar';
-                    } else if (route.name === 'Mes demandes') {
+                    } else if (route.name === 'Demandes') {
                         iconName = 'calendar-o';
                     } else if (route.name === 'Mon espace') {
                         iconName = 'user';
@@ -126,7 +126,7 @@ function TabBottomTattoo() {
             )}
         >
             <TabTattoo.Screen name="Calendrier" component={CalendarScreen} />
-            <TabTattoo.Screen name="Mes demandes" component={AppointmentStackNav} />
+            <TabTattoo.Screen name="Demandes" component={AppointmentStackNav} />
             <TabTattoo.Screen name="Mon espace" component={AccountTattooStackNav} />
         </TabTattoo.Navigator>
     )
@@ -135,7 +135,7 @@ function TabBottomTattoo() {
 function AppointmentStackNav() {
     return (
     <AppointmentStack.Navigator screenOptions={{ headerShown: false }} >
-    <AppointmentStack.Screen name="Demandes" component={AppointmentTatoueurScreen}/>
+    <AppointmentStack.Screen name="DemandesClient" component={AppointmentTatoueurScreen}/>
     <AppointmentStack.Screen name="Mes forms" component={FormTatoueurScreen}/>
     </AppointmentStack.Navigator>
     );
@@ -148,7 +148,7 @@ function AccountTattooStackNav() {
     <AccountTattooStack.Screen name="AccountTattoo" component={AccountTatoueurScreen}/>
     <AccountTattooStack.Screen name="Infos" component={TattooInfosScreen}/>
     <AccountTattooStack.Screen name="Calendar" component={CalendarScreen} />
-    <AccountTattooStack.Screen name="Demandes" component={AppointmentTatoueurScreen} />
+    <AccountTattooStack.Screen name="DemandesClient" component={AppointmentTatoueurScreen} />
     </AccountTattooStack.Navigator>
     );
 }

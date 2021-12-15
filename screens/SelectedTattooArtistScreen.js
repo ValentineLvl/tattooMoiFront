@@ -465,7 +465,7 @@ useEffect(() => {
                   paddingTop: 10,
                   paddingBottom: 10,
                 }}
-                onPress={() => handlePressDevis()}
+                onPress={() => handlePressDevis() }
               />
             </>
           ) : (
@@ -481,7 +481,7 @@ useEffect(() => {
                 paddingTop: 10,
                 paddingBottom: 10,
               }}
-              onPress={() => props.navigation.navigate("Formulaire")}
+              onPress={() => {props.navigation.navigate("Formulaire")}}
             />
           )}
           <Modal
@@ -569,7 +569,7 @@ useEffect(() => {
                 paddingTop: 10,
                 paddingBottom: 10,
               }}
-              onPress={() => props.navigation.navigate("Formulaire")}
+              onPress={() => {props.navigation.navigate("Formulaire")}}
             />
           )}
           <Modal
