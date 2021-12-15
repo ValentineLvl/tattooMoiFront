@@ -17,7 +17,7 @@ function SignInTatoueurScreen(props) {
 
     var handleSubmitSignin = async () => {
  
-        const data = await fetch('http://192.168.1.15:3000/sign-in-tattoo', {
+        const data = await fetch('http://172.17.1.128:3000/sign-in-tattoo', {
           method: 'POST',
           headers: {'Content-Type': 'application/x-www-form-urlencoded'},
           body: `emailFromFront=${signInEmail}&passwordFromFront=${signInPassword}`
@@ -27,7 +27,6 @@ function SignInTatoueurScreen(props) {
     
         if(body.result == true){
           props.addDataTattoo(body.user)
-          console.log('user connected', body.user)
           AsyncStorage.setItem("dataTattooToken", body.token);
         setUserExists(true);
           

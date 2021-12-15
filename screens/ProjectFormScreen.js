@@ -78,7 +78,7 @@ function ProjectFormScreen(props) {
             type: 'image/jpeg',
             name: 'avatar.jpg',
         });
-        var rawResponse = await fetch('http://192.168.1.15:3000/upload', {
+        var rawResponse = await fetch('http://172.17.1.128:3000/upload', {
             method: 'POST',
             body: data
         });
@@ -93,18 +93,18 @@ function ProjectFormScreen(props) {
     async function handleClickAddForm() {
         {
             console.log("activation de la fonction")
-            console.log("ID", props.dataUser.firstName)
+            console.log("ID", props.selectedArtistInfos._id)
 
-            const data = await fetch('http://192.168.1.15:3000/project-form', {
+            const data = await fetch('http://172.17.1.128:3000/project-form', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: `statusFromFront=${status}&tattooIdFromFront=${props.selectedArtistInfos[0]._id}&token=${props.dataUser.token}&userProjectImgFromFront=${tempUrl}&userStyleFromFront=${styleValue}&userDisponibilityFromFront=${scheduleValue}&userGenderFromFront=${titleValue}&userLastNameFromFront=${lastName}&userFirstNameFromFront=${firstName}&userEmailFromFront=${email}&userPhoneNumberFromFront=${phone}&userAddressFromFront=${address}&userPostalCodeFromFront=${postalCode}&userCityFromFront=${city}&usertattooZoneFromFront=${tattooZone}&userWidthFromFront=${width}&userHeightFromFront=${height}&userDescriptionFromFront=${description}&userRequestFromFront=${request}`
+                body: `statusFromFront=${status}&tattooIdFromFront=${props.selectedArtistInfos._id}&token=${props.dataUser.token}&userProjectImgFromFront=${tempUrl}&userStyleFromFront=${styleValue}&userDisponibilityFromFront=${scheduleValue}&userGenderFromFront=${titleValue}&userLastNameFromFront=${lastName}&userFirstNameFromFront=${firstName}&userEmailFromFront=${email}&userPhoneNumberFromFront=${phone}&userAddressFromFront=${address}&userPostalCodeFromFront=${postalCode}&userCityFromFront=${city}&usertattooZoneFromFront=${tattooZone}&userWidthFromFront=${width}&userHeightFromFront=${height}&userDescriptionFromFront=${description}&userRequestFromFront=${request}`
             })
 
             const body = await data.json()
-            // console.log("c la", props.saveTatoueurInfos)
+     console.log("c la", body)
             if (body.result == true) {
-                props.addForm(body.projectFormSave)
+                props.addForm(body.project)
                 props.navigation.navigate('Mes demandes')
             }
             // console.log(tempUrl);

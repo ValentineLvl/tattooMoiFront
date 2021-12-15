@@ -52,7 +52,7 @@ console.log(props.formId.confirmationFormSchema[0].status)
             console.log("ID", props.formId.confirmationFormSchema[0]._id)
             // console.log("ID", props.dataUser.firstName)
 
-            const dataConfirm = await fetch('http://192.168.1.15:3000/send-confirm', {
+            const dataConfirm = await fetch('http://172.17.1.128:3000/send-confirm', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: `confirmId=${props.formId.confirmationFormSchema[0]._id}&statusFromFront=${status}&formId=${props.formId._id}&dateFromFront=${date}&priceFromFront=${price}&commentFromFront=${comment}`
@@ -74,7 +74,7 @@ console.log(props.formId.confirmationFormSchema[0].status)
             console.log("ID", props.formList[0]._id)
             // console.log("ID", props.dataUser.firstName)
 
-            const dataRefuse = await fetch('http://192.168.1.15:3000/send-confirm', {
+            const dataRefuse = await fetch('http://172.17.1.128:3000/send-confirm', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: `confirmId=${props.formList[0].confirmationFormSchema[0]._id}&statusFromFront=${status}&formId=${props.formList[0]._id}`
@@ -93,7 +93,7 @@ console.log(props.formId.confirmationFormSchema[0].status)
     return (
         
     <View style={styles.container}>
-    <HeaderComponent navigation={props.navigation}/>
+    <HeaderComponent/>
     <ScrollView style={{ width: '90%', flex: 2 }} >
     
     

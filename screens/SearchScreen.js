@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 
 import HeaderComponent from './HeaderComponent';
 
-import { StyleSheet, View, Image, TextInput, Text, TouchableOpacity, Alert } from 'react-native';
+import { StyleSheet, View, TextInput, Text, TouchableOpacity, Alert, SafeAreaView, ScrollView } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
 
 const data = [
@@ -21,7 +21,8 @@ function SearchScreen(props) {
     const [userToken, setUserToken] = useState(false);
     const [dropdownValue, setDropdownValue] = useState(null);
     const [selected, setSelected] = useState([]);
-    const [tattooshopName, setTattooshopName] = useState('');
+    //const [tattooshopName, setTattooshopName] = useState('');
+    const [tatoueurName, setTatoueurName] = useState('');
 
     const [styleArray, setStyleArray] = useState([]);
 
@@ -32,7 +33,7 @@ function SearchScreen(props) {
 
             if (data) {
                 const findUser = async () => {
-                    const reqFind = await fetch(`http://192.168.1.15:3000/client-data?token=${data}`)
+                    const reqFind = await fetch(`http://172.17.1.128:3000/client-data?token=${data}`)
                     const resultFind = await reqFind.json()
 
                     props.addDataUser(resultFind.client)
@@ -44,6 +45,9 @@ function SearchScreen(props) {
 
     }, []);
 
+    // useEffect(() => {
+    //     console.log('STYLEARRAY', styleArray)  // Permet just ed'afficher le tableau en temps réel
+    // }, [styleArray])
 
     const handlePress = async (tattooStyle) => {
         selected.includes(tattooStyle)
@@ -52,49 +56,53 @@ function SearchScreen(props) {
             :
             setSelected([...selected, tattooStyle]);
 
-        let rawResponse = await fetch(`http://192.168.1.15:3000/search-tattoo?styleList=${tattooStyle}`)
-        let response = await rawResponse.json()
-        setStyleArray(styleArray => [...styleArray, response.searchResult])
+        // console.log('SELECTED', selected);
     }
 
-    useEffect(() => {
-        console.log('STYLEARRAY', styleArray)  // Permet just ed'afficher le tableau en temps réel
-    }, [styleArray])
+    // const onSearchInput = async (name, lastname) => {
 
-    const onSearchInput = async (name) => {
+    //     let rawResponse = await fetch(`http://192.168.1.101:3000/search-tattoo?firstName=${name}&lastName${lastname}`)
+    //     let response = await rawResponse.json()
 
-        let rawResponse = await fetch(`http://192.168.1.15:3000/search-tattoo?firstName=${name}`)
+    //     let nameResult = [response.searchTatoueur]
+
+
+    //     nameResult.map((tatoueur) => {
+    //         console.log('TATOUEUR', tatoueur);
+    //         if (tatoueur !== null) {
+    //             setStyleArray(styleArray => [...styleArray, tatoueur])
+    //             props.saveTatoueurInfos([nameResult])
+    //         }})
+    //         // else {
+    //         //     Alert.alert(
+    //         //         "Sorry...",
+    //         //         "Tatoueur non trouvé",
+    //         //         [
+    //         //             { text: "OK", onPress: () => props.navigation.goBack() }
+    //         //         ]
+    //         //     );
+    //         // }
+    //     })
+
+    // }
+
+    const onSearchStylePress = async () => {
+
+        let rawResponse = await fetch('http://172.17.1.128:3000/search-tattoo', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ styleList: selected, firstName: tatoueurName })
+        });
+
         let response = await rawResponse.json()
 
-        let nameResult = [response.searchTatoueur]
+        setStyleArray(response.searchResult)
 
-        nameResult.map((tatoueur) => {
-            console.log('TATOUEUR', tatoueur);
-            if (tatoueur !== null) {
-                setStyleArray(styleArray => [...styleArray, tatoueur])
-                props.saveTatoueurInfos([nameResult])
-            }
-            // else {
-            //     Alert.alert(
-            //         "Sorry...",
-            //         "Tatoueur non trouvé",
-            //         [
-            //             { text: "OK", onPress: () => props.navigation.goBack() }
-            //         ]
-            //     );
-            // }
-        })
+        props.saveTatoueurInfos(response.searchResult)
 
-    }
+        setTatoueurName('');
 
-    const onSearchStylePress = () => {
         props.navigation.navigate('Resultat')
-        props.saveTatoueurInfos(styleArray)
-
-    }
-
-    const onSearchNamePress = () => {
-        onSearchInput(tattooshopName)
 
     }
 
@@ -114,10 +122,11 @@ function SearchScreen(props) {
     return (
         <View style={styles.container}>
             <HeaderComponent navigation={props.navigation} />
-
+            <View style={styles.form}>
+            
             <TextInput
-                onChangeText={(value) => setTattooshopName(value)}
-                value={tattooshopName}
+                onChangeText={(value) => setTatoueurName(value)}
+                value={tatoueurName}
                 style={styles.input}
                 placeholder="Tatoueur, TattooShop"
             />
@@ -125,6 +134,8 @@ function SearchScreen(props) {
                 style={styles.inputLocalisation}
                 placeholder="Localisation"
             />
+            
+            
 
             <View style={styles.btnGroup}>
 
@@ -137,9 +148,9 @@ function SearchScreen(props) {
                 placeholderStyle={styles.placeholderStyle}
                 selectedTextStyle={styles.selectedTextStyle}
                 data={data}
-                containerStyle={{ backgroundColor: '#F1EFE5' }}
+                containerStyle={{ backgroundColor: '#F1EFE5', marginBottom: 40 }}
                 activeColor={'#C2A77D'}
-                maxHeight={110}
+                maxHeight={126}
                 labelField="label"
                 valueField="value"
                 placeholder="Couleur"
@@ -148,15 +159,16 @@ function SearchScreen(props) {
                     setDropdownValue(item.value);
                 }}
             />
-
+    
             <View style={styles.main}>
                 <Button
                     title="Rechercher"
                     type="solid"
                     buttonStyle={{ backgroundColor: '#424D41', paddingLeft: 30, paddingRight: 30, paddingTop: 10, paddingBottom: 10 }}
-                    onPress={() => { onSearchStylePress(), onSearchNamePress() }}
+                    onPress={() =>  onSearchStylePress()}
                 />
             </View>
+            
             <Button
                 title="Vous êtes pro ? Cliquez ici"
                 buttonStyle={{ backgroundColor: '#F1EFE5', padding: 1, paddingRight: 5, paddingLeft: 5, borderRadius: 5 }}
@@ -164,6 +176,7 @@ function SearchScreen(props) {
                 type="solid"
                 onPress={() => props.navigation.navigate('Connexion Tatoueur')}
             />
+            </View>
         </View>
     )
 }
@@ -193,19 +206,21 @@ const styles = StyleSheet.create({
     },
     input: {
         height: 40,
-        width: '80%',
+        width: 350,
         margin: 12,
         marginTop: 30,
         borderWidth: 0.5,
         padding: 10,
+        alignSelf: 'center',
     },
     inputLocalisation: {
         height: 40,
-        width: '80%',
+        width: 350,
         margin: 12,
         marginBottom: 30,
         borderWidth: 0.5,
         padding: 10,
+        alignSelf: 'center',
     },
     button: {
         backgroundColor: '#F1EFE5',
@@ -244,7 +259,7 @@ const styles = StyleSheet.create({
         flexWrap: 'wrap'
     },
     dropdown: {
-        width: '80%',
+        width: 300,
         margin: 16,
         marginTop: 60,
         height: 50,
@@ -252,7 +267,12 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         borderColor: '#454543',
         borderWidth: 0.5,
-        backgroundColor: '#F1EFE5'
+        backgroundColor: '#F1EFE5',
+        alignSelf: 'center',
+    },
+    form: {
+        flex: 3,
+        marginTop: 20,
     },
     placeholderStyle: {
         fontSize: 15,
@@ -271,7 +291,7 @@ function mapStateToProps(state) {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        saveTatoueurInfos: (infos) => dispatch({ type: 'saveTatoueurInfos', infos }),
+        saveTatoueurInfos: (infos) => dispatch({ type: 'saveTatoueurInfos', infos: infos }),
         addDataUser: (dataUser) => dispatch({ type: 'addDataUser', dataUser: dataUser })
     }
 }

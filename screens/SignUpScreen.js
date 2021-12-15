@@ -62,7 +62,7 @@ function SignUpScreen(props) {
 
 var handleSubmitSignup = async () => {
     
-  const data = await fetch('http://192.168.1.15:3000/sign-up', {
+  const data = await fetch('http://172.17.1.128:3000/sign-up', {
     method: 'POST',
     headers: {'Content-Type': 'application/x-www-form-urlencoded'},
     body: `userGenderFromFront=${value}&userLastNameFromFront=${signUpLastName}&userFirstNameFromFront=${signUpFirstName}&userEmailFromFront=${signUpEmail}&userPhoneNumberFromFront=${signUpPhoneNumber}&userAddressFromFront=${signUpAddress}&userPostalCodeFromFront=${signUpPostalCode}&userCityFromFront=${signUpCity}&userPasswordFromFront=${signUpPassword}&userPasswordConfirmationFromFront=${signUpPasswordConfirmation}`})
@@ -71,7 +71,6 @@ var handleSubmitSignup = async () => {
 
   if(body.result == true){
    props.addDataUser(body.saveClient);
-   //console.log('user created', body.saveClient);
    AsyncStorage.setItem("dataUserToken", body.token);
     setUserExists(true);
     

@@ -16,7 +16,7 @@ function AppointmentTatoueurScreen(props) {
     useEffect(() => {
         console.log("Appoint loaded");
         const findFormTattoo = async () => {
-            const dataForm = await fetch(`http://192.168.1.15:3000/appointment-tattoo?id=${props.dataTattoo._id}`)
+            const dataForm = await fetch(`http://172.17.1.128:3000/appointment-tattoo?id=${props.dataTattoo._id}`)
             const body = await dataForm.json();
             
             props.saveForm(body.form)
@@ -67,7 +67,7 @@ function AppointmentTatoueurScreen(props) {
     if (props.dataTattoo !== null) {
         return (
             <View style={styles.container}>
-                <HeaderComponent navigation={props.navigation} />
+                <HeaderComponent />
 
                 <SafeAreaView style={styles.safeArea} >
                    {appointment}
@@ -93,10 +93,7 @@ function AppointmentTatoueurScreen(props) {
                                 marginLeft={20}
                             />
                             </>
-                        }
-                        
-                        onPress={() => props.navigation.navigate('Mes favoris')}
-                   
+                        }                   
                    
                 //    icon={
                 //             <MaterialCommunityIcons
