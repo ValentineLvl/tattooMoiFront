@@ -29,7 +29,7 @@ function SearchResultScreen(props) {
 
     const findFavorites = async () => {
       const dataFavorites = await fetch(
-        `http://192.168.0.38:3000/favorites?token=${props.dataUser.token}`
+        `http://172.17.1.128:3000/favorites?token=${props.dataUser.token}`
       );
       const body = await dataFavorites.json();
       setTattooLiked(body.user.tattooId.map((el) => 
@@ -40,7 +40,7 @@ function SearchResultScreen(props) {
   }, []);
 
   var handleSubmitSignin = async () => {
-    const data = await fetch("http://192.168.0.38:3000/sign-in", {
+    const data = await fetch("http://172.17.1.128:3000/sign-in", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: `userEmailFromFront=${signInEmail}&userPasswordFromFront=${signInPassword}`,
@@ -79,7 +79,7 @@ function SearchResultScreen(props) {
   var handlePressAddFavorite = async (id) => {
     setTattooLiked([...tattooLiked, id]);
 
-    const response = await fetch("http://192.168.0.38:3000/favorites", {
+    const response = await fetch("http://172.17.1.128:3000/favorites", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: `IdFromFront=${id}&token=${props.dataUser.token}`,
@@ -90,7 +90,7 @@ function SearchResultScreen(props) {
   var handlePressDeleteFavorite = async (id) => {
     setTattooLiked(tattooLiked.filter(e => e !== id));
 
-    const response = await fetch("http://192.168.0.38:3000/delete-favorites", {
+    const response = await fetch("http://172.17.1.128:3000/delete-favorites", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: `tattooIdFromFront=${id}&token=${props.dataUser.token}`,

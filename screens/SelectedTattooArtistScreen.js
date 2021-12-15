@@ -40,7 +40,7 @@ function SelectedTattooArtistScreen(props) {
     console.log("Favoris is loaded");
     const findFavorites = async () => {
       const dataFavorites = await fetch(
-        `http://192.168.0.38:3000/favorites?token=${props.dataUser.token}`
+        `http://172.17.1.128:3000/favorites?token=${props.dataUser.token}`
       );
       const body = await dataFavorites.json();
 
@@ -54,7 +54,7 @@ function SelectedTattooArtistScreen(props) {
   }, []);
 
   var handleSubmitSignin = async () => {
-    const data = await fetch("http://192.168.0.38:3000/sign-in", {
+    const data = await fetch("http://172.17.1.128:3000/sign-in", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: `userEmailFromFront=${signInEmail}&userPasswordFromFront=${signInPassword}`,
@@ -93,7 +93,7 @@ function SelectedTattooArtistScreen(props) {
   var handlePressAddFavorite = async (id) => {
     setTattooLiked(true);
 
-    const response = await fetch("http://192.168.0.38:3000/favorites", {
+    const response = await fetch("http://172.17.1.128:3000/favorites", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: `IdFromFront=${id}&token=${props.dataUser.token}`,
@@ -106,7 +106,7 @@ function SelectedTattooArtistScreen(props) {
   var handlePressDeleteFavorite = async (id) => {
     setTattooLiked(false);
 
-    const response = await fetch("http://192.168.0.38:3000/delete-favorites", {
+    const response = await fetch("http://172.17.1.128:3000/delete-favorites", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: `tattooIdFromFront=${id}&token=${props.dataUser.token}`,
