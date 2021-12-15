@@ -12,21 +12,16 @@ import LottieView from 'lottie-react-native';
 
 import * as Location from 'expo-location';
 
-const data = [
-    { label: 'Noir', value: 'black&grey' },
-    { label: 'Couleur', value: 'color' },
-];
-
 const tattooStyles = ['old school', 'new school', 'realism', 'japanese', 'tribal', 'fineline', 'dotwork', 'geometric', 'lettering'];
 
 function SearchScreen(props) {
 
     const [userToken, setUserToken] = useState(false);
-    const [dropdownValue, setDropdownValue] = useState(null);
     const [selected, setSelected] = useState([]);
-    const [tattooshopName, setTattooshopName] = useState('');
+    // const [tattooshopName, setTattooshopName] = useState('');
     const [tatoueurName, setTatoueurName] = useState('');
     const [tatoueurCity, setTatoueurCity] = useState('');
+    const [tatoueurCityInput, setTatoueurCityInput] = useState('');
 
     const [displayCurrentAddress, setDisplayCurrentAddress] = useState('');
     const [errorMsg, setErrorMsg] = useState(null);
@@ -110,7 +105,14 @@ function SearchScreen(props) {
         let rawResponse = await fetch('http://192.168.1.101:3000/search-tattoo', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ styleList: selected, firstName: tatoueurName, city: tatoueurCity, tattooShop: tattooshopName })
+            body: JSON.stringify
+                ({
+                    styleList: selected,
+                    firstName: tatoueurName,
+                    city: tatoueurCity,
+                    cityInput: tatoueurCityInput
+                    // tattooShop: tattooshopName
+                })
         });
 
         let response = await rawResponse.json()
@@ -127,16 +129,29 @@ function SearchScreen(props) {
             );
         }
 
-        setTatoueurName('');
-        setTattooshopName('')
+        setTatoueurName('')
+        setTatoueurCity('')
+        setTatoueurCityInput('')
+        setDisplayCurrentAddress('Chercher autour de moi')
 
-        if(tatoueurName.length === 0 && tattooshopName.length === 0 && selected.length === 0 && tatoueurCity !== 0){
+        if (
+            tatoueurName.length === 0
+            // &&
+            // tattooshopName.length === 0
+            &&
+            tatoueurCityInput.length === 0
+            &&
+            selected.length === 0
+            &&
+            tatoueurCity !== 0) {
             props.navigation.navigate('MapScreen')
             setDisplayCurrentAddress('Chercher autour de moi')
         } else {
             props.navigation.navigate('Resultat')
             setTatoueurCity('')
         }
+
+        // props.navigation.navigate('Resultat')
 
     }
 
@@ -164,11 +179,17 @@ function SearchScreen(props) {
                 placeholder="Tatoueur"
             />
             <TextInput
+                onChangeText={(value) => setTatoueurCityInput(value)}
+                value={tatoueurCityInput}
+                style={[styles.input, { marginTop: 10 }]}
+                placeholder="Ville"
+            />
+            {/* <TextInput
                 onChangeText={(value) => setTattooshopName(value)}
                 value={tattooshopName}
-                style={[styles.input, {marginTop: 10}]}
+                style={[styles.input, { marginTop: 10 }]}
                 placeholder="TattooShop"
-            />
+            /> */}
             <Overlay
                 isVisible={visible}
                 overlayStyle={{ backgroundColor: 'rgba(255, 255, 255, 0)', borderRadius: 100, width: 160, height: 160, justifyContent: 'center', alignItems: 'center' }}>
@@ -202,7 +223,7 @@ function SearchScreen(props) {
                 }}
             /> */}
 
-            <View style={[styles.main, { marginTop: 20}]}>
+            <View style={[styles.main, { marginTop: 20 }]}>
                 <TouchableOpacity
                     onPress={() => GetCurrentLocation()}
                     style={[styles.button, { backgroundColor: '#F1EFE5', width: 'auto', paddingRight: 20, paddingLeft: 20 }]}>

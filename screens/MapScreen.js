@@ -76,7 +76,6 @@ function MapScreen(props) {
                     longitudeDelta: 0.1,
                 }}
                 style={[styles.map, { marginTop: 15, borderRadius: 30 }]}
-                // onPress={(e) => selectPOI(e)}
                 loadingEnabled={true}
             >
                 <Marker
