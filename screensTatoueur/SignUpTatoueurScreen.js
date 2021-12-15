@@ -81,7 +81,7 @@ function SignUpTatoueurScreen(props) {
         type: 'image/jpeg',
         name: 'avatar.jpg',
     });
-    var rawResponse = await fetch('http://172.17.1.128:3000/upload', {
+    var rawResponse = await fetch('https://tattoomoibackend.herokuapp.com/upload', {
         method: 'POST',
         body: data
     });
@@ -93,7 +93,7 @@ function SignUpTatoueurScreen(props) {
 
 var handleSubmitSignup = async () => {
     
-  const data = await fetch('http://172.17.1.128:3000/sign-up-tattoo', {
+  const data = await fetch('https://tattoomoibackend.herokuapp.com/sign-up-tattoo', {
     method: 'POST',
     headers: {'Content-Type': 'application/x-www-form-urlencoded'},
     body: `genderFromFront=${gender}&lastNameFromFront=${signUpLastName}&firstNameFromFront=${signUpFirstName}&emailFromFront=${signUpEmail}&passwordFromFront=${signUpPassword}&passwordConfirmationFromFront=${signUpPasswordConfirmation}&phoneFromFront=${signUpPhoneNumber}&siretFromFront=${signUpSiret}&scheduleFromFront=${schedule}&styleFromFront=${style}&colorFromFront=${color}&websiteFromFront=${website}&facebookFromFront=${facebook}&instagramFromFront=${instagram}&profilePictureFromFront=${profilePic}&tattooShopFromFront=${tattooShop}&addressFromFront=${signUpAddress}&postalCodeFromFront=${signUpPostalCode}&cityFromFront=${signUpCity}`})

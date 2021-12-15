@@ -23,7 +23,7 @@ function CalendarScreen(props) {
       if (data) {
         const findUser = async () => {
           const reqFind = await fetch(
-            `http://172.17.1.128:3000/tattoo-data?token=${data}`
+            `https://tattoomoibackend.herokuapp.com/tattoo-data?token=${data}`
           );
           const resultFind = await reqFind.json();
 

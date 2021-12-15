@@ -28,7 +28,7 @@ function AppointmentScreen(props) {
 
     const findProjectForm = async () => {
       const dataProjectForm = await fetch(
-        `http://172.17.1.128:3000/project-form?token=${props.dataUser.token}&tattooIdFromFront=${formId}`
+        `https://tattoomoibackend.herokuapp.com/project-form?token=${props.dataUser.token}&tattooIdFromFront=${formId}`
       );
       const body = await dataProjectForm.json();
 
@@ -47,7 +47,7 @@ function AppointmentScreen(props) {
 //console.log("PROPS FORMLIST", props.formList[props.formList.length-1]);
 
   var deleteForm = async (id) => {
-    const deleteReq = await fetch("http://172.17.1.128:3000/project-form", {
+    const deleteReq = await fetch("https://tattoomoibackend.herokuapp.com/project-form", {
       method: "DELETE",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: `formId=${id}&token=${props.dataUser.token}`,

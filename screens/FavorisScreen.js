@@ -14,7 +14,7 @@ function FavorisScreen(props) {
     console.log("Favoris is loaded");
     const findFavorites = async () => {
       const dataFavorites = await fetch(
-        `http://172.17.1.128:3000/favorites?token=${props.dataUser.token}`
+        `https://tattoomoibackend.herokuapp.com/favorites?token=${props.dataUser.token}`
       );
       const body = await dataFavorites.json();
       setFavoritesList(body.user.tattooId);
@@ -25,7 +25,7 @@ function FavorisScreen(props) {
   var handlePressDeleteFavorite = async (id) => {
     setTattooLiked(tattooLiked);
 
-    const deleteReq = await fetch("http://172.17.1.128:3000/delete-favorites", {
+    const deleteReq = await fetch("https://tattoomoibackend.herokuapp.com/delete-favorites", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: `tattooIdFromFront=${id}&token=${props.dataUser.token}`,
