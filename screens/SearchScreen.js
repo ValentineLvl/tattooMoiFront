@@ -1,33 +1,38 @@
 import React, { useState, useEffect } from 'react';
-import { Button } from 'react-native-elements';
+import { Button, Overlay } from 'react-native-elements';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { connect } from 'react-redux';
 
 import HeaderComponent from './HeaderComponent';
 
-import { StyleSheet, View, TextInput, Text, TouchableOpacity, Alert, SafeAreaView, ScrollView } from 'react-native';
-import { Dropdown } from 'react-native-element-dropdown';
+import { StyleSheet, View, TextInput, Text, TouchableOpacity, Alert } from 'react-native';
+import LottieView from 'lottie-react-native';
 
-const data = [
-    { label: 'Noir', value: 'black&grey' },
-    { label: 'Couleur', value: 'color' },
-];
+import * as Location from 'expo-location';
 
 const tattooStyles = ['old school', 'new school', 'realism', 'japanese', 'tribal', 'fineline', 'dotwork', 'geometric', 'lettering'];
 
 function SearchScreen(props) {
 
     const [userToken, setUserToken] = useState(false);
-    const [dropdownValue, setDropdownValue] = useState(null);
     const [selected, setSelected] = useState([]);
-    //const [tattooshopName, setTattooshopName] = useState('');
+    // const [tattooshopName, setTattooshopName] = useState('');
     const [tatoueurName, setTatoueurName] = useState('');
+    const [tatoueurCity, setTatoueurCity] = useState('');
+    const [tatoueurCityInput, setTatoueurCityInput] = useState('');
 
-    const [styleArray, setStyleArray] = useState([]);
+    const [displayCurrentAddress, setDisplayCurrentAddress] = useState('');
+    const [errorMsg, setErrorMsg] = useState(null);
+
+    const [visible, setVisible] = useState(false);
 
     //A l'initialisation de searchScreen, si le user était connecté on remet ses infos dans le store avec une route get
     useEffect(() => {
+
+        CheckIfLocationEnabled();
+
+        setDisplayCurrentAddress('Chercher autour de moi')
 
         AsyncStorage.getItem("dataUserToken", function (error, data) {
 
@@ -45,9 +50,45 @@ function SearchScreen(props) {
 
     }, []);
 
-    // useEffect(() => {
-    //     console.log('STYLEARRAY', styleArray)  // Permet just ed'afficher le tableau en temps réel
-    // }, [styleArray])
+    const CheckIfLocationEnabled = async () => {
+        let { status } = await Location.requestForegroundPermissionsAsync();
+        if (status !== 'granted') {
+            setErrorMsg('Permission to access location was denied');
+            return;
+        }
+    }
+
+
+    // Position du l'utilisateur
+    const GetCurrentLocation = async () => {
+
+        setDisplayCurrentAddress('Chercher autour de moi', setVisible(true))
+
+        let { coords } = await Location.getCurrentPositionAsync();
+
+        props.saveUserPosition({ latitude: coords.latitude, longitude: coords.longitude })
+
+        if (coords) {
+            const { latitude, longitude } = coords;
+            let response = await Location.reverseGeocodeAsync({
+                latitude,
+                longitude
+            })
+
+            setDisplayCurrentAddress(setVisible(false))
+
+            response.map((item) => {
+
+                let userAddress = `${item.street}, ${item.postalCode} ${item.city}`;
+
+                setDisplayCurrentAddress(userAddress);
+
+                setTatoueurCity(item.city)
+            })
+        }
+        setSelected([])
+    };
+
 
     const handlePress = async (tattooStyle) => {
         selected.includes(tattooStyle)
@@ -55,54 +96,58 @@ function SearchScreen(props) {
             setSelected(selected.filter(s => s !== tattooStyle))
             :
             setSelected([...selected, tattooStyle]);
-
-        // console.log('SELECTED', selected);
     }
-
-    // const onSearchInput = async (name, lastname) => {
-
-    //     let rawResponse = await fetch(`https://tattoomoibackend.herokuapp.com/search-tattoo?firstName=${name}&lastName${lastname}`)
-    //     let response = await rawResponse.json()
-
-    //     let nameResult = [response.searchTatoueur]
-
-
-    //     nameResult.map((tatoueur) => {
-    //         console.log('TATOUEUR', tatoueur);
-    //         if (tatoueur !== null) {
-    //             setStyleArray(styleArray => [...styleArray, tatoueur])
-    //             props.saveTatoueurInfos([nameResult])
-    //         }})
-    //         // else {
-    //         //     Alert.alert(
-    //         //         "Sorry...",
-    //         //         "Tatoueur non trouvé",
-    //         //         [
-    //         //             { text: "OK", onPress: () => props.navigation.goBack() }
-    //         //         ]
-    //         //     );
-    //         // }
-    //     })
-
-    // }
 
     const onSearchStylePress = async () => {
 
         let rawResponse = await fetch('https://tattoomoibackend.herokuapp.com/search-tattoo', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ styleList: selected, firstName: tatoueurName })
+            body: JSON.stringify
+                ({
+                    styleList: selected,
+                    firstName: tatoueurName,
+                    city: tatoueurCity,
+                    cityInput: tatoueurCityInput
+                    // tattooShop: tattooshopName
+                })
         });
 
         let response = await rawResponse.json()
 
-        setStyleArray(response.searchResult)
-
         props.saveTatoueurInfos(response.searchResult)
 
-        setTatoueurName('');
+        if (response.searchResult.length === 0) {
+            Alert.alert(
+                "Sorry...",
+                "Tatoueur non trouvé",
+                [
+                    { text: "OK", onPress: () => props.navigation.goBack() }
+                ]
+            );
+        }
 
-        props.navigation.navigate('Resultat')
+        setTatoueurName('')
+        setTatoueurCity('')
+        setTatoueurCityInput('')
+        setDisplayCurrentAddress('Chercher autour de moi')
+
+        if (
+            tatoueurName.length === 0
+            // &&
+            // tattooshopName.length === 0
+            &&
+            tatoueurCityInput.length === 0
+            &&
+            selected.length === 0
+            &&
+            tatoueurCity !== 0) {
+            props.navigation.navigate('MapScreen')
+            setDisplayCurrentAddress('Chercher autour de moi')
+        } else {
+            props.navigation.navigate('Resultat')
+            setTatoueurCity('')
+        }
 
     }
 
@@ -123,59 +168,67 @@ function SearchScreen(props) {
         <View style={styles.container}>
             <HeaderComponent navigation={props.navigation} />
             <View style={styles.form}>
-            
-            <TextInput
-                onChangeText={(value) => setTatoueurName(value)}
-                value={tatoueurName}
-                style={styles.input}
-                placeholder="Tatoueur, TattooShop"
-            />
-            <TextInput
-                style={styles.inputLocalisation}
-                placeholder="Localisation"
-            />
-            
-            
 
-            <View style={styles.btnGroup}>
-
-                {tattooStyleBtn}
-
-            </View>
-
-            <Dropdown
-                style={styles.dropdown}
-                placeholderStyle={styles.placeholderStyle}
-                selectedTextStyle={styles.selectedTextStyle}
-                data={data}
-                containerStyle={{ backgroundColor: '#F1EFE5', marginBottom: 40 }}
-                activeColor={'#C2A77D'}
-                maxHeight={126}
-                labelField="label"
-                valueField="value"
-                placeholder="Couleur"
-                value={dropdownValue}
-                onChange={item => {
-                    setDropdownValue(item.value);
-                }}
-            />
-    
-            <View style={styles.main}>
-                <Button
-                    title="Rechercher"
-                    type="solid"
-                    buttonStyle={{ backgroundColor: '#424D41', paddingLeft: 30, paddingRight: 30, paddingTop: 10, paddingBottom: 10 }}
-                    onPress={() =>  onSearchStylePress()}
+                <TextInput
+                    onChangeText={(value) => setTatoueurName(value)}
+                    value={tatoueurName}
+                    style={styles.input}
+                    placeholder="Tatoueur"
                 />
-            </View>
-            
-            <Button
-                title="Vous êtes pro ? Cliquez ici"
-                buttonStyle={{ backgroundColor: '#F1EFE5', padding: 1, paddingRight: 5, paddingLeft: 5, borderRadius: 5 }}
-                titleStyle={{ color: '#424D41', marginBottom: 10, fontSize: 15 }}
-                type="solid"
-                onPress={() => props.navigation.navigate('Connexion Tatoueur')}
-            />
+                <TextInput
+                    onChangeText={(value) => setTatoueurCityInput(value)}
+                    value={tatoueurCityInput}
+                    style={[styles.input, { marginTop: 10 }]}
+                    placeholder="Ville"
+                />
+                {/* <TextInput
+                onChangeText={(value) => setTattooshopName(value)}
+                value={tattooshopName}
+                style={[styles.input, { marginTop: 10 }]}
+                placeholder="TattooShop"
+            /> */}
+                <Overlay
+                    isVisible={visible}
+                    overlayStyle={{ backgroundColor: 'rgba(255, 255, 255, 0)', borderRadius: 100, width: 160, height: 160, justifyContent: 'center', alignItems: 'center' }}>
+                    <LottieView
+                        style={{ width: 150 }}
+                        source={require('../assets/loading-square.json')} autoPlay loop
+                        imageAssetsFolder
+                    />
+                </Overlay>
+
+                <View style={styles.btnGroup}>
+
+                    {tattooStyleBtn}
+
+                </View>
+
+                <View style={[styles.main, { marginTop: 20 }]}>
+                    <TouchableOpacity
+                        onPress={() => GetCurrentLocation()}
+                        style={[styles.button, { backgroundColor: '#F1EFE5', width: 'auto', paddingRight: 20, paddingLeft: 20 }]}>
+                        <Text style={{ color: '#424D41', fontSize: 15, textAlign: 'center' }}>
+                            {displayCurrentAddress}
+                        </Text>
+                    </TouchableOpacity>
+                </View>
+
+                <View style={styles.main}>
+                    <Button
+                        title="Rechercher"
+                        type="solid"
+                        buttonStyle={{ backgroundColor: '#424D41', paddingLeft: 30, paddingRight: 30, paddingTop: 10, paddingBottom: 10 }}
+                        onPress={() => onSearchStylePress()}
+                    />
+                </View>
+
+                <Button
+                    title="Vous êtes pro ? Cliquez ici"
+                    buttonStyle={{ backgroundColor: '#F1EFE5', padding: 1, paddingRight: 5, paddingLeft: 5, borderRadius: 5 }}
+                    titleStyle={{ color: '#424D41', marginBottom: 10, fontSize: 15 }}
+                    type="solid"
+                    onPress={() => props.navigation.navigate('Connexion Tatoueur')}
+                />
             </View>
         </View>
     )
@@ -222,15 +275,23 @@ const styles = StyleSheet.create({
         borderWidth: 0.5,
         padding: 10,
         alignSelf: 'center',
+        // height: 50,
+        // width: '80%',
+        // marginTop: 60,
+        // borderWidth: 0.5,
+        // padding: 10,
+        // textAlign: 'center',
+        // borderRadius: 50,
+        // fontSize: 17
     },
     button: {
         backgroundColor: '#F1EFE5',
         borderColor: '#454543',
         borderWidth: 0.5,
-        borderRadius: 15,
+        borderRadius: 100,
         padding: 10,
         marginBottom: 8,
-        width: 125,
+        width: 110
     },
     textButton: {
         color: '#C2A77D',
@@ -244,7 +305,9 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         padding: 8,
         width: 120,
-        color: '#F1EFE5', fontSize: 17, fontWeight: 'bold'
+        color: '#F1EFE5',
+        fontSize: 17,
+        fontWeight: 'bold'
     },
     selectedTextButton: {
         color: '#F1EFE5',
@@ -253,23 +316,12 @@ const styles = StyleSheet.create({
         textAlign: 'center'
     },
     btnGroup: {
-        marginTop: 20,
+        marginTop: 60,
         width: '100%',
         flexDirection: 'row',
         justifyContent: 'space-evenly',
+        alignItems: 'stretch',
         flexWrap: 'wrap'
-    },
-    dropdown: {
-        width: 300,
-        margin: 16,
-        marginTop: 60,
-        height: 50,
-        borderStyle: 'solid',
-        borderRadius: 10,
-        borderColor: '#454543',
-        borderWidth: 0.5,
-        backgroundColor: '#F1EFE5',
-        alignSelf: 'center',
     },
     form: {
         flex: 3,
@@ -293,7 +345,8 @@ function mapStateToProps(state) {
 const mapDispatchToProps = (dispatch) => {
     return {
         saveTatoueurInfos: (infos) => dispatch({ type: 'saveTatoueurInfos', infos: infos }),
-        addDataUser: (dataUser) => dispatch({ type: 'addDataUser', dataUser: dataUser })
+        addDataUser: (dataUser) => dispatch({ type: 'addDataUser', dataUser: dataUser }),
+        saveUserPosition: (position) => dispatch({ type: 'saveUserPosition', position })
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(SearchScreen)

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, TextInput, ScrollView } from 'react-native';
 import { Image, Button } from 'react-native-elements';
-import { Ionicons, FontAwesome } from '@expo/vector-icons';
 import { connect } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -37,11 +36,11 @@ function SignInScreen(props) {
         } else {
             setErrorsSignin(body.error)
         }
-      }
-    
-      var tabErrorsSignin = listErrorsSignin.map((error,i) => {
-        return(<Text style={{textAlign:'center', color:'#BF5F5F'}}>{error}</Text>)
-      })
+    }
+
+    var tabErrorsSignin = listErrorsSignin.map((error, i) => {
+        return (<Text style={{ textAlign: 'center', color: '#BF5F5F' }}>{error}</Text>)
+    })
 
 
     return (
@@ -52,7 +51,7 @@ function SignInScreen(props) {
                     style={{ width: 200, height: 80 }} />
             </View>
             <ScrollView style={styles.scroll}>
-                <View style={{marginBottom:60}}>
+                <View style={{ marginBottom: 60 }}>
                     <Button
                         title="Continuer sans s'inscrire"
                         buttonStyle={styles.greenButton}
@@ -80,7 +79,7 @@ function SignInScreen(props) {
                     type="solid"
                     onPress={() => handleSubmitSignin()}
                 />
-{/* 
+                {/* 
                 <Button
                     title=" Se connecter avec Google"
                     buttonStyle={styles.beigeButton}
@@ -154,8 +153,8 @@ const styles = StyleSheet.create({
         borderRadius: 2,
     },
     inscription: {
-        marginTop:90,
-      },
+        marginTop: 90,
+    },
 });
 
 function mapDispatchToProps(dispatch) {

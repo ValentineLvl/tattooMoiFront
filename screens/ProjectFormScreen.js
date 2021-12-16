@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Keyboard, StyleSheet, Text, View, Button, ScrollView, SafeAreaView, TextInput, Image, TouchableOpacity } from 'react-native';
+import { Keyboard, StyleSheet, Text, View, Button, ScrollView, SafeAreaView, TextInput, TouchableOpacity } from 'react-native';
 import { Overlay } from 'react-native-elements'
-import { Ionicons, FontAwesome, MaterialIcons } from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons';
 import { Dropdown } from 'react-native-element-dropdown';
 import * as ImagePicker from 'expo-image-picker';
 import HeaderComponent from './HeaderComponent';
@@ -17,7 +17,7 @@ const title = [
 const type = [
     { label: 'Devis', value: 'Devis' },
     { label: 'Rendez-vous', value: 'Rendez-vous' },
-    
+
 ];
 
 const style = [
@@ -44,7 +44,7 @@ const schedule = [
 function ProjectFormScreen(props) {
     console.log("ID",)
 
-    const [form, setForm] = useState({});
+    // const [form, setForm] = useState({});
 
     const [lastName, setLastName] = useState("");
     const [firstName, setFirstName] = useState("");
@@ -79,7 +79,7 @@ function ProjectFormScreen(props) {
         }
 
         let pickerResult = await ImagePicker.launchImageLibraryAsync();
-        //console.log(pickerResult);
+
         var data = new FormData();
         data.append('avatar', {
             uri: pickerResult.uri,
@@ -91,17 +91,17 @@ function ProjectFormScreen(props) {
             body: data
         });
         var response = await rawResponse.json();
-        //   props.onSnap(response.url);
+
         setTempUrl(response.url);
-        //console.log("response", response)
+
         if (response) {
-        setVisible(false)}
+            setVisible(false)
+        }
     }
 
     async function handleClickAddForm() {
         {
             console.log("activation de la fonction")
-          
 
             const data = await fetch('https://tattoomoibackend.herokuapp.com/project-form', {
                 method: 'POST',
@@ -110,12 +110,11 @@ function ProjectFormScreen(props) {
             })
 
             const body = await data.json()
-     console.log("c la", body)
+            console.log("c la", body)
             if (body.result == true) {
                 props.addForm(body.project)
                 props.navigation.navigate('Mes demandes')
             }
-            // console.log(tempUrl);
             setTempUrl("")
         }
     };
@@ -128,25 +127,25 @@ function ProjectFormScreen(props) {
                     {(props.dataUser == null) ? <>
 
                         <Dropdown
-                                style={styles.dropdownType}
-                                placeholderStyle={styles.placeholderStyle}
-                                selectedTextStyle={styles.selectedTextStyle}
-                                inputSearchStyle={styles.inputSearchStyle}
-                                data={type}
-                                containerStyle={{ backgroundColor: '#F1EFE5', marginTop: -30 }}
-                                activeColor={'#C2A77D'}
-                                maxHeight={100}
-                                labelField="label"
-                                valueField="value"
-                                placeholder='Type de demande'
-                                value={typeValue}
-                                onFocus={() => setIsFocus(true)}
-                                onBlur={() => setIsFocus(false)}
-                                onChange={item => {
-                                    setTypeValue(item.value);
-                                    setIsFocus(false);
-                                }}
-                            />
+                            style={styles.dropdownType}
+                            placeholderStyle={styles.placeholderStyle}
+                            selectedTextStyle={styles.selectedTextStyle}
+                            inputSearchStyle={styles.inputSearchStyle}
+                            data={type}
+                            containerStyle={{ backgroundColor: '#F1EFE5', marginTop: -30 }}
+                            activeColor={'#C2A77D'}
+                            maxHeight={100}
+                            labelField="label"
+                            valueField="value"
+                            placeholder='Type de demande'
+                            value={typeValue}
+                            onFocus={() => setIsFocus(true)}
+                            onBlur={() => setIsFocus(false)}
+                            onChange={item => {
+                                setTypeValue(item.value);
+                                setIsFocus(false);
+                            }}
+                        />
                         <View style={styles.smallForm} >
                             <Dropdown
                                 style={styles.dropdown}
@@ -224,76 +223,76 @@ function ProjectFormScreen(props) {
                         </View>
                     </>
                         : null}
-                        
-                        <TextInput
-                         style={styles.hiddenInput}
-                         autoFocus={true}
-                         multiline
-                         onFocus={Keyboard.dismiss}
-                        
-                         value={lastName}
+
+                    <TextInput
+                        style={styles.hiddenInput}
+                        autoFocus={true}
+                        multiline
+                        onFocus={Keyboard.dismiss}
+
+                        value={lastName}
 
                     />
 
                     <Dropdown
-                                style={styles.dropdownType}
-                                placeholderStyle={styles.placeholderStyle}
-                                selectedTextStyle={styles.selectedTextStyle}
-                                inputSearchStyle={styles.inputSearchStyle}
-                                data={type}
-                                containerStyle={{ backgroundColor: '#F1EFE5', marginTop: -30 }}
-                                activeColor={'#C2A77D'}
-                                maxHeight={100}
-                                labelField="label"
-                                valueField="value"
-                                placeholder='Type de demande'
-                                value={typeValue}
-                                onFocus={() => setIsFocus(true)}
-                                onBlur={() => setIsFocus(false)}
-                                onChange={item => {
-                                    setTypeValue(item.value);
-                                    setIsFocus(false);
-                                }}
-                            />
-                            
-                    <View style={styles.smallForm} >
-                   
-                            <Dropdown
-                                style={styles.dropdown}
-                                placeholderStyle={styles.placeholderStyle}
-                                selectedTextStyle={styles.selectedTextStyle}
-                                inputSearchStyle={styles.inputSearchStyle}
-                                data={title}
-                                containerStyle={{ backgroundColor: '#F1EFE5', marginTop: -30 }}
-                                activeColor={'#C2A77D'}
-                                maxHeight={100}
-                                labelField="label"
-                                valueField="value"
-                                placeholder='Civilité'
-                                value={titleValue}
-                                onFocus={() => setIsFocus(true)}
-                                onBlur={() => setIsFocus(false)}
-                                onChange={item => {
-                                    setTitleValue(item.value);
-                                    setIsFocus(false);
-                                }}
-                            />
+                        style={styles.dropdownType}
+                        placeholderStyle={styles.placeholderStyle}
+                        selectedTextStyle={styles.selectedTextStyle}
+                        inputSearchStyle={styles.inputSearchStyle}
+                        data={type}
+                        containerStyle={{ backgroundColor: '#F1EFE5', marginTop: -30 }}
+                        activeColor={'#C2A77D'}
+                        maxHeight={100}
+                        labelField="label"
+                        valueField="value"
+                        placeholder='Type de demande'
+                        value={typeValue}
+                        onFocus={() => setIsFocus(true)}
+                        onBlur={() => setIsFocus(false)}
+                        onChange={item => {
+                            setTypeValue(item.value);
+                            setIsFocus(false);
+                        }}
+                    />
 
-                            <TextInput
-                                style={styles.smallInput}
-                                onChangeText={setLastName}
-                                value={lastName}
-                                placeholder="Nom"
-                            />
-                        </View>
+                    <View style={styles.smallForm} >
+
+                        <Dropdown
+                            style={styles.dropdown}
+                            placeholderStyle={styles.placeholderStyle}
+                            selectedTextStyle={styles.selectedTextStyle}
+                            inputSearchStyle={styles.inputSearchStyle}
+                            data={title}
+                            containerStyle={{ backgroundColor: '#F1EFE5', marginTop: -30 }}
+                            activeColor={'#C2A77D'}
+                            maxHeight={100}
+                            labelField="label"
+                            valueField="value"
+                            placeholder='Civilité'
+                            value={titleValue}
+                            onFocus={() => setIsFocus(true)}
+                            onBlur={() => setIsFocus(false)}
+                            onChange={item => {
+                                setTitleValue(item.value);
+                                setIsFocus(false);
+                            }}
+                        />
 
                         <TextInput
-                            style={styles.input}
-                            onChangeText={setFirstName}
-                            value={firstName}
-                            placeholder="Prénom"
-
+                            style={styles.smallInput}
+                            onChangeText={setLastName}
+                            value={lastName}
+                            placeholder="Nom"
                         />
+                    </View>
+
+                    <TextInput
+                        style={styles.input}
+                        onChangeText={setFirstName}
+                        value={firstName}
+                        placeholder="Prénom"
+
+                    />
 
 
                     <TextInput
@@ -395,7 +394,7 @@ function ProjectFormScreen(props) {
                         </TouchableOpacity>
                     </View>
 
-                    <Overlay isVisible={visible} overlayStyle={{backgroundColor:'#F1EFE5'}}>
+                    <Overlay isVisible={visible} overlayStyle={{ backgroundColor: '#F1EFE5' }}>
                         <Text>Chargement...</Text>
                     </Overlay>
 
@@ -505,14 +504,14 @@ const styles = StyleSheet.create({
     hiddenInput: {
         width: 0,
         height: 0,
-      },
-    
+    },
+
 });
 
 
 
 function mapStateToProps(state) {
-    return { dataUser: state.dataUser,  selectedArtistInfos: state.selectedArtistInfos, formType : state.formType }
+    return { dataUser: state.dataUser, selectedArtistInfos: state.selectedArtistInfos, formType: state.formType }
 }
 
 function mapDispatchToProps(dispatch) {
