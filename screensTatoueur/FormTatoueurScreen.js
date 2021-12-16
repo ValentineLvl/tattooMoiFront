@@ -23,24 +23,9 @@ function FormTatoueurScreen(props) {
   const [date, setDate] = useState("");
   const [overlayVisibleConfirm, setOverlayVisibleConfirm] = useState(false);
   const [overlayVisibleRefuse, setOverlayVisibleRefuse] = useState(false);
-  const [status, setStatus] = useState(
-    props.formId.confirmationFormSchema[0].status
-  );
-  console.log(props.formId.confirmationFormSchema[0].status);
+  const [status, setStatus] = useState(props.formId.confirmationFormSchema[0].status);
 
-  // useEffect(() => {
-  //     console.log("Form loaded");
-  //     const findFormTattoo = async () => {
-  //         const dataForm = await fetch(`http://192.168.1.15:3000/form-tattoo?id=${props.dataTattoo._id}&formId=${props.formId}`)
-  //         const body = await dataForm.json();
-
-  //         props.saveForm(body.form)
-  //         setForm(body.form)
-
-  //     }
-  //     console.log("formList", props.formList)
-  //     findFormTattoo()
-  // }, [])
+  var RDV = "Rendez-vous";
 
   const Confirm = () => {
     setOverlayVisibleConfirm(!overlayVisibleConfirm);
@@ -187,14 +172,15 @@ function FormTatoueurScreen(props) {
                     <Text style={styles.textOverlay}>Proposition de {props.formId.type}</Text>
                     <View style={styles.continuer}>
            
-<Text>{(props.formId.type == "Rendez-vous")?<>
+{props.formId.type == RDV ? (<>
         <TextInput
                                 style={styles.input}
                                 onChangeText={setDate}
                                 value={date}
                                 placeholder="Date proposée"
-                            /> </>: null}
-</Text>
+                            /> 
+                            </>) : null}
+
         <TextInput
                                 style={styles.input}
                                 onChangeText={setPrice}

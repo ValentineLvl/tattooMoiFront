@@ -212,6 +212,7 @@ const styles = StyleSheet.create({
         borderWidth: 0.5,
         padding: 10,
         alignSelf: 'center',
+        borderRadius: 15,
     },
     inputLocalisation: {
         height: 40,
@@ -226,7 +227,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#F1EFE5',
         borderColor: '#454543',
         borderWidth: 0.5,
-        borderRadius: 10,
+        borderRadius: 15,
         padding: 10,
         marginBottom: 8,
         width: 125,
