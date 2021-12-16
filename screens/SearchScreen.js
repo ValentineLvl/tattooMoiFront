@@ -192,7 +192,7 @@ function SearchScreen(props) {
                     overlayStyle={{ backgroundColor: 'rgba(255, 255, 255, 0)', borderRadius: 100, width: 160, height: 160, justifyContent: 'center', alignItems: 'center' }}>
                     <LottieView
                         style={{ width: 150 }}
-                        source={require('../assets/loading-square.json')} autoPlay loop
+                        source={require('../assets/image/loading-square.json')} autoPlay loop
                         imageAssetsFolder
                     />
                 </Overlay>
@@ -275,8 +275,34 @@ const styles = StyleSheet.create({
         borderRadius: 15,
         padding: 10,
         marginBottom: 8,
-        width: 110
+        width: 110,
+        marginHorizontal: 5,
     },
+    btnGroup: {
+        marginTop: 40,
+        width: '100%',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'stretch',
+        flexWrap: 'wrap'
+    },
+    // button: {
+    //     backgroundColor: '#F1EFE5',
+    //     borderColor: '#454543',
+    //     borderWidth: 0.5,
+    //     borderRadius: 15,
+    //     padding: 10,
+    //     marginBottom: 8,
+    //     width: 110,
+    // },
+    // btnGroup: {
+    //     marginTop: 40,
+    //     width: '100%',
+    //     flexDirection: 'row',
+    //     justifyContent: 'space-evenly',
+    //     alignItems: 'stretch',
+    //     flexWrap: 'wrap'
+    // },
     textButton: {
         color: '#C2A77D',
         fontSize: 15,
@@ -288,14 +314,6 @@ const styles = StyleSheet.create({
         fontSize: 17,
         fontWeight: 'bold',
         textAlign: 'center'
-    },
-    btnGroup: {
-        marginTop: 40,
-        width: '100%',
-        flexDirection: 'row',
-        justifyContent: 'space-evenly',
-        alignItems: 'stretch',
-        flexWrap: 'wrap'
     },
     form: {
         flex: 3,

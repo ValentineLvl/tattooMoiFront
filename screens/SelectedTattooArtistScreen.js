@@ -297,7 +297,7 @@ function SelectedTattooArtistScreen(props) {
                 <View
 
                     style={{
-                        width: "90%",
+                        width: "100%",
                         marginVertical: 10,
                         flexDirection: "row",
                         justifyContent: "space-evenly",
