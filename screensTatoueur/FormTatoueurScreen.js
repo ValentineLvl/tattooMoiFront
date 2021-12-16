@@ -99,7 +99,7 @@ function FormTatoueurScreen(props) {
   return (
     <View style={styles.container}>
       <HeaderComponent />
-      <ScrollView style={{ width: "90%", flex: 2 }}>
+      <ScrollView style={{ width: "90%", flex: 2, marginBottom:20 }}>
         <Card containerStyle={styles.cardDesc}>
           <Text style={styles.titlePage}>Demande: {props.formId.request} </Text>
           <Text style={styles.titre}>
@@ -108,30 +108,30 @@ function FormTatoueurScreen(props) {
           </Text>
           <View style={{ flexDirection: "row" }}>
             <View style={{ marginRight: 40 }}>
-              <Text style={styles.titre}>Zone à tatouer:</Text>
+              <Text style={styles.textPage}>Zone à tatouer:</Text>
               <Text style={styles.Info}>{props.formId.tattooZone}</Text>
             </View>
             <View>
-              <Text style={styles.titre}>Style:</Text>
+              <Text style={styles.textPage}>Style:</Text>
               <Text style={styles.Info}>{props.formId.style}</Text>
             </View>
           </View>
           <View style={{ flexDirection: "row" }}>
             <View style={{ marginRight: 93 }}>
-              <Text style={styles.titre}>Hauteur:</Text>
+              <Text style={styles.textPage}>Hauteur:</Text>
               <Text style={styles.Info}>{props.formId.heigth} cm</Text>
             </View>
             <View>
-              <Text style={styles.titre}>Longueur:</Text>
+              <Text style={styles.textPage}>Longueur:</Text>
               <Text style={styles.Info}>{props.formId.width} cm</Text>
             </View>
           </View>
-          <Text style={styles.titre}>Description du projet:</Text>
+          <Text style={styles.textPage}>Description du projet:</Text>
           <Text style={styles.Info}>{props.formId.description}</Text>
-          <Text style={styles.titre}>Disponibilité:</Text>
+          <Text style={styles.textPage}>Disponibilité:</Text>
           <Text style={styles.Info}>{props.formId.disponibility}</Text>
-          <Text style={styles.titre}>Idée du projet:</Text>
-          <Card.Image source={{ uri: props.formId.projectImg }} />
+          <Text style={styles.textPage}>Idée du projet:</Text>
+          <Image source={{ uri: props.formId.projectImg }} style={{width: 300, height: 250, alignSelf:'center', marginVertical:5}}/>
           {status == "En attente" ? 
             
               <View style={{ flexDirection: "row", alignSelf: "center" }}>
@@ -257,29 +257,37 @@ const styles = StyleSheet.create({
     borderColor: "#454543",
   },
   titre: {
-    fontSize: 16,
-    fontWeight: "bold",
+    fontSize: 14,
+    //fontWeight: "bold",
     color: "#454543",
+    marginBottom: 15,
+    textAlign:'center',
+    fontStyle:'italic'
   },
   titlePage: {
-    fontSize: 22,
+    fontSize: 16,
     textAlign: "center",
     fontWeight: "bold",
     color: "#454543",
-    marginBottom: 20,
   },
+  textPage: {
+    fontSize: 14,
+    fontWeight: "bold",
+    color: "#424D41",
+},
   Info: {
-    fontSize: 16,
-    color: "#C2A77D",
+    fontSize: 14,
+    color: "#454543",
     marginBottom: 10,
   },
   input: {
     height: 40,
-    margin: 5,
+    marginHorizontal: 12,
+    marginVertical:5,
     borderWidth: 1,
     padding: 10,
     width: 300,
-    borderRadius: 2,
+    borderRadius: 15,
   },
   textOverlay: {
     fontSize: 14,
@@ -292,14 +300,13 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 10,
   },
-  inscription: {
-    marginTop: 20,
-  },
+  
   centeredView: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
     marginTop: 22,
+    
   },
   modalView: {
     margin: 20,
@@ -309,7 +316,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     shadowColor: "#000",
     shadowOffset: {
-      width: 100,
+      width: 20,
       height: 20,
     },
     shadowOpacity: 0.5,
@@ -318,22 +325,18 @@ const styles = StyleSheet.create({
   },
   greenButton: {
     backgroundColor: "#424D41",
-    borderRadius: 2,
+    borderRadius: 5,
     alignSelf: "center",
     marginTop: 20,
     marginBottom: 20,
   },
   cardDesc: {
-    // flexDirection: 'row',
-    // justifyContent: 'space-between',
-    paddingTop: 5,
-    paddingLeft: 40,
-    paddingRight: 40,
-    paddingBottom: 10,
     backgroundColor: "#F1EFE5",
-    borderWidth: 1,
+    borderWidth: 0.5,
     borderColor: "#454543",
     marginTop: 30,
+    marginBottom: 30,
+    borderRadius:5,
   },
   text: {
     fontSize: 14,
@@ -348,10 +351,11 @@ const styles = StyleSheet.create({
   commentInput: {
     textAlignVertical: 'top',
     height: 90,
-    margin: 5,
+    marginHorizontal: 12,
+    marginVertical:5,
     borderWidth: 1,
     padding: 10,
-    borderRadius: 2,
+    borderRadius: 15,
     width: 300
 },
 });
