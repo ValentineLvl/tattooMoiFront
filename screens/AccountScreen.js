@@ -112,12 +112,13 @@ const styles = StyleSheet.create({
         borderColor: '#424D41', 
         marginBottom:20,
         justifyContent: 'flex-start',
-        borderWidth: 1
+        borderWidth: 1,
+        borderRadius: 5
     },
     deconnexion: {
         flex:4,
         justifyContent: 'flex-end',
-        paddingBottom:20
+        paddingBottom: 30
     },
     
 });

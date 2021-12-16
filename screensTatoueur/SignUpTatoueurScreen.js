@@ -288,14 +288,15 @@ function SignUpTatoueurScreen(props) {
                 </View>
 
                 <View style={{ flex: 1, flexdirection: "row", alignItems: 'center', justifyContent: 'center', marginTop: 10 }}>
-                    <TouchableOpacity onPress={openImagePickerAsync} >
-                        <Text > <MaterialIcons
-                            name="save-alt"
-                            size={20}
-                            color="#C2A77D" />
-                            Télécharger une photo de profil </Text>
-                    </TouchableOpacity>
-                </View>
+                        <TouchableOpacity onPress={openImagePickerAsync} style={{ flexDirection: 'row' }} >
+                                <MaterialIcons
+                                name="save-alt"
+                                size={20}
+                                color="#C2A77D" />
+                            <Text style={{ color: '#C2A77D', fontWeight: 'bold', paddingTop: 4, marginLeft: 4 }}>
+                                Télécharger une photo de profil</Text>
+                        </TouchableOpacity>
+                    </View>
 
                 <Overlay isVisible={visible} overlayStyle={{ backgroundColor: '#F1EFE5' }}>
                     <Text>Chargement...</Text>
@@ -306,7 +307,7 @@ function SignUpTatoueurScreen(props) {
 
                     <Button
                         title="S'inscrire"
-                        buttonStyle={{ backgroundColor: '#424D41', borderRadius: 2, marginTop: 30, marginBottom: 30, alignSelf: 'center' }}
+                        buttonStyle={{ backgroundColor: '#424D41', borderRadius: 5, marginTop: 30, marginBottom: 30, alignSelf: 'center', paddingHorizontal: 20 }}
                         type="solid"
                         onPress={() => handleSubmitSignup()}
                     />
@@ -344,7 +345,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         padding: 10,
         width: 350,
-        borderRadius: 2,
+        borderRadius: 15,
     },
     smallInput: {
         height: 40,
@@ -352,7 +353,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         padding: 10,
         width: 170,
-        borderRadius: 2,
+        borderRadius: 15,
     },
     dropdown: {
         height: 40,
@@ -360,7 +361,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         padding: 10,
         width: 170,
-        borderRadius: 2,
+        borderRadius: 15,
         paddingHorizontal: 8,
     },
     multiselect: {
@@ -377,7 +378,8 @@ const styles = StyleSheet.create({
         fontSize: 14,
     },
     placeholderStyle: {
-        fontSize: 16,
+        fontSize: 14,
+        opacity: 0.25
     },
     selectedTextStyle: {
         fontSize: 14,

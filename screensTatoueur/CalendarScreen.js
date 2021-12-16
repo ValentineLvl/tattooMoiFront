@@ -41,7 +41,7 @@ function CalendarScreen(props) {
     useEffect(() => {
 
         console.log("Appoint loaded");
-        
+
         const findFormTattoo = async () => {
             const dataForm = await fetch(`https://tattoomoibackend.herokuapp.com/appointment-tattoo?id=${props.dataTattoo._id}`)
             const body = await dataForm.json();
@@ -63,8 +63,7 @@ function CalendarScreen(props) {
                     bottomDivider
                     containerStyle={{
                         backgroundColor: "#F1EFE5",
-                        margin: 15,
-                        borderRadius: 20,
+                        paddingTop: 15,
                         borderColor: "#C2A77D",
                     }}
                     onPress={() => {
@@ -73,7 +72,7 @@ function CalendarScreen(props) {
                 >
                     <Ionicons
                         name="md-person-circle-outline"
-                        size={50}
+                        size={30}
                         color="#424D41"
                     />
                     <ListItem.Content>
@@ -86,7 +85,7 @@ function CalendarScreen(props) {
                             {form.firstName}
                         </ListItem.Subtitle>
                     </ListItem.Content>
-                    <ListItem.Chevron size={30} color="#424D41" />
+                    <ListItem.Chevron size={20} color="#424D41" />
                 </ListItem>
             )
         }
@@ -114,7 +113,6 @@ function CalendarScreen(props) {
             </ScrollView>
 
             <Modal
-
                 animationType="slide"
                 transparent={true}
                 visible={modalVisible}
@@ -150,8 +148,9 @@ function CalendarScreen(props) {
                             <Text style={styles.textModal}>Description : </Text>
                             <Text style={styles.textPropsModal}>{props.formId.description}</Text>
                         </View>
-
-                        <Text style={styles.titleModal}>Idée :</Text>
+                        <View style={{ flexDirection: 'row', alignSelf: 'flex-start', flexWrap: 'wrap' }}>
+                            <Text style={styles.textModal}>Idée :</Text>
+                        </View>
                         <Image
                             source={{ uri: props.formId.projectImg }}
                             style={styles.imgModal}
@@ -196,6 +195,7 @@ const styles = StyleSheet.create({
         borderRadius: 75,
     },
     titre: {
+        marginLeft: -90,
         fontSize: 14,
         fontWeight: "bold",
         color: "#454543",
@@ -210,10 +210,11 @@ const styles = StyleSheet.create({
     },
     greenButton: {
         backgroundColor: "#424D41",
-        borderRadius: 2,
+        borderRadius: 5,
         alignSelf: 'center',
         marginTop: 20,
         marginBottom: 20,
+        paddingHorizontal: 20
     },
     titleModal: {
         fontSize: 14,
@@ -250,7 +251,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         shadowColor: "#424D41",
         shadowOffset: {
-            width: 100,
+            width: 10,
             height: 10,
         },
         shadowOpacity: 0.25,

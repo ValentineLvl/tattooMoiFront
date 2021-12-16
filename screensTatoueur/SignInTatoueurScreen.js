@@ -105,10 +105,11 @@ const styles = StyleSheet.create({
     },
     greenButton: {
         backgroundColor: '#424D41',
-        borderRadius: 2,
+        borderRadius: 5,
         alignSelf: 'center',
         marginTop: 30,
         marginBottom: 30,
+        paddingHorizontal: 20
     },
     input: {
         height: 40,
@@ -116,7 +117,8 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         padding: 10,
         width: 300,
-        borderRadius: 2,
+        borderRadius: 15,
+        textAlign: 'center'
     },
     inscription: {
         marginTop: 70,

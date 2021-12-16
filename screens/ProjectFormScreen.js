@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Keyboard, StyleSheet, Text, View, Button, ScrollView, SafeAreaView, TextInput, TouchableOpacity } from 'react-native';
-import { Overlay } from 'react-native-elements'
+import { Keyboard, StyleSheet, Text, View, ScrollView, SafeAreaView, TextInput, TouchableOpacity } from 'react-native';
+import { Overlay, Button } from 'react-native-elements'
 import { MaterialIcons } from '@expo/vector-icons';
 import { Dropdown } from 'react-native-element-dropdown';
 import * as ImagePicker from 'expo-image-picker';
@@ -385,11 +385,12 @@ function ProjectFormScreen(props) {
 
                     />
                     <View style={{ flex: 1, flexdirection: "row", alignItems: 'center', justifyContent: 'center', marginTop: 10 }}>
-                        <TouchableOpacity onPress={openImagePickerAsync} >
-                            <Text > <MaterialIcons
+                        <TouchableOpacity onPress={openImagePickerAsync} style={{ flexDirection: 'row' }} >
+                                <MaterialIcons
                                 name="save-alt"
                                 size={20}
                                 color="#C2A77D" />
+                            <Text style={{ color: '#C2A77D', fontWeight: 'bold', paddingTop: 4, marginLeft: 4 }}>
                                 Télécharger une image </Text>
                         </TouchableOpacity>
                     </View>
@@ -400,9 +401,9 @@ function ProjectFormScreen(props) {
 
                     <View style={{ flex: 1, alignSelf: 'center', marginTop: 20 }} >
                         <Button
+                            buttonStyle={styles.greenButton}
                             title="Valider"
                             type="solid"
-                            padding="30"
                             color='#424D41'
 
                             onPress={() => handleClickAddForm()}
@@ -441,7 +442,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         padding: 10,
         width: 145,
-        borderRadius: 2,
+        borderRadius: 15,
     },
     input: {
         height: 40,
@@ -449,7 +450,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         padding: 10,
         width: 300,
-        borderRadius: 2,
+        borderRadius: 15,
     },
     descriptionInput: {
         textAlignVertical: 'top',
@@ -457,8 +458,8 @@ const styles = StyleSheet.create({
         margin: 5,
         borderWidth: 1,
         padding: 10,
-        borderRadius: 2,
-        width: 300
+        borderRadius: 15,
+        width: 300,
     },
     dropdownType: {
         height: 40,
@@ -466,7 +467,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         padding: 10,
         width: 300,
-        borderRadius: 2,
+        borderRadius: 15,
         paddingHorizontal: 8,
         backgroundColor: '#F1EFE5',
     },
@@ -476,7 +477,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         padding: 10,
         width: 145,
-        borderRadius: 2,
+        borderRadius: 15,
         paddingHorizontal: 8,
         backgroundColor: '#F1EFE5',
     },
@@ -489,22 +490,31 @@ const styles = StyleSheet.create({
         fontSize: 14,
     },
     placeholderStyle: {
-        fontSize: 16,
+        fontSize: 14,
+        opacity: 0.25
 
     },
     selectedTextStyle: {
-        fontSize: 16,
+        fontSize: 14,
 
     },
     inputSearchStyle: {
         height: 40,
-        fontSize: 16,
+        fontSize: 14,
 
     },
     hiddenInput: {
         width: 0,
         height: 0,
     },
+    greenButton: {
+        backgroundColor: "#424D41",
+        borderRadius: 5,
+        alignSelf: "center",
+        marginTop: 20,
+        marginBottom: 20,
+        paddingHorizontal: 20
+    }
 
 });
 

@@ -217,7 +217,7 @@ function SearchScreen(props) {
                     <Button
                         title="Rechercher"
                         type="solid"
-                        buttonStyle={{ backgroundColor: '#424D41', paddingLeft: 30, paddingRight: 30, paddingTop: 10, paddingBottom: 10 }}
+                        buttonStyle={{ backgroundColor: '#424D41', paddingLeft: 30, paddingRight: 30, paddingTop: 10, paddingBottom: 10, marginBottom: 25, borderRadius: 5 }}
                         onPress={() => onSearchStylePress()}
                     />
                 </View>
@@ -225,7 +225,7 @@ function SearchScreen(props) {
                 <Button
                     title="Vous êtes pro ? Cliquez ici"
                     buttonStyle={{ backgroundColor: '#F1EFE5', padding: 1, paddingRight: 5, paddingLeft: 5, borderRadius: 5 }}
-                    titleStyle={{ color: '#424D41', marginBottom: 10, fontSize: 15 }}
+                    titleStyle={{ color: '#424D41', marginBottom: 25, fontSize: 15 }}
                     type="solid"
                     onPress={() => props.navigation.navigate('Connexion Tatoueur')}
                 />
@@ -261,34 +261,18 @@ const styles = StyleSheet.create({
         height: 40,
         width: 350,
         margin: 12,
-        marginTop: 30,
+        marginTop: 35,
         borderWidth: 0.5,
         padding: 10,
         alignSelf: 'center',
         borderRadius: 15,
-    },
-    inputLocalisation: {
-        height: 40,
-        width: 350,
-        margin: 12,
-        marginBottom: 30,
-        borderWidth: 0.5,
-        padding: 10,
-        alignSelf: 'center',
-        // height: 50,
-        // width: '80%',
-        // marginTop: 60,
-        // borderWidth: 0.5,
-        // padding: 10,
-        // textAlign: 'center',
-        // borderRadius: 50,
-        // fontSize: 17
+        textAlign: 'center'
     },
     button: {
         backgroundColor: '#F1EFE5',
         borderColor: '#454543',
         borderWidth: 0.5,
-        borderRadius: 100,
+        borderRadius: 15,
         padding: 10,
         marginBottom: 8,
         width: 110
@@ -299,16 +283,6 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         textAlign: 'center'
     },
-    selectedButton: {
-        backgroundColor: '#C2A77D',
-        borderColor: '#454543',
-        borderWidth: 1,
-        padding: 8,
-        width: 120,
-        color: '#F1EFE5',
-        fontSize: 17,
-        fontWeight: 'bold'
-    },
     selectedTextButton: {
         color: '#F1EFE5',
         fontSize: 17,
@@ -316,7 +290,7 @@ const styles = StyleSheet.create({
         textAlign: 'center'
     },
     btnGroup: {
-        marginTop: 60,
+        marginTop: 40,
         width: '100%',
         flexDirection: 'row',
         justifyContent: 'space-evenly',
@@ -326,16 +300,7 @@ const styles = StyleSheet.create({
     form: {
         flex: 3,
         marginTop: 20,
-    },
-    placeholderStyle: {
-        fontSize: 15,
-        textAlign: 'center',
-    },
-    selectedTextStyle: {
-        fontSize: 16,
-        textAlign: 'center',
-        color: '#454543'
-    },
+    }
 });
 
 function mapStateToProps(state) {

@@ -15,7 +15,7 @@ import {
     Modal
 } from "react-native";
 import { Button } from "react-native-elements";
-import { AntDesign, Feather, MaterialIcons } from "@expo/vector-icons";
+import { AntDesign, Feather, MaterialIcons, FontAwesome5 } from "@expo/vector-icons";
 
 import HeaderComponent from "./HeaderComponent";
 
@@ -24,7 +24,6 @@ function SelectedTattooArtistScreen(props) {
     //etats du coeur favoris
     const [tattooLiked, setTattooLiked] = useState(false);
     //etats des modals
-    const [overlayVisibleDevis, setOverlayVisibleDevis] = useState(false);
     const [overlayVisibleRDV, setOverlayVisibleRDV] = useState(false);
     const [overlayVisibleCoeur, setOverlayVisibleCoeur] = useState(false);
     //etats de connexion
@@ -113,11 +112,6 @@ function SelectedTattooArtistScreen(props) {
         const deleteLike = await response.json();
     };
 
-
-    const handlePressDevis = () => {
-        setOverlayVisibleDevis(!overlayVisibleDevis);
-    };
-
     const handlePressRDV = () => {
         setOverlayVisibleRDV(!overlayVisibleRDV);
     };
@@ -152,7 +146,7 @@ function SelectedTattooArtistScreen(props) {
                             <Text key={i}
                                 style={{
                                     fontSize: 14,
-                                    marginBottom: 10,
+                                    marginBottom: 20,
                                     fontWeight: "bold",
                                     color: "#454543",
                                 }}
@@ -282,11 +276,11 @@ function SelectedTattooArtistScreen(props) {
                 </View>
 
                 <View style={styles.ig}>
-                    <AntDesign
-                        name="instagram"
-                        size={30}
+                    <FontAwesome5
+                        name="camera-retro"
+                        size={20}
                         color="#454543"
-                        style={{ marginRight: 5, marginTop: 6 }}
+                        style={{ marginRight: 5, marginTop: 5 }}
                     />
                     <Text
                         style={{
@@ -297,14 +291,14 @@ function SelectedTattooArtistScreen(props) {
                             color: "#454543",
                         }}
                     >
-                        Instagram
+                        Galerie
                     </Text>
                 </View>
                 <View
 
                     style={{
                         width: "90%",
-                        margin: 10,
+                        marginVertical: 10,
                         flexDirection: "row",
                         justifyContent: "space-evenly",
                         flexWrap: "wrap",
@@ -315,7 +309,7 @@ function SelectedTattooArtistScreen(props) {
                             <Image
                                 key={i}
                                 source={{ uri: photo }}
-                                style={{ width: 80, height: 70, margin: 10 }}
+                                style={{ width: 95, height: 95, margin: 5 }}
                             />
                         );
                     })}
@@ -340,7 +334,6 @@ function SelectedTattooArtistScreen(props) {
                 />
 
                 <View
-
                     style={{
                         width: "90%",
                         flexDirection: "row",
@@ -355,7 +348,7 @@ function SelectedTattooArtistScreen(props) {
                         name="earth"
                         size={20}
                         color="#454543"
-                        style={{ marginRight: 10, marginTop: 10 }}
+                        style={{ marginRight: 10, marginTop: 3 }}
                     />
                     <Text
                         onPress={() =>
@@ -384,7 +377,7 @@ function SelectedTattooArtistScreen(props) {
                         name="phone"
                         size={20}
                         color="#454543"
-                        style={{ marginRight: 10, marginTop: 8 }}
+                        style={{ marginRight: 10, marginTop: 3 }}
                     />
                     <Text
 
@@ -407,14 +400,13 @@ function SelectedTattooArtistScreen(props) {
                     }}
                 >
                     <MaterialIcons
-
                         onPress={() =>
                             Linking.openURL(`mailto:${props.selectedArtistInfos.email}`)
                         }
                         name="alternate-email"
                         size={20}
                         color="#454543"
-                        style={{ marginRight: 10, marginTop: 10 }}
+                        style={{ marginRight: 10, marginTop: 3 }}
                     />
                     <Text
 
@@ -428,7 +420,6 @@ function SelectedTattooArtistScreen(props) {
                 </View>
                 <View style={{ flexDirection: "row" }}>
                     <AntDesign
-
                         name="facebook-square"
                         onPress={() => Linking.openURL(`https://www.facebook.com/${props.selectedArtistInfos.facebook}`)}
                         size={32}
@@ -451,122 +442,32 @@ function SelectedTattooArtistScreen(props) {
 
                 <View style={{ flexDirection: "row", marginBottom: 40 }}>
                     {props.dataUser == null ? (
-                        <>
-                            <Button
-                                title="Demande devis"
-                                type="solid"
-                                buttonStyle={{
-                                    backgroundColor: "#C2A77D",
-                                    marginTop: 40,
-                                    marginRight: 30,
-                                    paddingLeft: 10,
-                                    paddingRight: 10,
-                                    paddingTop: 10,
-                                    paddingBottom: 10,
-                                }}
-                                onPress={() => handlePressDevis()}
-                            />
-                        </>
-                    ) : (
                         <Button
-                            title="Demande devis"
+                            title="Contacter"
                             type="solid"
                             buttonStyle={{
                                 backgroundColor: "#C2A77D",
                                 marginTop: 40,
-                                marginRight: 30,
-                                paddingLeft: 10,
-                                paddingRight: 10,
+                                paddingLeft: 30,
+                                paddingRight: 30,
                                 paddingTop: 10,
                                 paddingBottom: 10,
-                            }}
-                            onPress={() => { props.navigation.navigate("Formulaire") }}
-                        />
-                    )}
-                    <Modal
-                        animationType="slide"
-                        transparent={true}
-                        visible={overlayVisibleDevis}
-                        onRequestClose={() => {
-                            setOverlayVisibleDevis(!overlayVisibleDevis);
-                        }}
-                    >
-                        <View style={styles.centeredView}>
-                            <View style={styles.modalView}>
-                                <Text style={styles.textOverlay}>Prendre un RDV</Text>
-                                <View style={styles.continuer}>
-                                    <Button
-                                        title="Continuer sans s'inscrire"
-                                        titleStyle={{ fontSize: 14 }}
-                                        buttonStyle={styles.greenButton}
-                                        type="solid"
-                                        onPress={() => {
-                                            handlePressRDV(), props.navigation.navigate("Formulaire");
-                                        }}
-                                    />
-                                </View>
-                                <TextInput
-                                    style={styles.input}
-                                    placeholder="Adresse email"
-                                    onChangeText={setSignInEmail}
-                                    value={signInEmail}
-                                />
-                                <TextInput
-                                    style={styles.input}
-                                    placeholder="Mot de passe"
-                                    onChangeText={setSignInPassword}
-                                    value={signInPassword}
-                                    secureTextEntry
-                                />
-                                {tabErrorsSignin}
-                                <Button
-                                    title="Se connecter"
-                                    titleStyle={{ fontSize: 14 }}
-                                    buttonStyle={styles.greenButton}
-                                    type="solid"
-                                    onPress={() => handleSubmitSignin()}
-                                />
-                                <View style={styles.inscription}>
-                                    <Button
-                                        title="S'inscrire"
-                                        titleStyle={{ fontSize: 14 }}
-                                        buttonStyle={styles.greenButton}
-                                        type="solid"
-                                        onPress={() => {
-                                            setOverlayVisibleDevis(false),
-                                                props.navigation.navigate("Inscription");
-                                        }}
-                                    />
-                                </View>
-                            </View>
-                        </View>
-                    </Modal>
-                    {props.dataUser == null ? (
-                        <Button
-                            title="Demande RDV"
-                            type="solid"
-                            buttonStyle={{
-                                backgroundColor: "#C2A77D",
-                                marginTop: 40,
-                                paddingLeft: 10,
-                                paddingRight: 10,
-                                paddingTop: 10,
-                                paddingBottom: 10,
+                                borderRadius: 5
                             }}
                             onPress={() => handlePressRDV()}
                         />
                     ) : (
                         <Button
-                            title="Demande RDV"
+                            title="Contacter"
                             type="solid"
                             buttonStyle={{
                                 backgroundColor: "#C2A77D",
                                 marginTop: 40,
-                                marginRight: 30,
-                                paddingLeft: 10,
-                                paddingRight: 10,
+                                paddingLeft: 30,
+                                paddingRight: 30,
                                 paddingTop: 10,
                                 paddingBottom: 10,
+                                borderRadius: 5
                             }}
                             onPress={() => { props.navigation.navigate("Formulaire") }}
                         />
@@ -654,7 +555,8 @@ const styles = StyleSheet.create({
     button: {
         backgroundColor: "#424D41",
         padding: 10,
-        //width: 100,
+        paddingHorizontal: 15,
+        borderRadius: 5
     },
     btnGroup: {
         marginTop: 20,
@@ -664,7 +566,7 @@ const styles = StyleSheet.create({
     },
     greenButton: {
         backgroundColor: "#424D41",
-        borderRadius: 2,
+        borderRadius: 5,
         alignSelf: "center",
         marginTop: 20,
         marginBottom: 20,
@@ -686,7 +588,8 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         padding: 10,
         width: 300,
-        borderRadius: 2,
+        borderRadius: 15,
+        textAlign: "center"
     },
     textOverlay: {
         fontSize: 14,
@@ -716,12 +619,12 @@ const styles = StyleSheet.create({
         alignItems: "center",
         shadowColor: "#000",
         shadowOffset: {
-            width: 100,
-            height: 20,
+            width: 10,
+            height: 10,
         },
-        shadowOpacity: 0.5,
+        shadowOpacity: 0.25,
         shadowRadius: 4,
-        elevation: 15,
+        elevation: 10,
     },
 });
 

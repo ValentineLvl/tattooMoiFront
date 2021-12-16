@@ -183,7 +183,7 @@ function SignUpScreen(props) {
 
                     <Button
                         title="S'inscrire"
-                        buttonStyle={{ backgroundColor: '#424D41', borderRadius: 2, marginTop: 30, alignSelf: 'center' }}
+                        buttonStyle={{ backgroundColor: '#424D41', borderRadius: 5, marginTop: 30, alignSelf: 'center', paddingHorizontal: 20 }}
                         type="solid"
                         onPress={() => handleSubmitSignup()}
                     />
@@ -243,7 +243,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         padding: 10,
         width: 300,
-        borderRadius: 2,
+        borderRadius: 15,
     },
     smallInput: {
         height: 40,
@@ -251,13 +251,14 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         padding: 10,
         width: 145,
-        borderRadius: 2,
+        borderRadius: 15,
     },
     placeholderStyle: {
-        fontSize: 16,
+        fontSize: 14,
+        opacity: 0.25
     },
     selectedTextStyle: {
-        fontSize: 16,
+        fontSize: 14
     },
     dropdown: {
         height: 40,
@@ -267,6 +268,7 @@ const styles = StyleSheet.create({
         width: 145,
         borderRadius: 2,
         paddingHorizontal: 8,
+        borderRadius: 15
     },
     label: {
         position: 'absolute',

@@ -10,7 +10,7 @@ function HeaderComponent(props) {
             <View style={styles.header}>
                 <Image
                     source={require('../assets/tattoo-moi_1.png')}
-                    style={{ width: 200, height: 80, marginRight: 50 }} />
+                    style={{ width: 200, height: 80, marginRight: 30 }} />
                 <Text style={styles.titre}>Salut {props.dataUser.firstName} !</Text>
             </View>
         )
@@ -20,7 +20,7 @@ function HeaderComponent(props) {
             <View style={styles.header}>
                 <Image
                     source={require('../assets/tattoo-moi_1.png')}
-                    style={{ width: 200, height: 80, marginRight: 50 }} />
+                    style={{ width: 200, height: 80, marginRight: 30 }} />
                 <Text style={styles.titre}>Salut {props.dataTattoo.firstName} !</Text>
             </View>
         )
@@ -54,6 +54,8 @@ const styles = StyleSheet.create({
         fontSize: 14,
         fontWeight: 'bold',
         color: '#454543',
+        marginRight: 20,
+        marginTop: 5
     },
 });
 

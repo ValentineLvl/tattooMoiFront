@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
     },
     greenButton: {
         backgroundColor: '#424D41',
-        borderRadius: 2,
+        borderRadius: 5,
         alignSelf: 'center',
         marginTop: 20,
         marginBottom: 20,
@@ -150,7 +150,8 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         padding: 10,
         width: 300,
-        borderRadius: 2,
+        borderRadius: 15,
+        textAlign: 'center'
     },
     inscription: {
         marginTop: 90,

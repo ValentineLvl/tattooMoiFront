@@ -45,7 +45,7 @@ function AppointmentScreen(props) {
     };
 
     var projectForm = props.formList.map((form, i) => {
-        
+
         console.log("image", form.confirmationFormSchema[0].status);
 
         return (
@@ -65,70 +65,66 @@ function AppointmentScreen(props) {
                     <View style={styles.cardDesc}>
                         <Text
                             style={{
-                                marginBottom: 10,
                                 fontWeight: "bold",
                                 paddingTop: 5,
                                 color: "#454543",
                             }}
                         >
-                            {" "}
-                            {form.type} : {form.request}
+                            {form.type}: {form.request}
                         </Text>
 
                         <Text
-                            style={{ fontWeight: "bold", paddingTop: 5, color: "#454543" }}
+                            style={{ fontWeight: "bold", paddingBottom: 10, color: "#454543" }}
                         >
-                            {" "}
                             Tatoueur: {form.tattooProjectId[0].firstName} {form.tattooProjectId[0].lastName}
                         </Text>
-                        <Text
-                            style={{ marginBottom: 10, fontWeight: "bold", color: "#454543" }}
-                        >
-                            {" "}
-                            Adresse : {
-                                form.tattooProjectId[0].tattooShopAddress[0].address
-                            }, {form.tattooProjectId[0].tattooShopAddress[0].postalCode},{" "}
-                            {form.tattooProjectId[0].tattooShopAddress[0].city}{" "}
-                        </Text>
-                        <Text style={styles.text}>Style: {form.style}</Text>
-                        <Text style={styles.text}>Zone à tatouer: {form.tattooZone}</Text>
-                        <Text style={styles.text}>
+                        <Text style={[styles.text, {marginLeft: 15}]}>Style: {form.style}</Text>
+                        <Text style={[styles.text, {marginLeft: 15}]}>Zone à tatouer: {form.tattooZone}</Text>
+                        <Text style={[styles.text, {marginLeft: 15}]}>
                             Taille: {form.heigth} cm x {form.width} cm
                         </Text>
-                        <Text style={styles.text}>Description: {form.description} </Text>
-                        <Text style={styles.text}>
-                            Disponibilité: {form.disponibility}{" "}
+                        <Text style={[styles.text, {marginLeft: 15}]}>Description: {form.description} </Text>
+                        <Text style={[styles.text, {marginLeft: 15}]}>
+                            Disponibilité: {form.disponibility}
                         </Text>
 
                         <Text
                             style={{
                                 marginBottom: 10,
                                 fontWeight: "bold",
-                                paddingTop: 5,
+                                paddingTop: 10,
                                 color: "#454543",
                             }}
                         >
-                            Statut de la demande: {form.confirmationFormSchema[0].status}{" "}
+                            Statut de la demande: {form.confirmationFormSchema[0].status}
                         </Text>
                         <Text>
                             {form.confirmationFormSchema[0].status == "Accepté" ? (
                                 <>
                                     <View style={{ maxWidth: 310 }}>
                                         <Text style={{ fontWeight: "bold", color: "#454543" }}>
-                                            Proposition du tatoueur:{" "}
+                                            Proposition du tatoueur:
                                         </Text>
-                                        <Text style={styles.text}>
-                                            Date proposée: {form.confirmationFormSchema[0].date}{" "}
+                                        <Text style={[styles.text, {marginLeft: 10}]}>
+                                            Date proposée: {form.confirmationFormSchema[0].date}
                                         </Text>
-                                        <Text style={styles.text}>
+                                        <Text style={[styles.text, {marginLeft: 10}]}>
                                             Prix estimé: {form.confirmationFormSchema[0].price} euro
                                         </Text>
-                                        <Text style={styles.commentText}>
-                                            Commentaire: {form.confirmationFormSchema[0].comment}{" "}
+                                        <Text style={[styles.commentText, {marginLeft: 10}]}>
+                                            Commentaire: {form.confirmationFormSchema[0].comment}
                                         </Text>
-                                    </View>{" "}
+                                        <Text
+                                            style={{ marginBottom: 10, fontWeight: "bold", color: "#454543", fontStyle: 'italic' }}
+                                        >
+                                            Adresse: {
+                                                form.tattooProjectId[0].tattooShopAddress[0].address
+                                            }, {form.tattooProjectId[0].tattooShopAddress[0].postalCode}{" "}
+                                            {form.tattooProjectId[0].tattooShopAddress[0].city}
+                                        </Text>
+                                    </View>
                                 </>
-                            ) : null}{" "}
+                            ) : null}
                         </Text>
                     </View>
                 </View>
